@@ -1,51 +1,24 @@
 <template>
   <div class="base-page-table-container">
     <el-card class="base-page-table-searcher-container" :body-style="{ paddingBottom: '0px' }">
-      <el-form
-        class="base-page-table-searcher"
-        :model="queryForm"
-        label-position="right"
-        v-bind="formConfig"
-        @keyup.enter.native="handleSearch"
-      >
+      <el-form class="base-page-table-searcher" :model="queryForm" label-position="right" v-bind="formConfig"
+        @keyup.enter.native="handleSearch">
         <el-row :gutter="gutter">
           <el-col v-for="factor in showFactors" :key="factor.prop" :span="span">
             <el-form-item :prop="factor.prop" :label="factor.label">
-              <component
-                :is="factor.type || 'el-input'"
-                v-model="queryForm[factor.prop]"
-                clearable
-                v-bind="factor.config"
-                class="base-factor-item"
-              >
+              <component :is="factor.type || 'el-input'" v-model="queryForm[factor.prop]" clearable v-bind="factor.config"
+                class="base-factor-item">
                 <template v-if="factor.type === 'el-select'">
-                  <el-option
-                    v-for="item in factor.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+                  <el-option v-for="item in factor.options" :key="item.value" :label="item.label"
+                    :value="item.value"></el-option>
                 </template>
               </component>
             </el-form-item>
           </el-col>
           <el-col class="base-searcher-actions" :span="span">
-            <el-button
-              size="small"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleSearch"
-              >搜索</el-button
-            >
-            <el-button
-              size="small"
-              type="primary"
-              icon="el-icon-refresh"
-              plain
-              @click="handleReset"
-              >重置</el-button
-            >
-            <el-button size="small" type="text" @click="handleResize">
+            <el-button size="small" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+            <el-button size="small" type="primary" icon="el-icon-refresh" plain @click="handleReset">重置</el-button>
+            <el-button v-if="searcherInline" size="small" type="text" @click="handleResize">
               {{ collapsed ? "展开" : "折叠" }}
               <i class="el-icon-arrow-down"></i>
             </el-button>
@@ -57,50 +30,25 @@
       <template #header></template>
       <div class="base-page-table-toolbar">
         <div :span="12" class="base-page-table-toolbar-actions">
-          <el-button
-            v-for="action in actions"
-            :key="action.name"
-            size="small"
-            v-bind="action"
-            @click="$emit(action.name)"
-          >
+          <el-button v-for="action in actions" :key="action.name" size="small" v-bind="action"
+            @click="$emit(action.name)">
             {{ action.label }}
           </el-button>
         </div>
         <div class="base-page-table-toolbar-tools">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="设置表格边框"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="设置表格边框" placement="top">
             <el-switch v-model="borderValue" inactive-text="边框" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="设置表格斑马纹"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="设置表格斑马纹" placement="top">
             <el-switch v-model="zebraValue" inactive-text="斑马纹" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="设置表格高度自适应"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="设置表格高度自适应" placement="top">
             <el-switch v-model="heightValue" inactive-text="高度适应" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="隐藏搜索"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="隐藏搜索" placement="top">
             <el-button size="small" circle class="el-icon-search" />
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -110,11 +58,7 @@
             <el-dropdown trigger="click" placement="bottom">
               <el-button size="small" circle class="el-icon-s-operation" />
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  v-for="item in densityArr"
-                  :key="item.value"
-                  :command="item.value"
-                >
+                <el-dropdown-item v-for="item in densityArr" :key="item.value" :command="item.value">
                   <el-radio v-model="densityValue" :label="item.value">{{
                     item.label
                   }}</el-radio>
@@ -125,23 +69,11 @@
           <el-tooltip class="item" effect="dark" content="导出" placement="top">
             <el-button size="small" circle class="el-icon-download" />
           </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="列配置"
-            placement="top"
-          >
+          <el-tooltip class="item" effect="dark" content="列配置" placement="top">
             <el-button size="small" circle class="el-icon-setting" />
             <el-popover placement="bottom" trigger="click" title="配置表格">
-              <el-checkbox-group
-                v-model="showColumns"
-                @change="onColumnsChange"
-              >
-                <el-checkbox
-                  v-for="item in columns"
-                  :key="item.prop"
-                  :label="item.prop"
-                >
+              <el-checkbox-group v-model="showColumns" @change="onColumnsChange">
+                <el-checkbox v-for="item in columns" :key="item.prop" :label="item.prop">
                   {{ item.label }}
                 </el-checkbox>
               </el-checkbox-group>
@@ -150,39 +82,22 @@
         </div>
       </div>
       <el-table class="base-page-table-table" v-bind="$attrs" v-on="$listeners">
-        <el-table-column
-          v-for="column in columns"
-          :key="column.prop"
-          v-bind="column"
-        >
+        <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
           <template slot-scope="scope">
             <template v-if="$slots[`${column.prop}Header`]" slot="header">
               <slot :name="`${column.prop}Header`"></slot>
             </template>
             <template v-if="$slots[`${column.prop}Content`]">
-              <slot
-                :name="`${column.prop}Content`"
-                :row="scope.row"
-                :index="scope.$index"
-              ></slot>
+              <slot :name="`${column.prop}Content`" :row="scope.row" :index="scope.$index"></slot>
             </template>
             <template v-else>{{ scope.row[column.prop] }}</template>
           </template>
         </el-table-column>
       </el-table>
       <div class="base-page-table-pagination">
-        <el-pagination
-          :background="background"
-          :current-page.sync="currentPage"
-          :page-size.sync="pageSize"
-          :layout="layout"
-          :page-sizes="pageSizes"
-          :pager-count="pagerCount"
-          :total="total"
-          v-bind="$attrs"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination :background="background" :current-page.sync="currentPage" :page-size.sync="pageSize"
+          :layout="layout" :page-sizes="pageSizes" :pager-count="pagerCount" :total="total" v-bind="$attrs"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </el-card>
   </div>
@@ -358,6 +273,9 @@ export default {
         this.$emit("update:queryParams", val);
       },
     },
+    /**
+     * @description 要显示的搜索条件
+     */
     showFactors() {
       if (this.collapsed) {
         let inlineMaxNum = 24 / this.span - 1;
@@ -365,6 +283,13 @@ export default {
       } else {
         return this.factors;
       }
+    },
+    /**
+     * @description 搜索条件是否只有一行
+     */
+    searcherInline() {
+      let inlineMaxNum = 24 / this.span - 1
+      return this.factors.length > inlineMaxNum;
     },
     showColumns() {
       return this.columns.map((item) => item.prop);
@@ -434,12 +359,29 @@ export default {
 <style lang="scss" scoped>
 .base-page-table-searcher-container {
   margin-bottom: 10px;
+
+  .base-page-table-searcher {
+    .el-row {
+      display: flex;
+      flex-wrap: wrap;
+
+      .base-factor-item {
+        width: 100%;
+      }
+    }
+  }
+
+  .base-searcher-actions {
+    line-height: 40px;
+    text-align: right;
+    flex: 1;
+  }
 }
 
-.base-page-table-main {
-}
+.base-page-table-main {}
 
 ::v-deep.base-page-table-table {
+
   .el-table__header-wrapper,
   .el-table__fixed-header-wrapper {
     th {
