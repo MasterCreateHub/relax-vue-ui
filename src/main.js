@@ -7,10 +7,12 @@ import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
 import BaseSearcher from './baseComponents/BaseSearcher.vue'
 import BasePageTable from './baseComponents/BasePageTable.vue'
+import BaseConverter from './baseComponents/BaseConverter.vue'
 
 Vue.config.productionTip = false;
 Vue.component('BaseSearcher', BaseSearcher)
 Vue.component('BasePageTable', BasePageTable)
+Vue.component('BaseConverter', BaseConverter)
 Vue.use(ElementUI);
 
 new Vue({
