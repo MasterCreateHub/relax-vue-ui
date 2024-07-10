@@ -1,7 +1,7 @@
 <template>
-  <div class="base-page-table-container">
-    <el-card class="base-page-table-searcher-container" :body-style="{ paddingBottom: '0px' }">
-      <el-form class="base-page-table-searcher" :model="queryForm" label-position="right" v-bind="formConfig"
+  <div class="bpt-container" :class="{ 'is-adapt': tableAdaption }">
+    <div class="bpt-searcher-container" :body-style="{ paddingBottom: '0px' }">
+      <el-form class="bpt-searcher bpt-searcher-form" :model="queryForm" label-position="right" v-bind="formConfig"
         @keyup.enter.native="handleSearch">
         <el-row :gutter="gutter">
           <el-col v-for="factor in showFactors" :key="factor.prop" :span="span">
@@ -25,30 +25,29 @@
           </el-col>
         </el-row>
       </el-form>
-    </el-card>
-    <el-card class="base-page-table-main">
-      <template #header></template>
-      <div class="base-page-table-toolbar">
-        <div :span="12" class="base-page-table-toolbar-actions">
+    </div>
+    <div class="bpt-body">
+      <div class="bpt-toolbar-container">
+        <div class="bpt-toolbar actions">
           <el-button v-for="action in actions" :key="action.name" size="small" v-bind="action"
             @click="$emit(action.name)">
             {{ action.label }}
           </el-button>
         </div>
-        <div class="base-page-table-toolbar-tools">
-          <el-tooltip class="item" effect="dark" content="设置表格边框" placement="top">
-            <el-switch v-model="borderValue" inactive-text="边框" />
+        <div class="bpt-toolbar tools">
+          <el-tooltip class="item" effect="dark" :content="borderSwitchTip" placement="top">
+            <el-switch v-model="tableBorder" inactive-text="边框" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip class="item" effect="dark" content="设置表格斑马纹" placement="top">
-            <el-switch v-model="zebraValue" inactive-text="斑马纹" />
+          <el-tooltip class="item" effect="dark" :content="stripeSwitchTip" placement="top">
+            <el-switch v-model="tableStripe" inactive-text="斑马纹" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip class="item" effect="dark" content="设置表格高度自适应" placement="top">
-            <el-switch v-model="heightValue" inactive-text="高度适应" />
+          <el-tooltip class="item" effect="dark" :content="adaptionSwitchTip" placement="top">
+            <el-switch v-model="tableAdaption" inactive-text="高度适应" />
           </el-tooltip>
           <el-divider direction="vertical" />
-          <el-tooltip class="item" effect="dark" content="隐藏搜索" placement="top">
+          <el-tooltip class="item" effect="dark" content="搜索" placement="top">
             <el-button size="small" circle class="el-icon-search" />
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -58,8 +57,8 @@
             <el-dropdown trigger="click" placement="bottom">
               <el-button size="small" circle class="el-icon-s-operation" />
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in densityArr" :key="item.value" :command="item.value">
-                  <el-radio v-model="densityValue" :label="item.value">{{
+                <el-dropdown-item v-for="item in rowDensityOptions" :key="item.value" :command="item.value">
+                  <el-radio v-model="rowDensity" :label="item.value">{{
                     item.label
                   }}</el-radio>
                 </el-dropdown-item>
@@ -81,7 +80,8 @@
           </el-tooltip>
         </div>
       </div>
-      <el-table class="base-page-table-table" v-bind="$attrs" v-on="$listeners">
+      <el-table class="bpt-table" :border="$attrs.border || tableBorder" :stripe="$attrs.stripe || tableStripe"
+        v-bind="$attrs" v-on="$listeners" :height="600">
         <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
           <template slot-scope="scope">
             <template v-if="$slots[`${column.prop}Header`]" slot="header">
@@ -94,12 +94,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="base-page-table-pagination">
+      <div class="bpt-pagination-container">
         <el-pagination :background="background" :current-page.sync="currentPage" :page-size.sync="pageSize"
           :layout="layout" :page-sizes="pageSizes" :pager-count="pagerCount" :total="total" v-bind="$attrs"
           @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
-    </el-card>
+    </div>
   </div>
 </template>
 <script>
@@ -253,14 +253,15 @@ export default {
        * @description 搜索面板是否折叠
        */
       collapsed: true,
-      borderValue: true,
-      zebraValue: true,
-      heightValue: true,
-      densityValue: "A",
-      densityArr: [
+      tableBorder: true,
+      tableStripe: true,
+      tableAdaption: true,
+      tableSearcher: true,
+      rowDensity: "A",
+      rowDensityOptions: [
         { label: "紧凑", value: "A" },
         { label: "普通", value: "B" },
-        { label: "普通", value: "C" },
+        { label: "宽松", value: "C" },
       ],
     };
   },
@@ -294,6 +295,27 @@ export default {
     showColumns() {
       return this.columns.map((item) => item.prop);
     },
+    /**
+     * @description stripe开关tip
+     */
+    borderSwitchTip() {
+      return this.tableBorder ? '关闭表格边框' : '开启表格边框'
+    },
+    /**
+     * @description border开关tip
+     */
+    stripeSwitchTip() {
+      return this.tableStripe ? '关闭表格斑马纹' : '开启表格斑马纹'
+    },
+    /**
+     * @description adaption开关tip
+     */
+    adaptionSwitchTip() {
+      return this.tableAdaption ? '关闭表格高度自适应' : '开启表格高度自适应'
+    },
+    /**
+     * @description adaption开关tip
+     */
     currentPage: {
       get() {
         return this.page;
@@ -357,59 +379,93 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.base-page-table-searcher-container {
-  margin-bottom: 10px;
+::v-deep.bpt-container {
 
-  .base-page-table-searcher {
-    .el-row {
-      display: flex;
-      flex-wrap: wrap;
+  .bpt-searcher-container {
+    padding: 20px 20px 0px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #EBEEF5;
+    background-color: #FFF;
+    overflow: hidden;
+    color: #303133;
+    transition: 0.3s;
 
-      .base-factor-item {
-        width: 100%;
+    .bpt-searcher {
+      .el-row {
+        display: flex;
+        flex-wrap: wrap;
+
+        .base-factor-item {
+          width: 100%;
+        }
       }
     }
+
+    .base-searcher-actions {
+      text-align: right;
+      flex: 1;
+    }
   }
 
-  .base-searcher-actions {
-    line-height: 40px;
-    text-align: right;
-    flex: 1;
-  }
-}
+  .bpt-body {
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #EBEEF5;
+    background-color: #FFF;
+    color: #303133;
+    transition: 0.3s;
 
-.base-page-table-main {}
+    .bpt-toolbar-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
 
-::v-deep.base-page-table-table {
+      .bpt-toolbar.tools {
+        text-align: right;
 
-  .el-table__header-wrapper,
-  .el-table__fixed-header-wrapper {
-    th {
-      word-break: break-word;
-      background-color: #f8f8f9;
-      color: #515a6e;
-      height: 40px;
-      font-size: 13px;
+        .el-button {
+          margin: 0px 6px;
+        }
+      }
+    }
+
+    .bpt-table {
+
+      .el-table__header-wrapper,
+      .el-table__fixed-header-wrapper {
+        th {
+          word-break: break-word;
+          background-color: #f8f8f9;
+          color: #515a6e;
+          height: 40px;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .bpt-pagination-container {
+      margin-top: 20px;
+      text-align: right;
     }
   }
 }
 
-.base-page-table-toolbar {
+.is-adapt {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
 
-  &-tools {
-    text-align: right;
+  .bpt-body {
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
-    & .el-button {
-      margin: 0px 6px;
+    .bpt-table {
+      flex: 1;
     }
   }
-}
-
-.base-page-table-pagination {
-  margin-top: 10px;
-  text-align: right;
 }
 </style>

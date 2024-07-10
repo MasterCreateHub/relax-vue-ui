@@ -22,6 +22,7 @@
 *{
   margin: 0px;
 }
+
 #app {
   width: 100vw;
   height: 100vh;

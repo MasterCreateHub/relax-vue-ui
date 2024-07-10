@@ -8,7 +8,7 @@
       />
     </el-card>
     <el-card header="通用数据转换器">
-      <base-converter :value="['A', 'B']" :source="dict" contrainer="el-tag"></base-converter>
+      <base-converter :value="['A', 'B']" :source="dict" container="el-tag"></base-converter>
     </el-card>
   </div>
 </template>
@@ -79,3 +79,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.el-card{
+    margin-bottom: 10px;
+}
+</style>

@@ -1,6 +1,7 @@
 <template>
-  <div class="tool">
-    <el-card header="通用表格页面">
+  <div class="table-view">
+    <!-- <el-card header="通用表格页面"></el-card> -->
+    <!-- <el-card header="通用表格页面" class="tool-card"> -->
       <base-page-table
         :span="6"
         :factors="seacherFactors"
@@ -11,7 +12,7 @@
         :limit.sync="queryForm.pageSize"
         @pagination="handleGet"
       ></base-page-table>
-    </el-card>
+    <!-- </el-card> -->
   </div>
 </template>
 
@@ -209,3 +210,21 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.table-view {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  // overflow: hidden;
+}
+::v-deep.tool-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .el-card__body {
+    height: 300px;
+    flex: 1;
+  }
+}
+</style>
