@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       once: 0,//每次插入的数量
-      containerHeight: 0,
+      containerHeight: '100%',
       total: 0,//总条数
       countRender: 0,//已经渲染次数
       loopCount: 0,//需要插入的次数
@@ -25,7 +25,7 @@ export default {
     }
   },
   created() {
-    this.containerHeight = 300 + 'px';
+    // this.containerHeight = 300 + 'px';
   },
   mounted() {
     this.handleInit();
@@ -59,3 +59,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.about {
+  height: 100%;
+  width: 100%;
+}
+</style>

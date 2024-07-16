@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <!-- <div> -->
         <div ref="listRef" :style="{ height: containerHeight }" class="listContainer" @scroll="scrollEvent($event)">
             <div class="listPhantom" :style="{ height: computedListHeight + 'px' }"></div>
             <div class="list" ref="infiniteListRef" :style="{ transform: computedGetTransform }">
@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </template>
   
 <script>
@@ -123,7 +123,7 @@ export default {
 }
 
 .listItem {
-    padding: 10px;
+    // padding: 10px;
     color: #555;
     box-sizing: border-box;
 }
