@@ -3,11 +3,11 @@
         <template #reference>
             <slot></slot>
         </template>
-        <div class="base-list-container" :style="{ height: height }" @scroll="handleScroll($event)">
+        <div class="base-list-container" @scroll="handleScroll($event)">
             <div class="base-list-phantom" :style="{ height: listHeight + 'px' }"></div>
             <ul class="base-list" :class="listClass" ref="infiniteListRef" :style="{ transform: viewportTransform }">
-                <li ref="items" class="base-list-item" :class="itemClass" v-for="(item, key) in visibleData"
-                    :key="key + '-' + item?.id">
+                <li ref="items" class="base-list-item" :class="itemClass" v-for="(item, index) in visibleData"
+                    :key="'option-' + index">
                     <slot :data="item" />
                 </li>
             </ul>
@@ -22,20 +22,9 @@ export default {
         /**
          * @description 列表数据
          */
-        data: {
+        options: {
             type: Array,
             default: () => [],
-        },
-        /**
-         * @description 列表高度，必须是px、vh或者%
-         */
-        height: {
-            type: String,
-            default: "100%",
-            validator: (value) => {
-                const regex = /^(?:\d+\.?\d*(?:px|vh|%))$/;
-                return regex.test(value);
-            }
         },
         /**
          * @description 列表类名
@@ -48,14 +37,12 @@ export default {
     },
     data() {
         return {
-            /**
-             * @description 列表视口高度，数字，px
-             */
-            visibleHeight: 0,
+
+
             /**
              * @description 列表项高度，数字，px
              */
-            itemHeight: 1,
+            itemHeight: 20,
             /**
              * @description 列表在容器中的偏移量，数字，px
              */
@@ -70,29 +57,19 @@ export default {
             end: null,
         };
     },
-    watch: {
-        //监听列表数据
-        data: {
-            handler() {
-                //修改每一个列的高度
-                this.$nextTick(() => {
-                    //获取每个列表高度
-                    this.itemHeight = this.$refs.items
-                        ? this.$refs.items[0].offsetHeight
-                        : 1;
-                    this.end = this.start + this.renderCount;
-                });
-            },
-            deep: true,
-            immediate: true,
-        },
-    },
     computed: {
+        /**
+             * @description 列表视口高度，数字，px
+             */
+        visibleHeight() {
+            return Math.min(this.options.length * this.itemHeight, 100)
+
+        },
         /**
          * @description 列表总高度
          */
         listHeight() {
-            return BigInt(this.data.length * this.itemHeight);
+            return BigInt(this.options.length * this.itemHeight);
         },
         /**
          * @description 视口可容纳的列表项(包括缓冲区)
@@ -104,9 +81,9 @@ export default {
          * @description 可见的列表数据
          */
         visibleData() {
-            return this.data.slice(
+            return this.options.slice(
                 this.start,
-                Math.min(this.end, this.data.length)
+                Math.min(this.end, this.options.length)
             );
         },
         /**
@@ -138,22 +115,12 @@ export default {
             this.end = this.start + this.renderCount;
             //此时的偏移量
             this.offset = scrollTop - (scrollTop % this.itemHeight);
+
         },
 
     },
     mounted() {
         this.handleInit()
-        this.resizeObserver = new ResizeObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.target === this.$el) {
-                    this.handleInit();
-                }
-            })
-        })
-        this.resizeObserver.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.resizeObserver.disconnect();
     },
 };
 </script>
