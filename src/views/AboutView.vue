@@ -1,9 +1,9 @@
 <template>
   <div class="about" ref="aboutDivRef">
-    <base-list ref="testRef" :containerHeight="containerHeight" :listData="rows">
+    <base-list ref="testRef" :height="containerHeight" :data="rows">
       <template slot-scope="row">
-        <div style="background-color: aqua;">
-          {{ row.data.id }}
+        <div class="item">
+          <el-tag>标题：{{ row.data.id }}</el-tag>
         </div>
       </template>
     </base-list>
@@ -63,5 +63,12 @@ export default {
 .about {
   height: 100%;
   width: 100%;
+}
+
+.item{ 
+  width: auto;
+  height: 200px;
+  border: 1px solid #ccc;
+  margin: 8px 0px;
 }
 </style>
