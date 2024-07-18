@@ -63,12 +63,27 @@ export default {
 .about {
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #EBEEF5;
+  background-color: #FFF;
+  overflow: hidden;
+  color: #303133;
+  transition: 0.3s;
 }
 
-.item{ 
-  width: auto;
+.list{
+  display: flex;
+}
+
+.item {
+  width: 80%;
   height: 200px;
   border: 1px solid #ccc;
-  margin: 8px 0px;
+  border-radius: 8px;
+  margin: 8px auto;
+  margin-top: 0px;
 }
+
 </style>

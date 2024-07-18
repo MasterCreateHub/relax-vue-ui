@@ -69,3 +69,21 @@ nav {
   }
 }
 </style>
+
+<style lang="scss">
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 30px;
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;
+  border-radius: 30px;
+}
+</style>
