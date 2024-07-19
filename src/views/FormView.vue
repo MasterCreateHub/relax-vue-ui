@@ -2,9 +2,18 @@
   <div class="form">
     <el-form :model="form" label-width="80px" label-position="top">
       <el-card header="BasePopselect">
-        <base-popselect :options="options">
-          <el-button slot="reference" type="primary">点击选择</el-button>
-        </base-popselect>        
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="BasePopselect">
+              <base-popselect v-model="popValue" :options="options" multiple>
+                <el-input slot="reference" readonly :value="showPopLabel"></el-input>
+              </base-popselect>
+            </el-form-item>         
+          </el-col>
+          <el-col :span="6"></el-col>
+          <el-col :span="6"></el-col>
+          <el-col :span="6"></el-col>
+        </el-row>
       </el-card>
     </el-form>
   </div>
@@ -20,25 +29,22 @@ export default {
       form: {
         name: "",
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-      ]
+      popValue: [],
+      options: []
     };
   },
+  computed:{
+    showPopLabel(){
+      return this.options.filter(item => this.popValue.includes(item.value)).map(item => item.label).join(",");
+    }
+  },
+  mounted() {
+    for (let i = 0; i < 5000; i++) {
+      this.options.push({
+        value: i,
+        label: `选项${i}`
+      })
+    }
+  }
 };
 </script>
