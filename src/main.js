@@ -9,7 +9,8 @@ import BaseSearcher from './baseComponents/BaseSearcher.vue'
 import BasePageTable from './baseComponents/BasePageTable.vue'
 import BaseConverter from './baseComponents/BaseConverter.vue'
 import BaseList from './baseComponents/BaseList.vue'
-import BasePopselect from "./baseComponents/BasePopselect.vue";
+import BasePopselect from "./baseComponents/BasePopselect.vue"
+import BasePoptabs from "./baseComponents/BasePoptabs.vue"
 
 Vue.config.productionTip = false;
 Vue.component('BaseSearcher', BaseSearcher)
@@ -17,6 +18,7 @@ Vue.component('BasePageTable', BasePageTable)
 Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseList', BaseList)
 Vue.component('BasePopselect', BasePopselect)
+Vue.component('BasePoptabs', BasePoptabs)
 Vue.use(ElementUI);
 
 new Vue({

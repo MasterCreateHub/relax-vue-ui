@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 *{
   margin: 0px;
 }

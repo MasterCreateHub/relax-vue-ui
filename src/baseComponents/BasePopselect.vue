@@ -182,7 +182,7 @@ export default {
 
     &::-webkit-scrollbar-track {
         border-radius: 10px;
-        background-color: #f1f1f1;
+        background-color: #ffffff;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -238,7 +238,7 @@ export default {
             }
         }
 
-        .base-popselect-item:hover {
+        .base-popselect-list-item:hover {
             background-color: #f5f7fa;
         }
     }
@@ -246,6 +246,6 @@ export default {
 </style>
 <style lang="scss">
 .base-popselect-popver {
-    padding: 6px 0px;
+    padding: 4px 0px;
 }
 </style>
