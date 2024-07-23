@@ -1,25 +1,20 @@
 <template>
     <el-dialog v-if="container === 'dialog'" :visible.sync="containershow" v-bind="$attrs" :width="$attrs.size || '80%'">
-        <header class="base-poptabs-header">
-            <el-tabs v-model="currentTab" @tab-click="handleTabClick">
+        <template v-slot:title>
+            <el-tabs v-if="visible" v-model="currentTab" @tab-click="handleTabClick">
                 <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>
             </el-tabs>
-            <template v-if="$slots.action">
-                <div class="base-poptabs-header-action">
+            <div class="base-poptabs-header-action">
+                <template v-if="$slots.action">
                     <slot name="action"></slot>
-                </div>
-            </template>
-            <template v-else>
-                <div class="base-poptabs-header-action">
-                    <template v-if="!$scopedSlots.default">
-                        <el-button icon="el-icon-close" @click="handleClose">关闭</el-button>
-                    </template>
-                </div>
-            </template>
-        </header>
-        <main class="base-poptabs-body">
-            <slot :name="currentTab"></slot>
-        </main>
+                </template>
+                <template v-else>
+                    <el-button class="close-button" size="mini" icon="el-icon-close" circle
+                        @click="handleClose"></el-button>
+                </template>
+            </div>
+        </template>
+        <slot :name="currentTab"></slot>
     </el-dialog>
     <el-drawer v-else :visible.sync="containershow" v-bind="$attrs" :with-header="false" :size="$attrs.size || '80%'"
         :width="$attrs.size || '80%'">
@@ -27,18 +22,15 @@
             <el-tabs v-model="currentTab" @tab-click="handleTabClick">
                 <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>
             </el-tabs>
-            <template v-if="$slots.action">
-                <div class="base-poptabs-header-action">
+            <div class="base-poptabs-header-action">
+                <template v-if="$slots.action">
                     <slot name="action"></slot>
-                </div>
-            </template>
-            <template v-else>
-                <div class="base-poptabs-header-action">
-                    <template v-if="!$scopedSlots.default">
-                        <el-button icon="el-icon-close" @click="handleClose">关闭</el-button>
-                    </template>
-                </div>
-            </template>
+                </template>
+                <template v-else>
+                    <el-button class="close-button" size="mini" icon="el-icon-close" circle
+                        @click="handleClose"></el-button>
+                </template>
+            </div>
         </header>
         <main class="base-poptabs-body">
             <slot :name="currentTab"></slot>
@@ -113,21 +105,16 @@ export default {
             this.$emit("tabClick", this.activeTab);
         },
         handleClose() {
+            this.$emit("update:visible", false);
             this.$emit("close")
         }
     },
 };
 </script>
 <style lang="scss" scoped>
-::v-deep section.el-drawer__body {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
+::v-deep .el-drawer {
 
     .base-poptabs-header {
-        // -webkit-box-align: center;
-        // -ms-flex-align: center;
-        // align-items: center;
         color: #72767b;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -140,6 +127,12 @@ export default {
         top: 0;
         background-color: #fff;
 
+        &> :first-child {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+        }
+
         & .el-tabs__item {
             font-size: 20px;
             color: #72767b;
@@ -149,41 +142,26 @@ export default {
             display: none;
         }
 
-        .close-button {
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: inherit;
-            background-color: transparent;
-            padding: 10px 0px;
+        .base-poptabs-header-action {
+            height: 54px;
+            box-sizing: border-box;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+
         }
 
     }
 
-    .base-poptabs-header> :first-child,
-    .base-poptabs-header> :first-child {
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-    }
-
     .base-poptabs-body {
         width: 100%;
-        height: 600px;
-        flex: 1;
         margin: 0 auto;
         overflow-y: auto;
     }
 }
 
-::v-deep section.el-dialog__body {
-    display: flex;
-    flex-direction: column;
-
-    .base-poptabs-header {
-        // -webkit-box-align: center;
-        // -ms-flex-align: center;
-        // align-items: center;
+::v-deep .el-dialog {
+    .el-dialog__header {
         color: #72767b;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -196,6 +174,12 @@ export default {
         top: 0;
         background-color: #fff;
 
+        &> :first-child {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+        }
+
         & .el-tabs__item {
             font-size: 20px;
             color: #72767b;
@@ -205,30 +189,17 @@ export default {
             display: none;
         }
 
-        .close-button {
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: inherit;
-            background-color: transparent;
-            padding: 10px 0px;
+        .base-poptabs-header-action {
+            height: 54px;
+            box-sizing: border-box;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
         }
 
-    }
-
-    .base-poptabs-header> :first-child,
-    .base-poptabs-header> :first-child {
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-    }
-
-    .base-poptabs-body {
-        width: 100%;
-        height: 600px;
-        flex: 1;
-        margin: 0 auto;
-        overflow-y: auto;
+        &>button {
+            display: none;
+        }
     }
 }
 </style>
