@@ -1,7 +1,11 @@
 <template>
-    <el-radio-group v-bind="$attrs" v-model="modelValue"
-        :class="['base-radio-group', 'base-radio-group--' + groupSize, { 'is-border': groupBorder }, { 'is-neat': neat }, { 'is-readonly': readonly }]"
-        :disabled="$attrs.disabled || readonly">
+    <el-radio-group v-bind="$attrs" v-model="modelValue" :class="[
+        'base-radio-group',
+        groupSize ? 'base-radio-group--' + groupSize : '',
+        { 'is-bordered': groupBorder },
+        { 'is-neat': neat },
+        { 'is-readonly': readonly }
+    ]" :disabled="$attrs.disabled || readonly">
         <el-radio v-for="item in options" :key="item.value" :label="item.value" :disabled="item.disabled"
             :border="itemBorder">{{ item.label }}</el-radio>
     </el-radio-group>
@@ -40,10 +44,6 @@ export default {
             default: false
         }
     },
-    created() {
-        console.log(this.elForm, this.elFormItem, (this.elFormItem || {}).elFormItemSize,this.$ELEMENT);
-
-    },
     computed: {
         modelValue: {
             get() {
@@ -54,7 +54,7 @@ export default {
             }
         },
         groupSize() {
-            return (this.elFormItem || {}).elFormItemSize || this.$ELEMENT.size
+            return (this.elFormItem || this.elForm || {}).elFormItemSize || this.$ELEMENT.size
         }
     },
     methods: {
@@ -67,20 +67,24 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.base-radio-group {
+::v-deep.base-radio-group {
     width: 100%;
-    height: 100%;
-    display: block;
+    height: 40px;
+    line-height: inherit;
     overflow: hidden;
     display: flex;
     align-items: center;
+
+    .el-radio {
+        line-height: inherit;
+    }
 }
 
 .base-radio-group--medium {
     height: 40px;
 }
 
-.base-radio-group--samll {
+.base-radio-group--small {
     height: 32px;
 }
 
@@ -90,7 +94,7 @@ export default {
 
 
 
-.is-border {
+.is-bordered {
     width: 100%;
     box-sizing: border-box;
     border-radius: 4px;
@@ -103,7 +107,7 @@ export default {
 }
 
 ::v-deep.is-readonly {
-    .el-radio.is-bordered.is-disabled {
+    .el-radio.is-bordereded.is-disabled {
         cursor: auto;
         border-color: #DCDFE6;
     }

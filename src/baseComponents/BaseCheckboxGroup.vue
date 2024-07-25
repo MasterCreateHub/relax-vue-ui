@@ -1,7 +1,11 @@
 <template>
-    <el-checkbox-group v-bind="$attrs" v-model="modelValue"
-        :class="{ 'is-border': groupBorder, 'is-neat': neat, 'is-readonly': readonly }"
-        :disabled="$attrs.disabled || readonly">
+    <el-checkbox-group v-bind="$attrs" v-model="modelValue" :class="[
+        'base-checkbox-group',
+        groupSize ? 'base-checkbox-group--' + groupSize : '',
+        { 'is-bordered': groupBorder },
+        { 'is-neat': neat },
+        { 'is-readonly': readonly }
+    ]" :disabled="$attrs.disabled || readonly">
         <el-checkbox v-for="item in options" :key="item.value" :label="item.value" :disabled="item.disabled"
             :border="itemBorder">{{ item.label }}</el-checkbox>
     </el-checkbox-group>
@@ -9,13 +13,21 @@
 <script>
 export default {
     name: "BaseCheckboxGroup",
+    inject: {
+        elForm: {
+            default: ''
+        },
+        elFormItem: {
+            default: ''
+        }
+    },
     props: {
         value: [String, Array],
         valueFormat: {
             type: String,
-            default: 'Array',
+            default: 'array',
             validator(value) {
-                return ['Array', 'String'].includes(value)
+                return ['array', 'string'].includes(value)
             }
         },
         valueSeparator: {
@@ -49,19 +61,22 @@ export default {
     computed: {
         modelValue: {
             get() {
-                if (this.valueFormat === 'String') {
+                if (this.valueFormat === 'string') {
                     return (typeof this.value === 'string' && this.value) ? this.value.split(this.valueSeparator) : []
                 } else {
                     return this.value
                 }
             },
             set(val) {
-                if (this.valueFormat === 'String') {
+                if (this.valueFormat === 'string') {
                     this.$emit("input", val.join(this.valueSeparator))
                 } else {
                     this.$emit("input", val)
                 }
             }
+        },
+        groupSize() {
+            return (this.elFormItem || this.elForm || {}).elFormItemSize || this.$ELEMENT.size
         }
     },
     methods: {
@@ -73,13 +88,28 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.el-checkbox-group {
+.base-checkbox-group {
+    width: 100%;
+    height: 40px;
+    line-height: inherit;
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-.is-border {
+.base-checkbox-group--medium {
+    height: 40px;
+}
+
+.base-checkbox-group--small {
+    height: 32px;
+}
+
+.base-checkbox-group--mini {
+    height: 28px;
+}
+
+.is-bordered {
     width: 100%;
     box-sizing: border-box;
     border-radius: 4px;
@@ -94,7 +124,7 @@ export default {
 
 ::v-deep.is-readonly {
 
-    .el-checkbox.is-bordered.is-disabled {
+    .el-checkbox.is-bordereded.is-disabled {
         border-color: #DCDFE6;
         cursor: auto
     }

@@ -1,8 +1,9 @@
 <template>
-    <el-select v-model="modelValue" :multiple="multiple"
-        :value-key="optionConfig.key ? optionConfig.key : optionConfig.value" filterable clearable default-first-option
-        :disabled="readonly || $attrs.disabled" :class="{ 'is-readonly': readonly }" v-bind="$attrs" v-on="$listeners">
-        <slot name="prefix"></slot>  
+    <el-select v-model="modelValue" :class="['base-select',{ 'is-readonly': readonly }]" :multiple="multiple"
+        :value-key="optionConfig.key ? optionConfig.key : optionConfig.value" :filterable="$attrs.filterable || true"
+        :clearable="$attrs.clearable || true" :default-first-option="true" :disabled="readonly || $attrs.disabled"
+        v-bind="$attrs" v-on="$listeners">
+        <slot name="prefix"></slot>
         <el-option v-for="item in options" :key="item[optionConfig.key ? optionConfig.key : optionConfig.value]"
             :value="item[optionConfig.value]" :label="item[optionConfig.label]">
         </el-option>
@@ -87,6 +88,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.base-select{
+    width: 100%;
+}
 ::v-deep.is-readonly {
     .el-input.is-disabled .el-input__inner {
         background-color: #FFF;

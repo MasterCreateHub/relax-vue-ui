@@ -1,12 +1,20 @@
 <template>
-    <div v-if="!readonly" class="base-input-number">
-        <template v-if="!$attrs.controls">
+    <div v-if="!readonly" :class="[
+        'base-input-number',
+        inputSize && !readonly ? 'base-input--' + inputSize : '',
+        { 'is-center': valueAlign === 'center' },
+        { 'is-left': valueAlign === 'left' },
+        { 'is-prefix': !!this.prefixText && !controls },
+        { 'is-suffix': !!this.suffixText && !controls },
+    ]">
+        <template v-if="!controls">
             <slot v-if="$slots.prefix" name="prefix"></slot>
-            <span v-if="!$slots.prefix && prefixText">{{ prefixText }}</span>
+            <span class="base-input__prefix" v-if="!$slots.prefix && prefixText">{{ prefixText }}</span>
         </template>
-        <el-input-number v-model="modelValue" v-bind="$attrs" v-on="$listeners" />
-        <template v-if="!$attrs.controls">
-            <span v-if="!$slots.suffix && suffixText">{{ suffixText }}</span>
+        <el-input-number v-model="modelValue" v-bind="$attrs" v-on="$listeners" :controls="controls"
+            :controls-position="controlsPosition" />
+        <template v-if="!controls">
+            <span class="base-input__suffix" v-if="!$slots.suffix && suffixText">{{ suffixText }}</span>
             <slot v-if="$slots.suffix" name="suffix"></slot>
         </template>
     </div>
@@ -16,8 +24,28 @@
 <script>
 export default {
     name: "BaseInputNumber",
+    inject: {
+        elForm: {
+            default: ''
+        },
+        elFormItem: {
+            default: ''
+        }
+    },
     props: {
         value: Number,
+        valueAlign: {
+            type: String,
+            default: "left"
+        },
+        controls: {
+            type: Boolean,
+            default: false
+        },
+        controlsPosition: {
+            type: String,
+            default: "right"
+        },
         prefixText: {
             type: String,
             default: ""
@@ -41,11 +69,10 @@ export default {
     },
     data() {
         return {}
-
     },
     computed: {
         modelValue: {
-           get() {
+            get() {
                 if (!this.readonly) {
                     return this.value;
                 }
@@ -76,6 +103,9 @@ export default {
                 this.$emit("input", val)
             }
         },
+        inputSize() {
+            return (this.elFormItem || this.elForm || {}).elFormItemSize || this.$ELEMENT.size
+        }
     },
     methods: {
 
@@ -84,6 +114,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep.base-input-number {
+    height: 40px;
     background-color: #FFF;
     border-radius: 4px;
     border: 1px solid #DCDFE6;
@@ -92,16 +123,69 @@ export default {
     display: flex;
     align-items: center;
 
-    span {
-        padding: 0px 4px;
+    .base-input__prefix,
+    .base-input__suffix {
+        padding: 0 7.5px;
     }
 
     .el-input-number {
+        height: 100%;
         flex: 1;
 
         .el-input__inner {
+            height: 100%;
+            line-height: 38px;
             border: none;
         }
+    }
+}
+
+::v-deep.is-prefix {
+    .el-input__inner {
+        padding-left: 0;
+    }
+}
+
+::v-deep.is-suffix {
+    .el-input__inner {
+        padding-right: 0;
+    }
+}
+
+::v-deep.is-left {
+    .el-input__inner {
+        text-align: left;
+    }
+}
+
+::v-deep.is-center {
+    .el-input__inner {
+
+        text-align: center;
+    }
+}
+
+::v-deep.base-input--medium {
+    height: auto;
+
+    .el-input__inner {
+        height: 100%;
+    }
+}
+
+::v-deep.base-input--small {
+    height: auto;
+
+    .el-input__inner {
+        height: 100%;
+    }
+}
+
+::v-deep.base-input--mini {
+    height: auto;
+
+    .el-input__inner {
+        height: 100%;
     }
 }
 
