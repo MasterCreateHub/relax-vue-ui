@@ -22,6 +22,7 @@
 <script>
 export default {
     name: "BasePopselect",
+    // 1.全选与清空功能，2键盘控制功能，弹出框宽度控制
     props: {
         /**
          * @description 选中的值
@@ -206,6 +207,7 @@ export default {
         z-index: 10;
         list-style-type: none;
         padding: 0px;
+        margin: 0px;
 
         .base-popselect-list-item {
             line-height: 34px;

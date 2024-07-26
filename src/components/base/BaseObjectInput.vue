@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'BaseTimePicker',
+    name: 'BaseCascader',
     props: {
         
     },

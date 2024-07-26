@@ -21,9 +21,9 @@ export default {
         },
         valueFormat: {
             type: String,
-            default: 'Array',
+            default: 'array',
             validator(value) {
-                return ['Array', 'String'].includes(value)
+                return ['array', 'string'].includes(value)
             }
         },
         valueSeparator: {
@@ -60,7 +60,7 @@ export default {
     watch: {
         value(newVal) {
             // 如果是多选且期望字符串格式，确保值始终为字符串
-            if (this.multiple && this.valueFormat === 'String') {
+            if (this.multiple && this.valueFormat === 'string') {
                 this.$emit("input", Array.isArray(newVal) ? newVal.join(this.valueSeparator) : newVal);
             }
         },
@@ -68,14 +68,14 @@ export default {
     computed: {
         modelValue: {
             get() {
-                if (this.multiple && this.valueFormat === 'String') {
+                if (this.multiple && this.valueFormat === 'string') {
                     return (typeof this.value === 'string' && this.value) ? this.value.split(this.valueSeparator) : []
                 } else {
                     return this.value
                 }
             },
             set(val) {
-                if (this.multiple && this.valueFormat === 'String') {
+                if (this.multiple && this.valueFormat === 'string') {
                     this.$emit("input", val.join(this.valueSeparator))
                 } else {
                     this.$emit("input", val)
