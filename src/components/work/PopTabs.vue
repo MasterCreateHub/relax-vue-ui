@@ -39,7 +39,7 @@
 </template>
 <script>
 export default {
-    name: "BasePoptabs",
+    name: "PopTabs",
     props: {
         container: {
             type: String,

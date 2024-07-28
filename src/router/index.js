@@ -34,6 +34,11 @@ const routes = [
     name: "table",
     component: () => import("../views/TableView.vue"),
   },
+  {
+    path: "/work",
+    name: "work",
+    component: () => import("../views/WorkView.vue"),
+  },
 ];
 
 const router = new VueRouter({

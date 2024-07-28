@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import ElementUI from 'element-ui';
+import '@/assets/style/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
 // 表单组件
@@ -20,7 +21,8 @@ import BaseConverter from '@/components/base/BaseConverter.vue'
 import BaseList from '@/components/base/BaseList.vue'
 
 // 业务组件
-import BasePoptabs from "@/components/base/BasePoptabs.vue"
+import PopTabs from "@/components/work/PopTabs.vue"
+import PopStaging from "@/components/work/PopStaging.vue"
 
 Vue.config.productionTip = false;
 
@@ -36,7 +38,8 @@ Vue.component('BasePageTable', BasePageTable)
 Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseList', BaseList)
 
-Vue.component('BasePoptabs', BasePoptabs)
+Vue.component('PopTabs', PopTabs)
+Vue.component('PopStaging', PopStaging)
 
 Vue.use(ElementUI);
 

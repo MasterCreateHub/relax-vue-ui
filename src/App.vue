@@ -6,7 +6,8 @@
         <router-link to="/about">About</router-link> |
         <router-link to="/form">Form</router-link> |
         <router-link to="/tool">Tool</router-link> |
-        <router-link to="/table">Table</router-link>
+        <router-link to="/table">Table</router-link>|
+        <router-link to="/work">Work</router-link>
       </nav>
     </header>
     <aside>
@@ -19,10 +20,6 @@
 </template>
 
 <style lang="scss" scoped>
-*{
-  margin: 0px;
-}
-
 #app {
   width: 100vw;
   height: 100vh;
