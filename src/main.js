@@ -13,12 +13,14 @@ import BaseCheckboxGroup from '@/components/base/BaseCheckboxGroup.vue'
 import BaseRadioGroup from '@/components/base/BaseRadioGroup.vue'
 import BasePopselect from "@/components/base/BasePopselect.vue"
 import BaseSelect from "@/components/base/BaseSelect.vue"
+import BaseTimePicker from '@/components/base/BaseTimePicker.vue'
+import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
 
 // 通用组件
-import BaseSearcher from '@/components/base/BaseSearcher.vue'
-import BasePageTable from '@/components/base/BasePageTable.vue'
 import BaseConverter from '@/components/base/BaseConverter.vue'
+import BaseSearcher from '@/components/base/BaseSearcher.vue'
 import BaseList from '@/components/base/BaseList.vue'
+import BasePageTable from '@/components/base/BasePageTable.vue'
 
 // 业务组件
 import PopTabs from "@/components/work/PopTabs.vue"
@@ -32,11 +34,13 @@ Vue.component('BaseCheckboxGroup', BaseCheckboxGroup)
 Vue.component('BaseRadioGroup', BaseRadioGroup)
 Vue.component('BasePopselect', BasePopselect)
 Vue.component('BaseSelect', BaseSelect)
+Vue.component('BaseTimePicker', BaseTimePicker)
+Vue.component('BaseDatePicker', BaseDatePicker)
 
-Vue.component('BaseSearcher', BaseSearcher)
-Vue.component('BasePageTable', BasePageTable)
 Vue.component('BaseConverter', BaseConverter)
+Vue.component('BaseSearcher', BaseSearcher)
 Vue.component('BaseList', BaseList)
+Vue.component('BasePageTable', BasePageTable)
 
 Vue.component('PopTabs', PopTabs)
 Vue.component('PopStaging', PopStaging)

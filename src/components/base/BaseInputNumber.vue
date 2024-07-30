@@ -79,7 +79,7 @@ export default {
 
                 let readonlyValue;
                 // 读取格式化函数的优先级最高
-                if (this.readTextFormat && typeof this.readTextFormat === 'function') {
+                if (this.readTextFormat && typeof this.readTextFormat === 'function' && this.readTextFormat(this.value)) {
                     readonlyValue = this.readTextFormat(this.value);
                 } else {
                     // 确保value为正常数字或处理非数字情况

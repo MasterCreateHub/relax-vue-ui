@@ -1,12 +1,20 @@
 <template>
-    <el-date-picker v-model="modelValue" v-bind="$attrs" v-on="$listeners"></el-date-picker>
+    <el-time-picker v-model="modelValue" v-bind="$attrs" v-on="$listeners" :disabled="$attrs.disabled || readonly" :class="[
+        'base-time-picker',
+        { 'is-readonly': readonly }
+    ]">
+    </el-time-picker>
 </template>
 
 <script>
 export default {
     name: 'BaseTimePicker',
     props: {
-        value: [String, Date, Array]      
+        value: Date,
+        readonly: {
+            type: Boolean,
+            default: false
+        }
     },
 
     data() {
@@ -29,4 +37,37 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.base-time-picker {
+    width: 100%;
+}
+
+::v-deep.is-readonly {
+    .el-input__inner {
+        padding: 0 15px;
+        background-color: #FFF;
+        border-color: #DCDFE6;
+        color: #606266;
+        cursor: auto;
+    }
+    .el-input__prefix {
+        display: none;
+
+    }
+
+    .el-input.is-disabled .el-input__inner::-webkit-input-placeholder {
+        color: #FFF
+    }
+
+    .el-input.is-disabled .el-input__inner:-ms-input-placeholder {
+        color: #FFF
+    }
+
+    .el-input.is-disabled .el-input__inner::-ms-input-placeholder {
+        color: #FFF
+    }
+
+    .el-input.is-disabled .el-input__inner::placeholder {
+        color: #FFF;
+    }
+}
 </style>

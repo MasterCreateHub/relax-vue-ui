@@ -404,7 +404,7 @@ export default {
      */
     showFactors() {
       if (this.collapsed) {
-        let inlineMaxNum = 24 / this.span - 1;
+        let inlineMaxNum = 24 / this.factorSpan- 1;
         return this.factors.slice(0, inlineMaxNum);
       } else {
         return this.factors;
@@ -414,7 +414,7 @@ export default {
      * @description 搜索条件是否只有一行
      */
     searcherInline() {
-      let inlineMaxNum = 24 / this.span - 1
+      let inlineMaxNum = 24 / this.factorSpan- 1
       return this.factors.length > inlineMaxNum;
     },
     /**

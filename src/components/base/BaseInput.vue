@@ -48,8 +48,8 @@ export default {
                 }
                 let readonlyValue;
                 // 读取格式化函数的优先级最高
-                if (this.readTextFormat && typeof this.readTextFormat === 'function') {
-                    readonlyValue = this.readTextFormat(this.value);
+                if (this.readTextFormat && typeof this.readTextFormat === 'function' && this.readTextFormat(this.value)) {
+                    readonlyValue = this.readTextFormat(this.value)
                 } else {
                     readonlyValue = this.value || this.readNullFill
                 }
