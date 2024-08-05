@@ -15,6 +15,7 @@ import BasePopselect from "@/components/base/BasePopselect.vue"
 import BaseSelect from "@/components/base/BaseSelect.vue"
 import BaseTimePicker from '@/components/base/BaseTimePicker.vue'
 import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
+import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 
 // 通用组件
 import BaseConverter from '@/components/base/BaseConverter.vue'
@@ -36,6 +37,7 @@ Vue.component('BasePopselect', BasePopselect)
 Vue.component('BaseSelect', BaseSelect)
 Vue.component('BaseTimePicker', BaseTimePicker)
 Vue.component('BaseDatePicker', BaseDatePicker)
+Vue.component('BaseTimeSelect', BaseTimeSelect)
 
 Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseSearcher', BaseSearcher)

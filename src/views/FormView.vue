@@ -59,6 +59,16 @@
               <base-select v-model="form.baseSelect" :readonly="formReadonly" :options="selectOptions" />
             </el-form-item>
           </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseTreeSelct">
+              <base-select v-model="form.baseSelect" :readonly="formReadonly" :options="selectOptions" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseCasder">
+              <base-select v-model="form.baseSelect" :readonly="formReadonly" :options="selectOptions" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-divider>时间选择型组件</el-divider>
           </el-col>
@@ -70,6 +80,34 @@
           <el-col :span="6">
             <el-form-item label="BaseDatePicker">
               <base-date-picker v-model="form.baseDatePicker" :readonly="formReadonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseTimeSelect">
+              <base-time-select v-model="form.baseTimeSelect" :readonly="formReadonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-divider>其他组件</el-divider>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseSilder">
+              <base-time-select v-model="form.baseTimeSelect" :readonly="formReadonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseSwitch">
+              <base-time-select v-model="form.baseTimeSelect" :readonly="formReadonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseRate">
+              <base-time-select v-model="form.baseTimeSelect" :readonly="formReadonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="BaseColorPicker">
+              <base-select v-model="form.baseSelect" :readonly="formReadonly" :options="selectOptions" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -96,6 +134,7 @@ export default {
         baseSelect: '0',
         baseTimePicker: new Date(2016, 9, 10, 18, 40),
         baseDatePicker: new Date(2016, 9, 10),
+        baseTimeSelct: null
       },
       options: [],
       radioOptions: [
