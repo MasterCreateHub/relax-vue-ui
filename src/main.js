@@ -21,6 +21,7 @@ import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 import BaseConverter from '@/components/base/BaseConverter.vue'
 import BaseSearcher from '@/components/base/BaseSearcher.vue'
 import BaseList from '@/components/base/BaseList.vue'
+import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
 import BasePageTable from '@/components/base/BasePageTable.vue'
 
 // 业务组件
@@ -42,6 +43,7 @@ Vue.component('BaseTimeSelect', BaseTimeSelect)
 Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseSearcher', BaseSearcher)
 Vue.component('BaseList', BaseList)
+Vue.component('BaseWorkbench', BaseWorkbench)
 Vue.component('BasePageTable', BasePageTable)
 
 Vue.component('PopTabs', PopTabs)
