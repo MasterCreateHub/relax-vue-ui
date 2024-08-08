@@ -41,11 +41,13 @@
     background-color: azure
   }
   & main{
-    width: calc(100% - 80px);
-    height: calc(100% - 80px);
+    width: calc(100% - 120px);
+    height: calc(100% - 120px);
     padding: 20px;
-    box-sizing: border-box;
-    background-color: azure
+    background-color: #fff;
+    // box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 

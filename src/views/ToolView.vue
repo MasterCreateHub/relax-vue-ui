@@ -11,9 +11,11 @@
         <el-col>
           <el-button size="small" @click="currentWork = 'addUser'">新增用户</el-button>
           <el-button size="small" @click="currentWork = 'viewUser'">查看用户</el-button>
+          <el-button size="small" @click="layout = 'two'">上下布局</el-button>
+          <el-button size="small" @click="layout = 'three'">上中下布局</el-button>
         </el-col>
       </el-row>
-      <base-workbench :current-work="currentWork" :works="works" :actions="actions" @submit="handleSubmit"
+      <base-workbench :current-work="currentWork" :layout="layout" :works="works" :actions="actions" @submit="handleSubmit"
         @print="handlePrint">
         <el-form v-if="currentWork === 'addUser'" :model="form" label-width="80px">
           <el-form-item label="姓名">
@@ -143,6 +145,7 @@ export default {
         { label: '打印', event: 'print', type: 'info', belong: ['viewUser'] },
         { label: '取消', event: 'cancel' },
       ],
+      layout: 'two',
       form: {
         name: "",
         age: "",

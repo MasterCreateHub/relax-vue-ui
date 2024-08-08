@@ -1,11 +1,11 @@
 <template>
-    <div class="base-workbench">
+    <div class="base-workbench" :class="[`is-${layout}`]">
         <div class="base-workbench__header">
             <div class="base-workbench-title">{{ currentWorkLabel }}</div>
-            <div class="base-workbench-action">
+            <div class="base-workbench-action" v-if="layout === 'two'">
                 <template v-if="!$slots.action">
                     <el-button v-for="action in currentWorkActions" :key="action.event" size="small" v-bind="action"
-                        @click="$emit(action.event)">
+                        @click="$emit(action.event, currentWork)">
                         {{ action.label }}
                     </el-button>
                 </template>
@@ -15,12 +15,33 @@
         <div class="base-workbench__body">
             <slot></slot>
         </div>
+        <div class="base-workbench__footer" v-if="layout === 'three'">
+            <div class="base-workbench-action">
+                <template v-if="!$slots.action">
+                    <el-button v-for="action in currentWorkActions" :key="action.event" size="small" v-bind="action"
+                        @click="$emit(action.event, currentWork)">
+                        {{ action.label }}
+                    </el-button>
+                </template>
+                <slot v-else name="action"></slot>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 export default {
     name: "BaseWorkbench",
     props: {
+        /**
+         * @description 布局方式，可选值为two和three,two表示header和body，three表示header和body和footer
+         */
+        layout: {
+            type: String,
+            default: 'two',
+            validator(value) {
+                return ['two', 'three'].includes(value)
+            }
+        },
         /**
          * @description 当前工作台的任务，值为works中任务的key
          */
@@ -107,14 +128,40 @@ export default {
         justify-content: space-between;
         align-items: center;
 
-        .base-workbench-title {}
+        .base-workbench-title {
+            color: #72767b;
+            font-size: 16px;
+        }
 
-        .base-workbench-action {}
+        .base-workbench-action {
+        }
     }
 
     .base-workbench__body {
         padding: 20px;
         height: auto;
     }
+
+    .base-workbench__footer {
+        width: 100%;
+        padding: 15px 20px;
+        box-sizing: border-box;
+        border-top: 1px #EBEEF5 solid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+}
+
+.is-two {}
+
+.is-three {
+    .base-workbench__header {
+        justify-content: center;
+
+    }
+
 }
 </style>
