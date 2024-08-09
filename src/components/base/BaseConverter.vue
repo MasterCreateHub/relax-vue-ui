@@ -1,5 +1,5 @@
 <template>
-    <div :class="['base-converter__wrapper', { 'is-targets': isTargets }]">
+    <div :class="['base-converter', 'base-converter__wrapper', { 'is-targets': isTargets }]">
         <component v-for="(item, index) in target" :key="'key' + index" :is="container" v-bind="$attrs"
             class="base-converter-value">
             {{ item }}

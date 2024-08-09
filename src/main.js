@@ -19,6 +19,7 @@ import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 
 // 通用组件
 import BaseConverter from '@/components/base/BaseConverter.vue'
+import BaseDescriptions from '@/components/base/BaseDescriptions.vue'
 import BaseSearcher from '@/components/base/BaseSearcher.vue'
 import BaseList from '@/components/base/BaseList.vue'
 import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
@@ -41,6 +42,7 @@ Vue.component('BaseDatePicker', BaseDatePicker)
 Vue.component('BaseTimeSelect', BaseTimeSelect)
 
 Vue.component('BaseConverter', BaseConverter)
+Vue.component('BaseDescriptions', BaseDescriptions)
 Vue.component('BaseSearcher', BaseSearcher)
 Vue.component('BaseList', BaseList)
 Vue.component('BaseWorkbench', BaseWorkbench)

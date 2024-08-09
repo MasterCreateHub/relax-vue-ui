@@ -1,5 +1,5 @@
 <template>
-    <el-descriptions v-bind="$attrs" :class="{ 'layout-fixed': layout === 'fixed' }">
+    <el-descriptions v-bind="$attrs" :class="['base-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
         <template slot="title">
             <slot name="title"></slot>
         </template>
@@ -8,18 +8,19 @@
         </template>
 
         <el-descriptions-item v-for="item in data" :key="item.prop" :label="item.label" :span="item.span"
-            :labelClassName="item.labelClassName" :contentClassName="item.contentClassName"
-            :labelStyle="item.labelStyle" :contentStyle="item.contentStyle">
+            :labelClassName="item.labelClassName" :contentClassName="item.contentClassName" :labelStyle="item.labelStyle"
+            :contentStyle="item.contentStyle">
             <template slot="label">
-                <slot name="label" :dataItem="item"></slot>
                 <!-- 如果没有自定义的 label 插槽，则显示默认值 -->
-                <span v-if="!$scopedSlots['label']">{{ item.label }}</span>
+                <slot name="label" :dataItem="item">
+                    <span>{{ item.label }}</span>
+                </slot>
             </template>
-
             <template slot="default">
-                <slot :dataItem="item"></slot>
-                <!-- 如果没有自定义的默认插槽，则显示 item.value -->
-                <span v-if="!$scopedSlots['default']">{{ item.value }}</span>
+                <!-- 如果没有自定义的 content 插槽，则显示 item.value -->
+                <slot name="default" :dataItem="item">
+                    <span>{{ item.value }}</span>
+                </slot>
             </template>
         </el-descriptions-item>
     </el-descriptions>
@@ -52,16 +53,20 @@ export default {
          */
         data: {
             type: Array,
-            default: () => {
-                return []
-            },
+            default: () => [],
             validator(value) {
                 return value.every(item => {
-                    let keys = Object.keys(item)
-                    return keys.includes('prop') && keys.includes('label') && keys.includes('value')
-                })
+                    return (
+                        typeof item.prop === 'string' &&
+                        typeof item.label === 'string' &&
+                        (typeof item.value === 'string' || typeof item.value === 'number' || typeof item.value === 'boolean' || Array.isArray(item.value))
+                    );
+                });
             }
         },
+        /**
+         * @description 描述列表的布局方式，可选值：fixed、auto
+         */
         layout: {
             type: String,
             default: 'fixed',
@@ -75,16 +80,12 @@ export default {
 
         }
     },
-    mounted() {
-        console.log(this);
-    },
-
     methods: {
     }
 }
 </script>
 <style lang="scss" scoped>
-::v-deep.el-descriptions.layout-fixed {
+::v-deep.is-layout-fixed {
     .el-descriptions__body .el-descriptions__table {
         table-layout: fixed;
     }

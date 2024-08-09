@@ -3,11 +3,6 @@
     <el-card header="通用搜索框">
       <base-searcher :span="6" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
-    <el-card header="通用数据转换器">
-      <base-converter :value="['A', 'B']" :source="dict" container="el-tag" />
-      <base-converter :value="['name', 'remark']" :source="student" />
-      <base-converter :value="currentDate" :source="formatDate" />
-    </el-card>
     <el-card header="通用工作台">
       <el-row style="margin-bottom: 10px;">
         <el-col>
@@ -71,6 +66,19 @@
           </el-descriptions-item>
         </el-descriptions>
       </base-workbench>
+    </el-card>
+    <el-card header="通用数据转换器">
+      <base-converter :value="['A', 'B']" :source="dict" container="el-tag" />
+      <base-converter :value="['name', 'remark']" :source="student" />
+      <base-converter :value="currentDate" :source="formatDate" />
+    </el-card>
+    <el-card header="通用描述列表">
+      <base-descriptions :data="personalData" border :column="3" layout="auto">
+        <template #label="scope">
+          {{ scope.dataItem.label + ':' }}
+        </template>
+    </base-descriptions>
+
     </el-card>
   </div>
 </template>
@@ -164,6 +172,78 @@ export default {
         tel: "",
         email: "",
       },
+
+      personalData: [
+        {
+          prop: 'name',
+          label: '姓名',
+          value: '张三',
+          span: 1,
+          labelClassName: 'labelClassName',
+          contentClassName: 'contentClassName',
+          labelStyle: {
+            color: 'red'
+          },
+          contentStyle: {
+            color: 'blue'
+          }
+        },
+        {
+          prop: 'age',
+          label: '年龄',
+          value: 28,
+          span: 1,
+        },
+        {
+          prop: 'gender',
+          label: '性别',
+          value: '男',
+          span: 1,
+        },
+        {
+          prop: 'phone',
+          label: '电话',
+          value: '13800138000',
+          span: 1,
+        },
+        {
+          prop: 'address',
+          label: '地址',
+          value: '上海市浦东新区',
+          span: 1,
+        },
+        {
+          prop: 'education',
+          label: '学历',
+          value: '本科',
+          span: 1,
+        },
+        {
+          prop: 'company',
+          label: '公司',
+          value: '阿里巴巴集团',
+          span: 1,
+        },
+        {
+          prop: 'email',
+          label: '邮箱',
+          value: 'zhangsan@example.com',
+          span: 1,
+        },
+        {
+          prop: 'position',
+          label: '职位',
+          value: '软件工程师',
+          span: 1,
+        },
+        {
+          prop: 'hobbies',
+          label: '爱好',
+          value: '编程, 阅读, 游泳',
+          span: 1,
+        },
+        
+      ]
 
     };
   },
