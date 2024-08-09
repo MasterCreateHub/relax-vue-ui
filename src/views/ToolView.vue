@@ -4,7 +4,9 @@
       <base-searcher :span="6" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用数据转换器">
-      <base-converter :value="['A', 'B']" :source="dict" container="el-tag"></base-converter>
+      <base-converter :value="['A', 'B']" :source="dict" container="el-tag" />
+      <base-converter :value="['name', 'remark']" :source="student" />
+      <base-converter :value="currentDate" :source="formatDate" />
     </el-card>
     <el-card header="通用工作台">
       <el-row style="margin-bottom: 10px;">
@@ -15,8 +17,8 @@
           <el-button size="small" @click="layout = 'three'">上中下布局</el-button>
         </el-col>
       </el-row>
-      <base-workbench :current-work="currentWork" :layout="layout" :works="works" :actions="actions" @submit="handleSubmit"
-        @print="handlePrint">
+      <base-workbench :current-work="currentWork" :layout="layout" :works="works" :actions="actions"
+        @submit="handleSubmit" @print="handlePrint">
         <el-form v-if="currentWork === 'addUser'" :model="form" label-width="80px">
           <el-form-item label="姓名">
             <el-input v-model="form.name"></el-input>
@@ -130,6 +132,16 @@ export default {
         { label: "B", value: "B" },
         { label: "C", value: "C" },
       ],
+      student: {
+        name: "张三",
+        age: 18,
+        sex: "男",
+        address: "北京",
+        phone: "12345678901",
+        email: "12345678901@qq.com",
+        remark: "这是一个备注",
+      },
+      currentDate: new Date(),
       currentWork: 'addUser',
       works: [{
         key: 'addUser',
@@ -164,6 +176,16 @@ export default {
     },
     handlePrint() {
       console.log("查看用户并打印");
+    },
+    // 格式化日期，Date对象，变为YYYY-MM-DD HH:mm:ss的字符串
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
   },
 };
