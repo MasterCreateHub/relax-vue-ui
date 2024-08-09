@@ -37,7 +37,22 @@
         :columns="columns"
         :tableData="tableData"
         multiple
-      ></pop-staging>
+      >
+      <template #operate>
+        <div class="operate">
+          <el-form>
+            <el-form-item label="将所选数据发送给">
+              <el-input v-model="name" placeholder="请输入目的地" />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template> 
+      <!-- <template #result>
+        <div class="result">
+          <el-tag>您所选择的数据</el-tag>
+        </div>
+      </template> -->
+    </pop-staging>
     </el-card>
   </div>
 </template>
@@ -122,5 +137,9 @@ export default {
 <style lang="scss" scoped>
 .el-card {
   margin-bottom: 10px;
+}
+.operate{
+  width: 100%;
+  height: 100px;
 }
 </style>
