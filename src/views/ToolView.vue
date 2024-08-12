@@ -1,9 +1,15 @@
 <template>
   <div class="tool">
-    <el-card header="通用搜索框">
+    <el-card header="通用搜索框组件">
       <base-searcher :span="6" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
-    <el-card header="通用工作台">
+    <el-card header="通用工具栏组件">
+      <base-toolbar/>
+    </el-card>
+    <el-card header="通用表格组件"></el-card>
+    <el-card header="通用列表组件"></el-card>
+    <el-card header="通用分页器组件"></el-card>
+    <el-card header="通用工作台组件">
       <el-row style="margin-bottom: 10px;">
         <el-col>
           <el-button size="small" @click="currentWork = 'addUser'">新增用户</el-button>
@@ -67,19 +73,19 @@
         </el-descriptions>
       </base-workbench>
     </el-card>
-    <el-card header="通用数据转换器">
+    <el-card header="通用数据转换组件">
       <base-converter :value="['A', 'B']" :source="dict" container="el-tag" />
       <base-converter :value="['name', 'remark']" :source="student" />
       <base-converter :value="currentDate" :source="formatDate" />
     </el-card>
-    <el-card header="通用描述列表">
+    <el-card header="通用描述列表组件">
       <base-descriptions :data="personalData" border :column="3" layout="auto">
         <template #label="scope">
           {{ scope.dataItem.label + ':' }}
         </template>
-    </base-descriptions>
-
+      </base-descriptions>
     </el-card>
+    <el-card header="通用详情组件"></el-card>
   </div>
 </template>
 
@@ -161,9 +167,9 @@ export default {
         actions: ['print', 'cancel']
       }],
       actions: [
-        { label: '提交', event: 'submit', type: 'primary', belong: ['addUser'] },
-        { label: '打印', event: 'print', type: 'info', belong: ['viewUser'] },
-        { label: '取消', event: 'cancel' },
+        { label: '提交', eventName: 'submit', type: 'primary', belong: ['addUser'] },
+        { label: '打印', eventName: 'print', type: 'info', belong: ['viewUser'] },
+        { label: '取消', eventName: 'cancel' },
       ],
       layout: 'two',
       form: {

@@ -8,8 +8,9 @@
       :visible.sync="show"
       v-bind="$attrs"
       :width="$attrs.size || '80%'"
+      :top="$attrs.top || '10vh'"
     >
-      <div class="pop-staging__main">
+      <div class="pop-staging__body">
         <div class="pop-staging-tool"><slot name="tool"></slot></div>
         <el-table
           class="pop-staging-table"
@@ -39,7 +40,7 @@
           :current-page.sync="pageNumber"
           :total="tableData.length"
         />
-        <div v-if="multiple">
+        <div v-if="multiple" class="pop-staging-actions__container">
           <el-button type="primary" size="mini" @click="handleEnter"
             >确定</el-button
           >
@@ -117,7 +118,7 @@ export default {
     width: auto;
   }
 }
-.pop-staging__main {
+.pop-staging__body {
   position: relative;
   width: 100%;
   height: calc(100% - 30px);
@@ -148,6 +149,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  .pop-staging-actions__container{
+    padding: 2px 5px;
+    margin: 0px 3px;
+  }
 }
 
 .is-multiple {
@@ -161,7 +166,7 @@ export default {
     display: flex;
     border-bottom: 1px solid #e4e7ed;
     padding: 20px;
-    padding-bottom: 0;
+    padding-bottom: 10px;
     position: sticky;
     top: 0;
     background-color: #fff;

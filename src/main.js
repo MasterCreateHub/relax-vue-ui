@@ -18,12 +18,17 @@ import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
 import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 
 // 通用组件
+import BaseSearcher from '@/components/base/BaseSearcher.vue'
+import BaseToolbar from '@/components/base/BaseToolbar.vue'
+import BaseTable from '@/components/base/BaseTable.vue'
+import BaseList from '@/components/base/BaseList.vue'
+import BasePagination from '@/components/base/BasePagination.vue'
+import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
 import BaseConverter from '@/components/base/BaseConverter.vue'
 import BaseDescriptions from '@/components/base/BaseDescriptions.vue'
-import BaseSearcher from '@/components/base/BaseSearcher.vue'
-import BaseList from '@/components/base/BaseList.vue'
-import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
+import BaseDetail from '@/components/base/BasePageList.vue'
 import BasePageTable from '@/components/base/BasePageTable.vue'
+import BasePageList from '@/components/base/BasePageList.vue'
 
 // 业务组件
 import PopTabs from "@/components/work/PopTabs.vue"
@@ -41,12 +46,17 @@ Vue.component('BaseTimePicker', BaseTimePicker)
 Vue.component('BaseDatePicker', BaseDatePicker)
 Vue.component('BaseTimeSelect', BaseTimeSelect)
 
+Vue.component('BaseSearcher', BaseSearcher)
+Vue.component('BaseToolbar', BaseToolbar)
+Vue.component('BaseTable', BaseTable)
+Vue.component('BaseList', BaseList)
+Vue.component('BasePagination', BasePagination)
+Vue.component('BaseWorkbench', BaseWorkbench)
 Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseDescriptions', BaseDescriptions)
-Vue.component('BaseSearcher', BaseSearcher)
-Vue.component('BaseList', BaseList)
-Vue.component('BaseWorkbench', BaseWorkbench)
+Vue.component('BaseDetail', BaseDetail)
 Vue.component('BasePageTable', BasePageTable)
+Vue.component('BasePageList', BasePageList)
 
 Vue.component('PopTabs', PopTabs)
 Vue.component('PopStaging', PopStaging)

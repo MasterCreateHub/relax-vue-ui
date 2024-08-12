@@ -1,23 +1,12 @@
 <template>
-    <div></div>
-    
+    <el-date-picker v-model="modelValue" v-bind="$attrs" v-on="$listeners"></el-date-picker>
 </template>
 
 <script>
 export default {
-    name: 'BaseToolbar',
+    name: 'BaseSlider',
     props: {
-        /**
-         * @description 工具数组
-         * @item {String} icon 图标
-         * @item {String} text 文本
-         * @item {String} type 类型，可选值为button和link
-         * @item {String} url 链接
-         */     
-        tools: {
-            type: Array,
-            default: () => []
-        },
+        value: [String, Date, Array]      
     },
 
     data() {
