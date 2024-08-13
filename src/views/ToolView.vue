@@ -4,9 +4,18 @@
       <base-searcher :span="6" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
-      <base-toolbar/>
+      <base-toolbar :actions="toolbarActions" :tools="toolbarTools" @refresh="handleRefresh" @export="handleExport" />
     </el-card>
-    <el-card header="通用表格组件"></el-card>
+    <el-card header="通用表格组件">
+      <base-table :columns="tableColumns" :data="tableData">
+        <template slot="emailHeader">
+          <span>邮箱</span><i class="el-icon-info"></i>
+        </template>
+        <template slot="sexContent" slot-scope="scope">
+          <el-tag>{{ scope.row.sex }}</el-tag>
+        </template>
+      </base-table>
+    </el-card>
     <el-card header="通用列表组件"></el-card>
     <el-card header="通用分页器组件"></el-card>
     <el-card header="通用工作台组件">
@@ -146,6 +155,39 @@ export default {
         { label: "B", value: "B" },
         { label: "C", value: "C" },
       ],
+      // 工具栏props
+      toolbarActions: [
+        { name: "add", label: "添加", config: { type: "primary", icon: "el-icon-plus" } },
+        { name: "del", label: "删除", config: { type: "danger", icon: "el-icon-delete" } },
+      ],
+      toolbarTools: [
+        {
+          toolName: "refresh", label: "刷新", tooltip: true, tipContent: '刷新',
+          config: { type: "info", plain: true, icon: "el-icon-refresh", circle: true },
+          eventType: "click", eventName: "refresh",
+        },
+        {
+          toolName: "export", label: "导出", tooltip: true, tipContent: '导出',
+          config: { type: "info", plain: true, icon: "el-icon-download", circle: true },
+          eventType: "click", eventName: "export",
+        },
+      ],
+      // 表格组件props
+      tableColumns: [
+        { prop: "name", label: "姓名", align: "center" },
+        { prop: "age", label: "年龄", align: "center" },
+        { prop: "sex", label: "性别", align: "center" },
+        { prop: "address", label: "地址", align: "center" },
+        { prop: "phone", label: "电话", align: "center" },
+        { prop: "email", label: "邮箱", align: "center" }
+      ],
+      tableData: [
+        { name: "张三", age: 18, sex: "男", address: "北京", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "李四", age: 19, sex: "女", address: "上海", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "王五", age: 20, sex: "男", address: "广州", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "赵六", age: 21, sex: "女", address: "深圳", phone: "12345678901", email: "12345678901@qq.com" }
+      ],
+      // 描述列表props
       student: {
         name: "张三",
         age: 18,
@@ -248,7 +290,7 @@ export default {
           value: '编程, 阅读, 游泳',
           span: 1,
         },
-        
+
       ]
 
     };
@@ -256,6 +298,12 @@ export default {
   methods: {
     handleSearch(val) {
       console.log(val);
+    },
+    handleRefresh() {
+      console.log('工具栏刷新');
+    },
+    handleExport() {
+      console.log('工具栏导出');
     },
     handleSubmit() {
       console.log("新增用户并提交");
