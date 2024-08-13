@@ -28,6 +28,7 @@
             align="center"
           ></el-table-column>
         </el-table>
+        <div class="pop-staging-operate"><slot name="operate"></slot></div>
         <div class="pop-staging-result"><slot name="result"></slot></div>
       </div>
       <div class="pop-staging__footer" :class="{ 'is-multiple': multiple }">
@@ -40,10 +41,10 @@
           :current-page.sync="pageNumber"
           :total="tableData.length"
         />
-        <div v-if="multiple" class="pop-staging-actions__container">
-          <el-button type="primary" size="mini" @click="handleEnter"
-            >确定</el-button
-          >
+        <div v-if="multiple">
+          <el-button type="primary" size="mini" @click="handleEnter">
+            提交
+          </el-button>
           <el-button size="mini" @click="show = false">取消</el-button>
         </div>
       </div>
@@ -125,27 +126,39 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 1;
-}
-
-::v-deep.pop-staging-table {
-  width: 100%;
-  margin-bottom: 15px;
-
-  .el-table__header-wrapper,
-  .el-table__fixed-header-wrapper {
-    th {
-      word-break: break-word;
-      background-color: #f8f8f9;
-      color: #515a6e;
-      height: 40px;
-      font-size: 13px;
+  align-items: center;
+  .pop-staging-tool {
+    width: 100%;
+    // margin-bottom: 10px;
+  }
+  .pop-staging-table {
+    width: 100%;
+    flex: 1;
+    // margin-bottom: 10px;
+    .el-table__header-wrapper,
+    .el-table__fixed-header-wrapper {
+      th {
+        word-break: break-word;
+        background-color: #f8f8f9;
+        color: #515a6e;
+        height: 40px;
+        font-size: 13px;
+      }
     }
+  }
+  .pop-staging-operate{
+    width: 100%;
+  }
+  .pop-staging-result {
+    width: 100%;
+    // margin-bottom: 10px;
   }
 }
 
-.pop-staging__footer {
+::v-deep.pop-staging__footer {
   width: 100%;
   height: 30px;
+  margin-top: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
