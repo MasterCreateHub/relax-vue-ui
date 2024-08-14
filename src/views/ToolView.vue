@@ -8,7 +8,10 @@
     </el-card>
     <el-card header="通用表格组件">
       <base-table :columns="tableColumns" :data="tableData">
-        <template slot="emailHeader">
+        <template slot="header" slot-scope="scope">
+          <span style="color: brown;">{{ scope.column?.label }}</span>
+        </template>
+        <template slot="emailLabel">
           <span>邮箱</span><i class="el-icon-info"></i>
         </template>
         <template slot="sexContent" slot-scope="scope">

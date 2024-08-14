@@ -1,14 +1,18 @@
 <template>
     <el-table v-bind="$attrs" v-on="$listeners" class="base-table">
         <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
-            <template slot="header" slot-scope="scope">
-                <slot :name="`${column.prop}Header`"  :row="scope.row"  :index="scope.$index">{{ column.label }}</slot>
-            </template>
-            <template slot-scope="scope">
-                <slot :name="`${column.prop}Content`" :row="scope.row" :column="scope.column" :index="scope.$index">
-                    {{ scope.row[column.prop] }}
-                </slot>
-            </template>
+                <template slot="header" slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row" :index="scope.$index">{{ column.label }}</slot>
+                    <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+                </template>
+                <template slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row" :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                    <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                </template>
         </el-table-column>
         <slot name="append"></slot>
     </el-table>
