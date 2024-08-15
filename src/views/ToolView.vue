@@ -1,7 +1,7 @@
 <template>
   <div class="tool">
     <el-card header="通用搜索框">
-      <base-searcher :span="6" :factors="seacherFactors" @search="handleSearch" />
+      <base-searcher :show-all.sync="showAll" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工作台">
       <el-row style="margin-bottom: 10px;">
@@ -89,6 +89,7 @@ export default {
   components: {},
   data() {
     return {
+      showAll: false,
       seacherFactors: [
         {
           label: "姓名",

@@ -8,7 +8,15 @@
       @keyup.enter.native="handleSearch"
     >
       <el-row :gutter="gutter">
-        <el-col v-for="factor in showFactors" :key="factor.prop" :span="span">
+        <el-col
+          v-for="factor in showFactors"
+          :key="factor.prop"
+          :xs="24"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
+        >
           <el-form-item :prop="factor.prop" :label="factor.label">
             <component
               :is="factor.type || 'el-input'"
@@ -29,37 +37,45 @@
           </el-form-item>
         </el-col>
         <el-col
-          v-if="$scopedSlots.action"
           class="base-searcher-actions"
-          :span="span"
+          :xs="24"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
         >
-          <slot name="action" :form="form"></slot>
-        </el-col>
-        <el-col v-else class="base-searcher-actions" :span="span">
-          <el-button
-            size="small"
-            type="primary"
-            icon="el-icon-search"
-            @click="handleSearch"
-            >搜索</el-button
-          >
-          <el-button
-            size="small"
-            type="primary"
-            icon="el-icon-refresh"
-            plain
-            @click="handleReset"
-            >重置</el-button
-          >
-          <el-button
-            size="small"
-            v-if="searcherInline"
-            type="text"
-            @click="handleResize"
-          >
-            {{ collapsed ? "展开" : "折叠" }}
-            <i class="el-icon-arrow-down"></i>
-          </el-button>
+          <el-form-item>
+            <slot name="action" :form="form">
+              <el-button
+                size="small"
+                type="primary"
+                icon="el-icon-search"
+                @click="handleSearch"
+              >
+                {{ searchText }}
+              </el-button>
+              <el-button
+                size="small"
+                type="primary"
+                icon="el-icon-refresh"
+                plain
+                @click="handleReset"
+              >
+                {{ resetText }}
+              </el-button>
+              <el-button
+                size="small"
+                v-if="searcherInline"
+                type="text"
+                @click="handleResize"
+              >
+                {{ showAll ? collapseText : expandText }}
+                <i
+                  :class="showAll ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"
+                ></i>
+              </el-button>
+            </slot>
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form>
@@ -69,6 +85,41 @@
 export default {
   name: "BaseSearcher",
   props: {
+    /**
+     * @description 搜索按钮文字
+     */
+    searchText: {
+      type: String,
+      default: "搜索",
+    },
+    /**
+     * @description 重置按钮文字
+     */
+    resetText: {
+      type: String,
+      default: "重置",
+    },
+    /**
+     * @description 展开按钮文字
+     */
+    expandText: {
+      type: String,
+      default: "展开",
+    },
+    /**
+     * @description 收起按钮文字
+     */
+    collapseText: {
+      type: String,
+      default: "收起",
+    },
+    /**
+     * @description 是否全部展示
+     */
+    showAll: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * @description 栅格间隔
      */
@@ -119,6 +170,10 @@ export default {
   data() {
     return {
       /**
+       * @description 搜索表单可见的检索条件
+       */
+      viewportSize: "lg",
+      /**
        * @description 搜索面板是否折叠
        */
       collapsed: true,
@@ -126,6 +181,16 @@ export default {
        * @description 搜索表单绑定的数据对象
        */
       form: {},
+      /**
+       * @description size配置
+       */
+      sizes: [
+        { label: "xs", value: 1 },
+        { label: "sm", value: 2 },
+        { label: "md", value: 3 },
+        { label: "lg", value: 4 },
+        { label: "xl", value: 6 },
+      ],
     };
   },
   computed: {
@@ -133,8 +198,11 @@ export default {
      *  @description 搜索表单可见的检索条件
      */
     showFactors() {
-      if (this.collapsed) {
-        let inlineMaxNum = 24 / this.span - 1;
+      if (!this.showAll) {
+        let sizeValue = this.sizes.find(
+          (size) => size.label === this.viewportSize
+        ).value;
+        let inlineMaxNum = sizeValue - 1;
         return this.factors.slice(0, inlineMaxNum);
       } else {
         return this.factors;
@@ -150,6 +218,11 @@ export default {
   },
   mounted() {
     this.onInit();
+    this.onResize();
+    window.addEventListener("resize", this.onResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
   },
   methods: {
     /**
@@ -162,6 +235,20 @@ export default {
           this.$set(this.form, key, null);
         });
     },
+    onResize() {
+      const width = window.innerWidth;
+      if (width < 768) {
+        this.viewportSize = "xs";
+      } else if (width < 992) {
+        this.viewportSize = "sm";
+      } else if (width < 1200) {
+        this.viewportSize = "md";
+      } else if (width < 1920) {
+        this.viewportSize = "lg";
+      } else {
+        this.viewportSize = "xl";
+      }
+    },
     handleSearch() {
       this.$emit("search", this.form);
     },
@@ -172,14 +259,14 @@ export default {
       this.$emit("reset", this.form);
     },
     handleResize() {
-      this.collapsed = !this.collapsed;
-      this.$emit("resize", this.collapsed);
+      this.$emit("update:showAll", !this.showAll);
+      this.$emit("resize", this.showAll);
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.base-searcher {
+::v-deep.base-searcher {
   .el-row {
     display: flex;
     flex-wrap: wrap;
@@ -187,12 +274,13 @@ export default {
     .base-factor-item {
       width: 100%;
     }
+    .base-searcher-actions {
+      text-align: right;
+      flex: 1;
+      .el-form-item__content {
+        margin-left: 0px !important;
+      }
+    }
   }
-}
-
-.base-searcher-actions {
-//   line-height: 40px;
-  text-align: right;
-  flex: 1;
 }
 </style>
