@@ -1,6 +1,6 @@
 <template>
-    <div class="base-list-container" :style="{ height: height }" @scroll="handleScroll($event)">
-        <div class="base-list-phantom" :style="{ height: listHeight + 'px' }"></div>
+    <div class="base-list__wrapper" :style="{ height: height }" @scroll="handleScroll($event)">
+        <div class="base-list__phantom" :style="{ height: listHeight + 'px' }"></div>
         <ul class="base-list" :class="listClass" ref="infiniteListRef" :style="{ transform: viewportTransform }">
             <li ref="items"  class="base-list-item" :class="itemClass" v-for="(item, key) in visibleData" :key="key + '-' + item?.id">
                 <slot :data="item" />
@@ -39,11 +39,18 @@ export default {
          * @description 列表项类名
          */
         itemClass: String,
+        /**
+         * @description 列数
+         */
+        column: {
+            type: Number,
+            default: 1
+        }
     },
     data() {
         return {
             /**
-             * @description 列表视口高度，数字，px
+             * @description 列表可见高度，数字，px
              */
             visibleHeight: 0,
             /**
@@ -82,6 +89,12 @@ export default {
         },
     },
     computed: {
+        /*
+        * @description 是否多列
+        */
+        isMultiColumn() {
+            return this.column > 1
+        },
         /**
          * @description 列表总高度
          */
@@ -152,12 +165,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.base-list-container {
+.base-list__wrapper {
     overflow: auto;
     position: relative;
     -webkit-overflow-scrolling: touch;
 
-    .base-list-phantom {
+    .base-list__phantom {
         position: absolute;
         left: 0;
         top: 0;

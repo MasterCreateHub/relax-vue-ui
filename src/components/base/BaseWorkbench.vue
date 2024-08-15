@@ -3,27 +3,25 @@
         <div class="base-workbench__header">
             <div class="base-workbench-title">{{ currentWorkLabel }}</div>
             <div class="base-workbench-action" v-if="layout === 'two'">
-                <template v-if="!$slots.action">
-                    <el-button v-for="action in currentWorkActions" :key="action.event" size="small" v-bind="action"
-                        @click="$emit(action.event, currentWork)">
+                <slot name="action" :currentWork="currentWork">
+                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small" v-bind="action"
+                        @click="$emit(action.eventName, currentWork)">
                         {{ action.label }}
                     </el-button>
-                </template>
-                <slot v-else name="action"></slot>
+                </slot>
             </div>
         </div>
         <div class="base-workbench__body">
-            <slot></slot>
+            <slot :currentWork="currentWork"></slot>
         </div>
         <div class="base-workbench__footer" v-if="layout === 'three'">
             <div class="base-workbench-action">
-                <template v-if="!$slots.action">
-                    <el-button v-for="action in currentWorkActions" :key="action.event" size="small" v-bind="action"
-                        @click="$emit(action.event, currentWork)">
+                <slot name="action" :currentWork="currentWork">
+                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small" v-bind="action"
+                        @click="$emit(action.eventName, currentWork)">
                         {{ action.label }}
                     </el-button>
-                </template>
-                <slot v-else name="action"></slot>
+                </slot>
             </div>
         </div>
     </div>
@@ -63,7 +61,7 @@ export default {
         /**
          * @description 工作台所有可执行动作
          * @label 动作名称
-         * @event 动作触发的事件
+         * @eventName 动作触发的事件
          * @icon 动作图标
          */
         actions: {
@@ -73,7 +71,7 @@ export default {
             },
             validator(value) {
                 return value.every(item => {
-                    return item.label && item.event
+                    return item.label && item.eventName
                 })
             }
         },
@@ -101,7 +99,7 @@ export default {
          */
         currentWorkActions() {
             return this.actions.filter(item => {
-                return ((this.currentWorkConfig.actions) && Array.isArray(this.currentWorkConfig.actions)) ? this.currentWorkConfig.actions.includes(item.event) : true
+                return ((this.currentWorkConfig.actions) && Array.isArray(this.currentWorkConfig.actions)) ? this.currentWorkConfig.actions.includes(item.eventName) : true
             })
         }
     },
@@ -133,8 +131,7 @@ export default {
             font-size: 16px;
         }
 
-        .base-workbench-action {
-        }
+        // .base-workbench-action {}
     }
 
     .base-workbench__body {
@@ -155,12 +152,11 @@ export default {
 
 }
 
-.is-two {}
+// .is-two {}
 
 .is-three {
     .base-workbench__header {
         justify-content: center;
-
     }
 
 }

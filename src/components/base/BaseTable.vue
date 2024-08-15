@@ -1,40 +1,52 @@
 <template>
-    <el-table v-bind="$attrs" v-on="$listeners">
-        <template v-if="columns.length > 0">
-            <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
-                <template slot-scope="scope">
-                    <template v-if="$slots[`${column.prop}Header`]" slot="header">
-                        <slot :name="`${column.prop}Header`"></slot>
-                    </template>
-                    <template v-if="$slots[`${column.prop}Content`]">
-                        <slot :name="`${column.prop}Content`" :row="scope.row" :index="scope.$index"></slot>
-                    </template>
-                    <template v-else>{{ scope.row[column.prop]  }}</template>
+    <el-table v-bind="$attrs" v-on="$listeners" class="base-table">
+        <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
+                <template slot="header" slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row" :index="scope.$index">{{ column.label }}</slot>
+                    <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
                 </template>
-            </el-table-column>
-        </template>
-        <slot></slot>
+                <template slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row" :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                    <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                </template>
+        </el-table-column>
+        <slot name="append"></slot>
     </el-table>
 </template>
 <script>
 export default {
     name: "BaseTable",
-    data() {
-        
-    },
     props: {
         columns: {
             type: Array,
             default: () => { return [] }
         },
     },
-    computed: {
+    data() {
+        return {
 
-    },
-    methods: {
-        
+        }
     },
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep.base-table {
+    width: 100%;
+
+    .el-table__header-wrapper,
+    .el-table__fixed-header-wrapper {
+        th {
+            word-break: break-word;
+            background-color: #f8f8f9;
+            color: #515a6e;
+            height: 40px;
+            font-size: 13px;
+        }
+    }
+}
+</style>
   
