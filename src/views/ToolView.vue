@@ -1,7 +1,7 @@
 <template>
   <div class="tool">
     <el-card header="通用搜索框">
-      <base-searcher :show-all.sync="showAll" :factors="seacherFactors" @search="handleSearch" />
+      <base-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
       <base-toolbar :actions="toolbarActions" :tools="toolbarTools" @refresh="handleRefresh" @export="handleExport" />
@@ -107,42 +107,48 @@ export default {
   components: {},
   data() {
     return {
-      showAll: false,
       seacherFactors: [
         {
           label: "姓名",
           prop: "name",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "年龄",
           prop: "age",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "电话",
           prop: "tel",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "邮箱",
           prop: "email",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "爱好",
           prop: "happy",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "描述",
           prop: "desc",
           type: "el-input",
+          valueType: 'string'
         },
         {
           label: "等级",
           prop: "level",
           type: "el-select",
+          valueType: 'string',
           config: {
             placeholder: "",
             clearable: false,
