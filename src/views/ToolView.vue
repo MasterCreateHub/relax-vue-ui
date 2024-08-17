@@ -20,7 +20,9 @@
       </base-table>
     </el-card>
     <el-card header="通用列表组件"></el-card>
-    <el-card header="通用分页器组件"></el-card>
+    <el-card header="通用分页器组件">
+      <base-pagination :current-page="pagination.currentPage" :page-size="pagination.pageSize" :total="pagination.total" align="center"/>
+    </el-card>
     <el-card header="通用工作台组件">
       <el-row style="margin-bottom: 10px;">
         <el-col>
@@ -182,6 +184,12 @@ export default {
           eventType: "click", eventName: "export",
         },
       ],
+      // 分页器props
+      pagination: {
+        currentPage: 1,
+        pageSize: 20,
+        total: 100,
+      },
       // 表格组件props
       tableColumns: [
         { prop: "name", label: "姓名", align: "center" },
