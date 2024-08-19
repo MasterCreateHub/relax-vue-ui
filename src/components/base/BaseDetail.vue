@@ -101,31 +101,34 @@ export default {
     },
     components: {
         BaseDetailSection: {
-            template: `
-                <template v-if="type === 'descriptions'">
-                    <el-descriptions v-bind="config">
-                        <el-descriptions-item v-for="item in data" :key="item.prop" :label="item.label">
-                            {{ item.value }}
-                        </el-descriptions-item>
-                    </el-descriptions>
-                </template>
-                <template v-else-if="type === 'table'">
-                    <el-table v-bind="config">
-                        <el-table-column v-for="item in data" :key="item.prop" :label="item.label" :prop="item.prop" />
-                    </el-table>
-                </template>
-                <template v-else-if="type === 'custom'">
-                    <slot :name="area.name" :data="area.data"></slot>
-                </template>
-            `,
+            template: `<div class="base-detail-section">
+                    <template v-if="type === 'descriptions'">
+                        <el-descriptions v-bind="config">
+                            <el-descriptions-item v-for="item in data" :key="item.prop" :label="item.label">
+                                {{ item.value }}
+                            </el-descriptions-item>
+                        </el-descriptions>
+                    </template>
+                    <template v-else-if="type === 'table'">
+                        <el-table v-bind="config" :data="data">
+                            <el-table-column v-for="item in config.columns" :key="item.prop" :label="item.label" :prop="item.prop" />
+                        </el-table>
+                    </template>
+                    <template v-else-if="type === 'custom'">
+                        <slot :name="area.name" :data="area.data"></slot>
+                    </template>
+                </div>`,
             props: {
                 type: {
                     type: String,
-                    required: true
+                    required: true,
+                    validator(value) {
+                        return ['descriptions', 'table', 'custom'].includes(value)
+                    }
                 },
                 config: {
                     type: Object,
-                    default: () => ({})
+                    default: () => ({}),
                 },
                 data: {
                     type: Array,

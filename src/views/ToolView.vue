@@ -4,7 +4,8 @@
       <base-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
-      <base-toolbar :actions="toolbarActions" :tools="toolbarTools" @refresh="handleRefresh" @export="handleExport" />
+      <base-toolbar :tools="toolbarTools" @add="handleAdd" @delete="handleDelete" @refresh="handleRefresh"
+        @export="handleExport" />
     </el-card>
     <el-card header="通用表格组件">
       <base-table :columns="tableColumns" :data="tableData">
@@ -21,7 +22,8 @@
     </el-card>
     <el-card header="通用列表组件"></el-card>
     <el-card header="通用分页器组件">
-      <base-pagination :current-page="pagination.currentPage" :page-size="pagination.pageSize" :total="pagination.total" align="center"/>
+      <base-pagination :current-page="pagination.currentPage" :page-size="pagination.pageSize" :total="pagination.total"
+        align="center" />
     </el-card>
     <el-card header="通用工作台组件">
       <el-row style="margin-bottom: 10px;">
@@ -99,7 +101,9 @@
         </template>
       </base-descriptions>
     </el-card>
-    <el-card header="通用详情组件"></el-card>
+    <el-card header="通用详情组件">
+      <base-detail :data="detailData" :show-type="showType" />
+    </el-card>
   </div>
 </template>
 
@@ -168,20 +172,16 @@ export default {
         { label: "C", value: "C" },
       ],
       // 工具栏props
-      toolbarActions: [
-        { name: "add", label: "添加", config: { type: "primary", icon: "el-icon-plus" } },
-        { name: "del", label: "删除", config: { type: "danger", icon: "el-icon-delete" } },
-      ],
       toolbarTools: [
+        { name: "add", label: "添加", config: { type: "primary", icon: "el-icon-plus" }, position: "left" },
+        { name: "delete", label: "删除", config: { type: "danger", icon: "el-icon-delete" }, position: "left" },
         {
-          toolName: "refresh", label: "刷新", tooltip: true, tipContent: '刷新',
+          name: "refresh", label: "刷新", useTip: true, tooltip: '刷新', position: "right",
           config: { type: "info", plain: true, icon: "el-icon-refresh", circle: true },
-          eventType: "click", eventName: "refresh",
         },
         {
-          toolName: "export", label: "导出", tooltip: true, tipContent: '导出',
+          name: "export", label: "导出", useTip: true, tooltip: '导出', position: "right",
           config: { type: "info", plain: true, icon: "el-icon-download", circle: true },
-          eventType: "click", eventName: "export",
         },
       ],
       // 分页器props
@@ -309,6 +309,78 @@ export default {
           span: 1,
         },
 
+      ],
+
+      // 详情组件Detail
+      detailTitle: '用户详情', // 详情标题
+      showType: 'tabs',
+      detailData: [
+        {
+          name: 'baseInfo', // 区域名称
+          label: '基础信息', // 区域标签
+          type: 'descriptions', // 数据展示组件类型，descriptions, table， custom
+          config: { column: 3, border: true }, // 数据展示组件的配置，el-descriptions，el-table的配置，（el-table的配置包含了表格要展示的data),
+          data: [{
+            prop: 'name',
+            label: '姓名',
+            value: '张三',
+            span: 1,
+          },
+          {
+            prop: 'age',
+            label: '年龄',
+            value: 28,
+            span: 1,
+          },
+          {
+            prop: 'gender',
+            label: '性别',
+            value: '男',
+            span: 1,
+          },]
+        },
+        {
+          name: 'contactInfo', // 区域名称
+          label: '联系方式', // 区域标签
+          type: 'table', // 数据展示组件类型，descriptions, table， custom
+          config: {
+            columns: [
+              {
+                prop: 'name',
+                label: '姓名',
+              },
+              {
+                prop: 'address',
+                label: '地址',
+              },
+              {
+                prop: 'phone',
+                label: '电话',
+              },
+              {
+                prop: 'email',
+                label: '邮箱',
+              },
+            ]
+          },
+          data: [{
+            name: '张三',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
+          }, {
+            name: '李四',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
+
+          }, {
+            name: '王五',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
+          }]
+        }
       ]
 
     };
@@ -316,6 +388,12 @@ export default {
   methods: {
     handleSearch(val) {
       console.log(val);
+    },
+    handleAdd() {
+      console.log('工具栏新增');
+    },
+    handleDelete() {
+      console.log('工具栏删除');
     },
     handleRefresh() {
       console.log('工具栏刷新');

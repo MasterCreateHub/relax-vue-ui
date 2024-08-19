@@ -26,7 +26,7 @@ import BasePagination from '@/components/base/BasePagination.vue'
 import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
 import BaseConverter from '@/components/base/BaseConverter.vue'
 import BaseDescriptions from '@/components/base/BaseDescriptions.vue'
-import BaseDetail from '@/components/base/BasePageList.vue'
+import BaseDetail from '@/components/base/BaseDetail.vue'
 import BasePageTable from '@/components/base/BasePageTable.vue'
 import BasePageList from '@/components/base/BasePageList.vue'
 

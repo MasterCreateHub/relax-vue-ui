@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  name: "ToolView",
+  name: "WorkView",
   components: {},
   data() {
     return {
