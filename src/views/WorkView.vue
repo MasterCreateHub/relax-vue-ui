@@ -11,17 +11,16 @@
           </el-button>
         </el-col>
       </el-row>
-      <pop-tabs
-        :visible.sync="dialogTabsShow"
-        :tabs="tabsArr"
-        container="dialog"
-        :activeTab.sync="dialogActiveTab"
-      ></pop-tabs>
-      <pop-tabs
-        :visible.sync="drawerTabsShow"
-        :tabs="tabsArr"
-        :activeTab.sync="drawerActiveTab"
-      ></pop-tabs>
+      <pop-tabs :visible.sync="dialogTabsShow" :tabs="tabsArr" container="dialog"
+        :activeTab.sync="dialogActiveTab"></pop-tabs>
+      <pop-tabs :visible.sync="drawerTabsShow" :tabs="tabsArr" :activeTab.sync="drawerActiveTab" defaultTab="detail" @tabClick="handleTabClick">
+        <template #detail>
+          <span>这是详情数据</span>
+        </template>
+        <template #test>
+          <span>这是测试数据</span>
+        </template>
+      </pop-tabs>
     </el-card>
     <el-card header="弹出临时工作台">
       <el-row>
@@ -31,28 +30,23 @@
           </el-button>
         </el-col>
       </el-row>
-      <pop-staging
-        :visible.sync="popStagingShow"
-        :title="popStagingtitle"
-        :columns="columns"
-        :tableData="tableData"
-        multiple
-      >
-      <template #operate>
-        <div class="operate">
-          <el-form>
-            <el-form-item label="将所选数据发送给">
-              <el-input v-model="name" placeholder="请输入目的地" />
-            </el-form-item>
-          </el-form>
-        </div>
-      </template> 
-      <!-- <template #result>
+      <pop-staging :visible.sync="popStagingShow" :title="popStagingtitle" :columns="columns" :tableData="tableData"
+        multiple>
+        <template #operate>
+          <div class="operate">
+            <el-form>
+              <el-form-item label="将所选数据发送给">
+                <el-input v-model="name" placeholder="请输入目的地" />
+              </el-form-item>
+            </el-form>
+          </div>
+        </template>
+        <!-- <template #result>
         <div class="result">
           <el-tag>您所选择的数据</el-tag>
         </div>
       </template> -->
-    </pop-staging>
+      </pop-staging>
     </el-card>
   </div>
 </template>
@@ -70,9 +64,12 @@ export default {
       tabsArr: [
         { label: "详情", name: "detail" },
         { label: "测试", name: "test" },
+        { label: "提交", name: "submit" },
+        { label: "金额", name: "amount" }
       ],
       popStagingShow: false,
       popStagingtitle: "临时工作台",
+      name: null,
       columns: [
         { prop: "name", label: "姓名" },
         { prop: "age", label: "年龄" },
@@ -131,14 +128,20 @@ export default {
       ],
     };
   },
-  methods: {},
+  methods: {
+    handleTabClick(value){
+      console.log('测试', value);
+
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .el-card {
   margin-bottom: 10px;
 }
-.operate{
+
+.operate {
   width: 100%;
   height: 100px;
 }

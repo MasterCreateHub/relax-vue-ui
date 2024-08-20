@@ -102,6 +102,14 @@
       </base-descriptions>
     </el-card>
     <el-card header="通用详情组件">
+      <el-row style="margin-bottom: 10px;">
+        <el-col>
+          <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
+          <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
+          <el-button size="small" @click="showType = 'collapse'">折叠风格</el-button>
+          <el-button size="small" @click="showType = 'tabs'">tab风格</el-button>
+        </el-col>
+      </el-row>
       <base-detail :data="detailData" :show-type="showType" />
     </el-card>
   </div>
