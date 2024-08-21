@@ -6,31 +6,31 @@
         <main class="base-detail__body">
             <template v-if="showType === 'simple'">
                 <el-row class="base-detail-content is-simple">
-                    <el-col v-for="area in data" :key="area.name" :span="24">
-                        <el-divider content-position="left">{{ area.label }}</el-divider>
-                        <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                    <el-col v-for="section in data" :key="section.name" :span="24">
+                        <el-divider content-position="left">{{ section.label }}</el-divider>
+                        <BaseDetailSection :type="section.type" :config="section.config" :data="section.data" />
                     </el-col>
                 </el-row>
             </template>
             <template v-else-if="showType === 'card'">
-                <el-card v-for="area in data" :key="area.name" :header="area.label" v-bind="areaConfig">
-                    <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                <el-card v-for="section in data" :key="section.name" :header="section.label" v-bind="sectionConfig">
+                    <BaseDetailSection :type="section.type" :config="section.config" :data="section.data" />
                 </el-card>
             </template>
             <template v-else-if="showType === 'collapse'">
                 <el-collapse v-model="activeValue">
-                    <el-collapse-item v-for="area in data" :key="area.name" :title="area.label" :name="area.name"
-                        v-bind="areaConfig">
-                        <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                    <el-collapse-item v-for="section in data" :key="section.name" :title="section.label" :name="section.name"
+                        v-bind="sectionConfig">
+                        <BaseDetailSection :type="section.type" :config="section.config" :data="section.data" />
                     </el-collapse-item>
                 </el-collapse>
             </template>
             <template v-else-if="showType === 'tabs'">
                 <el-tabs v-model="activeValue">
-                    <el-tab-pane v-for="area in data" :key="area.name" :label="area.label" :name="area.name"
-                        v-bind="areaConfig">
-                        <template v-if="area.name === activeValue">
-                            <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                    <el-tab-pane v-for="section in data" :key="section.name" :label="section.label" :name="section.name"
+                        v-bind="sectionConfig">
+                        <template v-if="section.name === activeValue">
+                            <BaseDetailSection :type="section.type" :config="section.config" :data="section.data" />
                         </template>
                     </el-tab-pane>
                 </el-tabs>
@@ -87,7 +87,7 @@ export default {
         /**
          * @description 详情区域的统一配置
          */
-        areaConfig: {
+        sectionConfig: {
             type: Object,
             default: () => {
                 return {}
@@ -115,7 +115,7 @@ export default {
                         </el-table>
                     </template>
                     <template v-else-if="type === 'custom'">
-                        <slot :name="area.name" :data="area.data"></slot>
+                        <slot :name="section.name" :data="section.data"></slot>
                     </template>
                 </div>`,
             props: {
@@ -264,3 +264,4 @@ export default {
         }
     }
 }
+</style>

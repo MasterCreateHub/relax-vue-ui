@@ -4,22 +4,49 @@
       <slot name="reference"></slot>
     </div>
 
-    <el-dialog class="pop-staging-dialog" :visible.sync="show" v-bind="$attrs" :width="$attrs.size || '80%'"
-      :top="$attrs.top || '7.5vh'">
+    <el-dialog
+      class="pop-staging-dialog"
+      :visible.sync="show"
+      v-bind="$attrs"
+      :width="$attrs.size || '80%'"
+      :top="$attrs.top || '7.5vh'"
+    >
       <div class="pop-staging__body">
         <div class="pop-staging-tool">
           <slot name="tool"></slot>
         </div>
-        <el-table class="pop-staging-table" :data="pageData" :height="400" v-bind="tableConfig"
-          @selection-change="handleSelectionChange" v-on="$listeners">
+        <el-table
+          class="pop-staging-table"
+          :data="pageData"
+          :height="400"
+          v-bind="tableConfig"
+          @selection-change="handleSelectionChange"
+          v-on="$listeners"
+        >
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column v-for="column in columns" :key="column.prop" :prop="column.prop" :label="column.label"
-            align="center" v-bind="column">
+          <el-table-column
+            v-for="column in columns"
+            :key="column.prop"
+            :prop="column.prop"
+            :label="column.label"
+            align="center"
+            v-bind="column"
+          >
             <template slot="header" slot-scope="scope">
-              <slot name="tableHeader" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+              <slot
+                name="tableHeader"
+                :column="scope.column"
+                :index="scope.$index"
+                >{{ column.label }}</slot
+              >
             </template>
             <template slot-scope="scope">
-              <slot name="tableBody" :row="scope.row" :column="scope.column" :index="scope.$index">
+              <slot
+                name="tableBody"
+                :row="scope.row"
+                :column="scope.column"
+                :index="scope.$index"
+              >
                 {{ scope.row[column.prop] }}
               </slot>
             </template>
@@ -33,13 +60,30 @@
         </div>
       </div>
       <div class="pop-staging__footer">
-        <el-pagination class="pop-staging-pagination" small background layout="prev, pager, next" :pager-count="5"
-          :page-size="pageSize" :current-page.sync="pageNumber" :total="tableData.length" />
+        <el-pagination
+          class="pop-staging-pagination"
+          small
+          background
+          layout="prev, pager, next"
+          :pager-count="5"
+          :page-size="pageSize"
+          :current-page.sync="pageNumber"
+          :total="tableData.length"
+        />
         <div class="pop-staging-actions">
-          <el-button type="primary" size="mini" :disabled="!isFairSelection" @click="handleEnter">
-            确定
-          </el-button>
-          <el-button size="mini" @click="handleCancel">取消</el-button>
+          <slot name="actions">
+            <el-button
+              type="primary"
+              size="mini"
+              :disabled="!isFairSelection"
+              @click="handleEnter"
+            >
+              {{ enterText }}
+            </el-button>
+            <el-button size="mini" @click="handleCancel">{{
+              cancelText
+            }}</el-button>
+          </slot>
         </div>
       </div>
     </el-dialog>
@@ -83,6 +127,20 @@ export default {
     multiple: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * @description 确定按钮文字
+     */
+    enterText: {
+      type: String,
+      default: "确定",
+    },
+    /**
+     * @description 取消按钮文字
+     */
+    cancelText: {
+      type: String,
+      default: "取消",
     },
   },
   data() {
@@ -129,9 +187,9 @@ export default {
      */
     handleSelectionChange(rows) {
       if (!this.multiple && rows.length > 1) {
-        this.isFairSelection = false
+        this.isFairSelection = false;
       } else {
-        this.isFairSelection = true
+        this.isFairSelection = true;
       }
       this.$emit("selection-change", rows);
     },
@@ -185,8 +243,6 @@ export default {
     width: 100%;
     flex: 1;
 
-
-
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
@@ -219,7 +275,7 @@ export default {
   .pop-staging-pagination {
     padding: 0px;
 
-    &> :first-child {
+    & > :first-child {
       margin-left: 0px;
     }
   }

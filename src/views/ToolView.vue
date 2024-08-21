@@ -110,7 +110,7 @@
           <el-button size="small" @click="showType = 'tabs'">tab风格</el-button>
         </el-col>
       </el-row>
-      <base-detail :data="detailData" :show-type="showType" />
+      <base-detail title="测试详情" :data="detailData" :show-type="showType" />
     </el-card>
   </div>
 </template>
@@ -431,5 +431,8 @@ export default {
 <style lang="scss" scoped>
 .el-card {
   margin-bottom: 10px;
+}
+.detail{
+  width: 1200px;
 }
 </style>
