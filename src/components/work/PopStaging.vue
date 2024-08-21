@@ -4,16 +4,26 @@
       <slot name="reference"></slot>
     </div>
 
-    <el-dialog :visible.sync="show" v-bind="$attrs" :width="$attrs.size || '80%'" :top="$attrs.top || '10vh'">
+    <el-dialog class="pop-staging-dialog" :visible.sync="show" v-bind="$attrs" :width="$attrs.size || '80%'"
+      :top="$attrs.top || '7.5vh'">
       <div class="pop-staging__body">
         <div class="pop-staging-tool">
           <slot name="tool"></slot>
         </div>
-        <el-table class="pop-staging-table" :height="500" :data="pageData" @row-click="handleClickRow"
-          @selection-change="handleSelectionChange">
+        <el-table class="pop-staging-table" :data="pageData" :height="400" v-bind="tableConfig"
+          @selection-change="handleSelectionChange" v-on="$listeners">
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column v-for="column in columns" :key="column.prop" :prop="column.prop" :label="column.label"
-            align="center"></el-table-column>
+            align="center" v-bind="column">
+            <template slot="header" slot-scope="scope">
+              <slot name="tableHeader" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+            </template>
+            <template slot-scope="scope">
+              <slot name="tableBody" :row="scope.row" :column="scope.column" :index="scope.$index">
+                {{ scope.row[column.prop] }}
+              </slot>
+            </template>
+          </el-table-column>
         </el-table>
         <div class="pop-staging-operate">
           <slot name="operate"></slot>
@@ -22,14 +32,14 @@
           <slot name="result"></slot>
         </div>
       </div>
-      <div class="pop-staging__footer" :class="{ 'is-multiple': multiple }">
-        <el-pagination small background layout="prev, pager, next" :pager-count="5" :page-size="pageSize"
-          :current-page.sync="pageNumber" :total="tableData.length" />
-        <div v-if="multiple">
-          <el-button type="primary" size="mini" @click="handleEnter">
-            提交
+      <div class="pop-staging__footer">
+        <el-pagination class="pop-staging-pagination" small background layout="prev, pager, next" :pager-count="5"
+          :page-size="pageSize" :current-page.sync="pageNumber" :total="tableData.length" />
+        <div class="pop-staging-actions">
+          <el-button type="primary" size="mini" :disabled="!isFairSelection" @click="handleEnter">
+            确定
           </el-button>
-          <el-button size="mini" @click="show = false">取消</el-button>
+          <el-button size="mini" @click="handleCancel">取消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -39,30 +49,62 @@
 export default {
   name: "PopStaging",
   props: {
+    /**
+     * @description 工作台是否可见
+     */
     visible: {
       type: Boolean,
       default: false,
     },
+    /**
+     * @description 工作数据表格列
+     */
     columns: {
       type: Array,
       default: () => [],
     },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
+    /**
+     * @description 工作数据
+     */
     tableData: {
       type: Array,
       default: () => [],
     },
+    /**
+     * @description 表格配置
+     */
+    tableConfig: {
+      type: Object,
+      default: () => ({}),
+    },
+    /**
+     * @description 是否可以选择多条数据进行操作
+     */
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      pageNumber: 1,
+      /**
+       * @description 每页显示条数
+       */
       pageSize: 10,
+      /**
+       * @description 当前页码
+       */
+      pageNumber: 1,
+      /**
+       * @description 选择的数据是否合理，只校验多选单选
+       */
+      isFairSelection: true,
     };
   },
   computed: {
+    /**
+     * @description 控制弹窗显示隐藏的计算属性
+     */
     show: {
       get() {
         return this.visible;
@@ -71,28 +113,40 @@ export default {
         this.$emit("update:visible", val);
       },
     },
+    /**
+     * @description 当前页显示的数据
+     */
     pageData() {
       return this.tableData.slice(
         (this.pageNumber - 1) * this.pageSize,
         this.pageNumber * this.pageSize
       );
     },
-    setMaxHeight() {
-      return this.tableData.length > this.pageSize;
-    },
   },
   methods: {
-    toggleShow() {
-      this.$emit("update:visible", !this.visible);
-    },
+    /**
+     * @description 选择操作数据时的回调
+     */
     handleSelectionChange(rows) {
-      this.$emit("selectRows", rows);
+      if (!this.multiple && rows.length > 1) {
+        this.isFairSelection = false
+      } else {
+        this.isFairSelection = true
+      }
+      this.$emit("selection-change", rows);
     },
-    handleClickRow(row) {
-      this.$emit("clickRow", row);
-    },
+    /**
+     * @description 点击确定的回调
+     */
     handleEnter() {
-      this.$emit("clickEnter");
+      this.$emit("enter");
+    },
+    /**
+     * @description 点击取消的回调
+     */
+    handleCancel() {
+      this.$emit("cancel");
+      this.show = false;
     },
   },
 };
@@ -104,7 +158,17 @@ export default {
   }
 }
 
-.pop-staging__body {
+::v-deep.pop-staging-dialog {
+  .el-dialog__header {
+    border-bottom: 1px solid #e4e7ed;
+  }
+
+  .el-dialog__body {
+    padding: 20px 20px 20px 20px;
+  }
+}
+
+::v-deep.pop-staging__body {
   position: relative;
   width: 100%;
   height: calc(100% - 30px);
@@ -115,14 +179,14 @@ export default {
 
   .pop-staging-tool {
     width: 100%;
-    // margin-bottom: 10px;
   }
 
   .pop-staging-table {
     width: 100%;
     flex: 1;
 
-    // margin-bottom: 10px;
+
+
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
@@ -141,75 +205,23 @@ export default {
 
   .pop-staging-result {
     width: 100%;
-    // margin-bottom: 10px;
   }
 }
 
 ::v-deep.pop-staging__footer {
   width: 100%;
   height: 30px;
-  margin-top: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  .pop-staging-actions__container {
-    padding: 2px 5px;
-    margin: 0px 3px;
-  }
-}
-
-.is-multiple {
   justify-content: space-between;
-}
 
-::v-deep .el-dialog {
-  .el-dialog__header {
-    color: #72767b;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    border-bottom: 1px solid #e4e7ed;
-    padding: 20px;
-    padding-bottom: 10px;
-    position: sticky;
-    top: 0;
-    background-color: #fff;
+  .pop-staging-pagination {
+    padding: 0px;
 
     &> :first-child {
-      -webkit-box-flex: 1;
-      -ms-flex: 1;
-      flex: 1;
+      margin-left: 0px;
     }
-
-    & .el-tabs__item {
-      font-size: 20px;
-      color: #72767b;
-    }
-
-    & .el-tabs__nav-wrap::after {
-      display: none;
-    }
-
-    .base-poptabs-header-action {
-      height: 54px;
-      box-sizing: border-box;
-      padding-bottom: 15px;
-      display: flex;
-      align-items: center;
-    }
-
-    &>button {
-      display: none;
-    }
-  }
-
-  .el-dialog__body {
-    padding: 20px;
-    height: 500px;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
   }
 }
 </style>

@@ -13,7 +13,8 @@
       </el-row>
       <pop-tabs :visible.sync="dialogTabsShow" :tabs="tabsArr" container="dialog"
         :activeTab.sync="dialogActiveTab"></pop-tabs>
-      <pop-tabs :visible.sync="drawerTabsShow" :tabs="tabsArr" :activeTab.sync="drawerActiveTab" defaultTab="detail" @tabClick="handleTabClick">
+      <pop-tabs :visible.sync="drawerTabsShow" :tabs="tabsArr" :activeTab.sync="drawerActiveTab" defaultTab="detail"
+        @tabClick="handleTabClick">
         <template #detail>
           <span>这是详情数据</span>
         </template>
@@ -30,8 +31,12 @@
           </el-button>
         </el-col>
       </el-row>
-      <pop-staging :visible.sync="popStagingShow" :title="popStagingtitle" :columns="columns" :tableData="tableData"
-        multiple>
+      <pop-staging :visible.sync="popStagingShow" :title="popStagingtitle" :columns="columns" :tableData="tableData">
+        <template #tableBody="scope">
+          <template v-if="scope.column.property === 'level'">
+            <el-tag>{{ scope.row.level }}</el-tag>
+          </template>
+        </template>
         <template #operate>
           <div class="operate">
             <el-form>
@@ -41,11 +46,6 @@
             </el-form>
           </div>
         </template>
-        <!-- <template #result>
-        <div class="result">
-          <el-tag>您所选择的数据</el-tag>
-        </div>
-      </template> -->
       </pop-staging>
     </el-card>
   </div>
@@ -129,7 +129,7 @@ export default {
     };
   },
   methods: {
-    handleTabClick(value){
+    handleTabClick(value) {
       console.log('测试', value);
 
     },
