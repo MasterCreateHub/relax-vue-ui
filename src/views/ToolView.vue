@@ -432,4 +432,7 @@ export default {
 .el-card {
   margin-bottom: 10px;
 }
+.detail{
+  width: 1200px;
+}
 </style>
