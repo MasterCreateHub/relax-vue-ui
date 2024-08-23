@@ -185,11 +185,11 @@ export default {
         { name: "delete", label: "删除", config: { type: "danger", icon: "el-icon-delete" }, position: "left" },
         {
           name: "refresh", label: "刷新", useTip: true, tooltip: '刷新', position: "right",
-          config: { type: "info", plain: true, icon: "el-icon-refresh", circle: true },
+          config: { plain: true, icon: "el-icon-refresh", circle: true },
         },
         {
           name: "export", label: "导出", useTip: true, tooltip: '导出', position: "right",
-          config: { type: "info", plain: true, icon: "el-icon-download", circle: true },
+          config: { plain: true, icon: "el-icon-download", circle: true },
         },
       ],
       // 分页器props
