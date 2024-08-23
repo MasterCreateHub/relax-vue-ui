@@ -1,8 +1,10 @@
 <template>
     <div class="base-list__wrapper" :style="{ height: height }" @scroll="handleScroll($event)">
         <div class="base-list__phantom" :style="{ height: listHeight + 'px' }"></div>
-        <ul class="base-list" :class="listClass" ref="infiniteListRef" :style="{ transform: viewportTransform }">
-            <li ref="items"  class="base-list-item" :class="itemClass" v-for="(item, key) in visibleData" :key="key + '-' + item?.id">
+        <ul class="base-list" :class="[listClass, { 'is-columns': isMultiColumn }]" ref="infiniteListRef"
+            :style="{ transform: viewportTransform }">
+            <li ref="items" :style="{ width: columnWidth }" class="base-list-item" :class="itemClass"
+                v-for="(item, key) in visibleData" :key="key + '-' + item?.id">
                 <slot :data="item" />
             </li>
         </ul>
@@ -26,7 +28,7 @@ export default {
         height: {
             type: String,
             default: "100%",
-            validator: (value)=>{
+            validator: (value) => {
                 const regex = /^(?:\d+\.?\d*(?:px|vh|%))$/;
                 return regex.test(value);
             }
@@ -35,9 +37,9 @@ export default {
          * @description 列表类名
          */
         listClass: String,
-         /**
-         * @description 列表项类名
-         */
+        /**
+        * @description 列表项类名
+        */
         itemClass: String,
         /**
          * @description 列数
@@ -95,17 +97,20 @@ export default {
         isMultiColumn() {
             return this.column > 1
         },
+        columnWidth() {
+            return `${(100 / this.column)}%`
+        },
         /**
          * @description 列表总高度
          */
         listHeight() {
-            return BigInt(this.data.length * this.itemHeight);
+            return BigInt(Math.ceil(this.data.length / this.column) * this.itemHeight);
         },
         /**
          * @description 视口可容纳的列表项(包括缓冲区)
          */
         renderCount() {
-            return Math.ceil(this.visibleHeight / this.itemHeight) + 6;
+            return (Math.ceil(this.visibleHeight / this.itemHeight) + 6) * this.column;
         },
         /**
          * @description 可见的列表数据
@@ -191,6 +196,11 @@ export default {
             color: #555;
             box-sizing: border-box;
         }
+    }
+
+    .is-columns {
+        display: flex;
+        flex-wrap: wrap;
     }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="about" ref="aboutDivRef">
-    <base-list ref="testRef" :height="containerHeight" :data="rows">
+    <base-list ref="testRef" :height="containerHeight" :data="rows" :column="1">
       <template slot-scope="row">
         <div class="item">
           <el-tag>标题：{{ row.data.id }}</el-tag>
