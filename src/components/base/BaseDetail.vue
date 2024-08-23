@@ -1,36 +1,94 @@
 <template>
-    <div class="base-detail" :class="{ ['is-' + showType]: true }">
-        <header class="base-detail__header">
+    <div :class="['base-detail', { ['is-' + showType]: true }]">
+        <header class="base-detail__header" :class="{ ['is-' + showType]: true }">
             <slot name="header">{{ title }}</slot>
         </header>
         <main class="base-detail__body">
             <template v-if="showType === 'simple'">
-                <el-row class="base-detail-content is-simple">
-                    <el-col v-for="area in data" :key="area.name" :span="24">
-                        <el-divider content-position="left">{{ area.label }}</el-divider>
-                        <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
-                    </el-col>
-                </el-row>
+                <div v-for="section in data" :key="section.name" class="base-detail-section">
+                    <div classs="base-detail-section__title">
+                        <slot name="sectionTitle" :section="section">
+                            <el-divider content-position="left">{{ section.label }}</el-divider>
+                        </slot>
+                    </div>
+                    <div class="base-detail-section__content">
+                        <slot :name="section.name" :data="section.data">
+                            <el-descriptions v-if="section.type === 'descriptions'" v-bind="section.config">
+                                <el-descriptions-item v-for="item in section.data" :key="item.prop" :label="item.label">
+                                    {{ item.value }}
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-table v-else-if="section.type === 'table'" v-bind="section.config" :data="section.data">
+                                <el-table-column v-for="item in section.config.columns" :key="item.prop" :label="item.label"
+                                    :prop="item.prop" />
+                            </el-table>
+                        </slot>
+                    </div>
+                </div>
             </template>
             <template v-else-if="showType === 'card'">
-                <el-card v-for="area in data" :key="area.name" :header="area.label" v-bind="areaConfig">
-                    <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                <el-card v-for="section in data" :key="section.name" :header="section.label" v-bind="sectionConfig"
+                    class="base-detail-section">
+                    <template #header>
+                        <slot name="sectionTitle" :section="section">{{ section.label }}</slot>
+                    </template>
+                    <slot :name="section.name" :data="section.data">
+                        <el-descriptions v-if="section.type === 'descriptions'" v-bind="section.config">
+                            <el-descriptions-item v-for="item in section.data" :key="item.prop" :label="item.label">
+                                {{ item.value }}
+                            </el-descriptions-item>
+                        </el-descriptions>
+                        <el-table v-else-if="section.type === 'table'" v-bind="section.config" :data="section.data">
+                            <el-table-column v-for="item in section.config.columns" :key="item.prop" :label="item.label"
+                                :prop="item.prop" />
+                        </el-table>
+                    </slot>
                 </el-card>
             </template>
             <template v-else-if="showType === 'collapse'">
                 <el-collapse v-model="activeValue">
-                    <el-collapse-item v-for="area in data" :key="area.name" :title="area.label" :name="area.name"
-                        v-bind="areaConfig">
-                        <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                    <el-collapse-item v-for="section in data" :key="section.name" :title="section.label"
+                        :name="section.name" v-bind="sectionConfig" class="base-detail-section">
+                        <template #title>
+                            <slot name="sectionTitle" :section="section">
+                                {{ section.label }}
+                            </slot>
+                        </template>
+                        <slot :name="section.name" :data="section.data">
+                            <el-descriptions v-if="section.type === 'descriptions'" v-bind="section.config">
+                                <el-descriptions-item v-for="item in section.data" :key="item.prop" :label="item.label">
+                                    {{ item.value }}
+                                </el-descriptions-item>
+                            </el-descriptions>
+                            <el-table v-else-if="section.type === 'table'" v-bind="section.config" :data="section.data">
+                                <el-table-column v-for="item in section.config.columns" :key="item.prop" :label="item.label"
+                                    :prop="item.prop" />
+                            </el-table>
+                        </slot>
                     </el-collapse-item>
                 </el-collapse>
             </template>
-            <template v-else-if="showType === 'tabs'">
+            <template v-else-if="showType === 'tab'">
                 <el-tabs v-model="activeValue">
-                    <el-tab-pane v-for="area in data" :key="area.name" :label="area.label" :name="area.name"
-                        v-bind="areaConfig">
-                        <template v-if="area.name === activeValue">
-                            <BaseDetailSection :type="area.type" :config="area.config" :data="area.data" />
+                    <el-tab-pane v-for="section in data" :key="section.name" :label="section.label" :name="section.name"
+                        v-bind="sectionConfig" class="base-detail-section">
+                        <template #label>
+                            <slot name="sectionTitle" :section="section">
+                                {{ section.label }}
+                            </slot>
+                        </template>
+                        <template v-if="section.name === activeValue">
+                            <slot :name="section.name" :data="section.data">
+                                <el-descriptions v-if="section.type === 'descriptions'" v-bind="section.config">
+                                    <el-descriptions-item v-for="item in section.data" :key="item.prop" :label="item.label">
+                                        {{ item.value }}
+                                    </el-descriptions-item>
+                                </el-descriptions>
+                                <el-table v-else-if="section.type === 'table'" v-bind="section.config" :data="section.data">
+                                    <el-table-column v-for="item in section.config.columns" :key="item.prop"
+                                        :label="item.label" :prop="item.prop" />
+                                </el-table>
+                            </slot>
                         </template>
                     </el-tab-pane>
                 </el-tabs>
@@ -47,7 +105,7 @@ export default {
     name: 'BaseDetail',
     props: {
         /**
-         * @description 详情标题
+         * @description 标题
          */
         title: {
             type: String,
@@ -62,9 +120,9 @@ export default {
          *     {
          *          name: 'baseInfo',     // 区域名称
          *          label: '基础信息',     // 区域标签
-         *          type: 'descriptions', // 数据展示组件类型，descriptions, table， custom
-         *          config: {},           // 数据展示组件的配置，el-descriptions，el-table的配置，（el-table的配置包含了表格要展示的data)
-         *          data: [],             // 区域数据，对于el-descriptions来说，是要展示的label和value，对于el-table来说，是el-table-column的配置数组
+         *          type: 'descriptions', // 数据展示组件类型，descriptions, table
+         *          config: {},           // 数据展示组件的配置，el-descriptions，el-table的配置
+         *          data: [],             // 区域数据
          *      }            
          * ]
          */
@@ -75,19 +133,20 @@ export default {
             },
         },
         /**
-         * @description 详情分组区域的展现形式，简单，卡片、tab页、折叠面板
+         * @description 区域的展现形式，卡片、tab页、折叠面板
          */
         showType: {
             type: String,
             default: 'simple',
             validator(value) {
-                return ['simple', 'card', 'collapse', 'tabs'].includes(value)
+                return ['simple', 'card', 'collapse', 'tab'].includes(value)
             }
         },
         /**
-         * @description 详情区域的统一配置
+         * @description 区域的统一配置，即el-card，el-collapse-item、el-tab-pane的配置，
+         * simple风格时该prop无效
          */
-        areaConfig: {
+        sectionConfig: {
             type: Object,
             default: () => {
                 return {}
@@ -96,69 +155,33 @@ export default {
     },
     data() {
         return {
+            /**
+             * @description 激活的tab页或者折叠面板的name
+             */
             activeValue: null
         }
     },
-    components: {
-        BaseDetailSection: {
-            template: `<div class="base-detail-section">
-                    <template v-if="type === 'descriptions'">
-                        <el-descriptions v-bind="config">
-                            <el-descriptions-item v-for="item in data" :key="item.prop" :label="item.label">
-                                {{ item.value }}
-                            </el-descriptions-item>
-                        </el-descriptions>
-                    </template>
-                    <template v-else-if="type === 'table'">
-                        <el-table v-bind="config" :data="data">
-                            <el-table-column v-for="item in config.columns" :key="item.prop" :label="item.label" :prop="item.prop" />
-                        </el-table>
-                    </template>
-                    <template v-else-if="type === 'custom'">
-                        <slot :name="area.name" :data="area.data"></slot>
-                    </template>
-                </div>`,
-            props: {
-                type: {
-                    type: String,
-                    required: true,
-                    validator(value) {
-                        return ['descriptions', 'table', 'custom'].includes(value)
-                    }
-                },
-                config: {
-                    type: Object,
-                    default: () => ({}),
-                },
-                data: {
-                    type: Array,
-                    default: () => []
-                }
-            }
-        }
-    },
     watch: {
+        /**
+         * @description 根据showType的值，设置activeValue的值
+         */
         showType: {
             handler(newVal) {
-                switch (newVal) {
-                    case 'tabs':
-                        this.activeValue = this.data[0]?.name;
-                        break;
-                    case 'collapse':
-                        this.activeValue = this.data.map(item => item.name);
-                        break;
-                    default:
-                        this.activeValue = null;
+                if (newVal === 'tab') {
+                    this.activeValue = this.data[0] ? this.data[0].name : null
+                } else if (newVal === 'collapse') {
+                    this.activeValue = this.data.map(item => item.name)
+                } else if (newVal === 'card' || newVal === 'simple') {
+                    this.activeValue = null
                 }
             },
             immediate: true
         }
-    }
+    },
 }
 </script>
-
 <style lang="scss" scoped>
-.base-detail {
+::v-deep.base-detail {
     padding: 15px 20px;
     border: 2px solid #EBEEF5;
     border-radius: 5px;
@@ -167,100 +190,68 @@ export default {
     .base-detail__header {
         text-align: center;
         font-size: 16px;
-        margin-bottom: 15px;
+        font-weight: 700;
+        padding: 5px 0px;
     }
 
-    .is-tabs {
-        text-align: left;
-    }
-}
-
-::v-deep.base-detail-content.is-simple {
-    .el-descriptions {
-        .el-descriptions__body .el-descriptions__table {
-            table-layout: fixed;
-        }
-    }
-
-    .el-table {
-
-        .el-table__header-wrapper,
-        .el-table__fixed-header-wrapper {
-            th {
-                word-break: break-word;
-                background-color: #f8f8f9;
-                color: #515a6e;
-                height: 40px;
-                font-size: 13px;
-            }
-        }
-    }
-}
-
-::v-deep.el-card {
-    margin-bottom: 10px;
-
-    .el-card__header {
-        padding: 10px 12px;
-    }
-
-    .el-card__body {
+    .base-detail__body {
         padding: 15px;
 
-        .el-descriptions {
-            .el-descriptions__body .el-descriptions__table {
-                table-layout: fixed;
+        .base-detail-section {
+            margin-bottom: 10px;
+
+            .el-descriptions {
+                .el-descriptions__body .el-descriptions__table {
+                    table-layout: fixed;
+                }
             }
-        }
 
-        .el-table {
+            .el-table {
 
-            .el-table__header-wrapper,
-            .el-table__fixed-header-wrapper {
-                th {
-                    word-break: break-word;
-                    background-color: #f8f8f9;
-                    color: #515a6e;
-                    height: 40px;
-                    font-size: 13px;
+                .el-table__header-wrapper,
+                .el-table__fixed-header-wrapper {
+                    th {
+                        word-break: break-word;
+                        background-color: #f8f8f9;
+                        color: #515a6e;
+                        height: 40px;
+                        font-size: 13px;
+                    }
                 }
             }
         }
-    }
-}
 
-::v-deep.el-collapse {
-    .el-collapse-item .el-collapse-item__wrap {
-        .el-table {
+        .base-detail-section:last-child {
+            margin-bottom: 0;
+        }
 
-            .el-table__header-wrapper,
-            .el-table__fixed-header-wrapper {
-                th {
-                    word-break: break-word;
-                    background-color: #f8f8f9;
-                    color: #515a6e;
-                    height: 40px;
-                    font-size: 13px;
-                }
+        .el-card {
+            margin-bottom: 10px;
+
+            .el-card__header {
+                padding: 10px 15px;
+            }
+
+            .el-card__body {
+                padding: 15px;
             }
         }
     }
-}
 
-::v-deep.el-tabs {
-    .el-tab-pane {
-        .el-table {
-
-            .el-table__header-wrapper,
-            .el-table__fixed-header-wrapper {
-                th {
-                    word-break: break-word;
-                    background-color: #f8f8f9;
-                    color: #515a6e;
-                    height: 40px;
-                    font-size: 13px;
-                }
-            }
-        }
+    .base-detail__footer {
+        text-align: center;
     }
 }
+
+.is-tab {
+    .base-detail__body {
+        padding-top: 5px;
+    }
+}
+
+.is-simple {
+    .base-detail__body {
+        padding-top: 0px;
+    }
+}
+</style>
