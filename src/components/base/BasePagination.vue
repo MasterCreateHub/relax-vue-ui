@@ -1,18 +1,8 @@
 <template>
-  <el-pagination
-    :class="['base-pagination', { 'is-hidden': hidden }, `is-${align}`]"
-    :layout="layout"
-    :background="background"
-    :total="total"
-    :current-page.sync="currentPageModel"
-    :page-size.sync="pageSizeModel"
-    :page-sizes="pageSizes"
-    :pager-count="pagerCount"
-    v-bind="$attrs"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    v-on="$listeners"
-  >
+  <el-pagination :class="['base-pagination', { 'is-hidden': hidden }, `is-${align}`]" :layout="layout"
+    :background="background" :total="total" :current-page.sync="currentPageModel" :page-size.sync="pageSizeModel"
+    :page-sizes="pageSizes" :pager-count="pagerCount" v-bind="$attrs" @size-change="handleSizeChange"
+    @current-change="handleCurrentChange" v-on="$listeners">
     <slot v-if="hasSlot"></slot>
   </el-pagination>
 </template>
@@ -140,15 +130,19 @@ export default {
   margin-top: 10px;
   padding: 0px;
 }
+
 .is-left {
   text-align: left;
 }
+
 .is-center {
   text-align: center;
 }
+
 .is-right {
   text-align: right;
 }
+
 .is-hidden {
   display: none;
 }

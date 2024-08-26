@@ -1,7 +1,7 @@
 <template>
-    <div class="base-list__wrapper" :style="{ height: height }" @scroll="handleScroll($event)">
+    <div class="base-list" :style="{ height: height }" @scroll="handleScroll($event)">
         <div class="base-list__phantom" :style="{ height: listHeight + 'px' }"></div>
-        <ul class="base-list" :class="[listClass, { 'is-columns': isMultiColumn }]" ref="infiniteListRef"
+        <ul class="base-list__body" :class="[listClass, { 'is-columns': isMultiColumn }]" ref="infiniteListRef"
             :style="{ transform: viewportTransform }">
             <li ref="items" :style="{ width: columnWidth }" class="base-list-item" :class="itemClass"
                 v-for="(item, key) in visibleData" :key="key + '-' + item?.id">
@@ -189,7 +189,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.base-list__wrapper {
+.base-list {
     overflow: auto;
     position: relative;
     -webkit-overflow-scrolling: touch;
@@ -202,7 +202,7 @@ export default {
         z-index: -1;
     }
 
-    .base-list {
+    .base-list__body {
         position: absolute;
         left: 0;
         right: 0;
@@ -210,7 +210,6 @@ export default {
         z-index: 10;
         list-style-type: none;
         padding: 0px;
-
         .base-list-item {
             color: #555;
             box-sizing: border-box;
