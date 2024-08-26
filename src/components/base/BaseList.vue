@@ -71,6 +71,10 @@ export default {
              * @description 结束索引
              */
             end: null,
+            /**
+             * @description 是否正在滚动
+             */
+            scrolling: false,
         };
     },
     watch: {
@@ -107,10 +111,10 @@ export default {
             return BigInt(Math.ceil(this.data.length / this.column) * this.itemHeight);
         },
         /**
-         * @description 视口可容纳的列表项(包括缓冲区)
+         * @description 视口可容纳的列表项(包括缓冲区，缓冲区大小为6行)
          */
         renderCount() {
-            return (Math.ceil(this.visibleHeight / this.itemHeight) + 6) * this.column;
+            return Math.min((Math.ceil(this.visibleHeight / this.itemHeight) + 6) * this.column, this.data.length)
         },
         /**
          * @description 可见的列表数据
@@ -134,7 +138,7 @@ export default {
          * @description 组件初始化
          */
         handleInit() {
-            this.visibleHeight = this.$el.clientHeight; //客户端高度
+            this.visibleHeight = this.$el.clientHeight; //根节点高度
             this.start = 0; //列表开始索引
             this.end = this.start + this.renderCount; //列表结束索引
         },
@@ -145,11 +149,26 @@ export default {
             //当前滚动位置
             let scrollTop = this.$el.scrollTop;
             //此时的开始索引
-            this.start = Math.floor(scrollTop / this.itemHeight);
+            this.start = Math.floor(scrollTop / this.itemHeight) * this.column;
             //此时的结束索引
             this.end = this.start + this.renderCount;
             //此时的偏移量
             this.offset = scrollTop - (scrollTop % this.itemHeight);
+            // if (!this.scrolling) {
+            //     window.requestAnimationFrame(() => {
+            //         //当前滚动位置
+            //         let scrollTop = this.$el.scrollTop;
+            //         //此时的开始索引
+            //         this.start = Math.floor(scrollTop / this.itemHeight) * this.column;
+            //         //此时的结束索引
+            //         this.end = this.start + this.renderCount;
+            //         //此时的偏移量
+            //         this.offset = scrollTop - (scrollTop % this.itemHeight);
+            //         this.scrolling = false
+            //     })
+            //     this.scrolling = true
+            // }
+
         },
 
     },
