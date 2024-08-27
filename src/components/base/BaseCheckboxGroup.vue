@@ -98,7 +98,7 @@ export default {
 }
 
 .base-checkbox-group--medium {
-    height: 40px;
+    height: 36px;
 }
 
 .base-checkbox-group--small {
