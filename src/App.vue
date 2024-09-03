@@ -2,11 +2,11 @@
   <div id="app">
     <header>
       <nav>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> |
+        <router-link to="/">Home</router-link> |    
         <router-link to="/form">Form</router-link> |
         <router-link to="/tool">Tool</router-link> |
         <router-link to="/table">Table</router-link>|
+        <router-link to="/list">List</router-link> |
         <router-link to="/work">Work</router-link>
       </nav>
     </header>

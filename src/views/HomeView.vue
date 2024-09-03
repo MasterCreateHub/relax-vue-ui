@@ -84,6 +84,9 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <el-card>
+      <div class="container"></div>
+    </el-card>
   </div>
 </template>
 
@@ -184,3 +187,15 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.container{
+  width: 500px;
+  height: 500px;
+  margin: 20px auto;
+  border: 120px solid #ccc;
+  // border-image: url(https://images.669pic.com/element2/f87f9800a2f4cf39083f031d3119380a.jpg) 120 round;
+  border-image-source: url(https://img2.baidu.com/it/u=4140512648,4045264493&fm=253&fmt=auto&app=138&f=JPEG?w=642&h=500);
+  border-image-slice: 120;
+  border-image-repeat: round;
+}
+</style>

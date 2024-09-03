@@ -1,24 +1,26 @@
 <template>
     <div class="base-workbench" :class="[`is-${layout}`]">
-        <div class="base-workbench__header">
-            <div class="base-workbench-title">{{ currentWorkLabel }}</div>
-            <div class="base-workbench-action" v-if="layout === 'two'">
+        <header class="base-workbench__header">
+            <slot name="title">
+                <span class="base-workbench-title">{{ currentWorkLabel }}</span>
+            </slot>
+            <div class="base-workbench-action__wrapper" v-if="layout === 'two'">
                 <slot name="action" :currentWork="currentWork">
-                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small" v-bind="action"
-                        @click="$emit(action.eventName, currentWork)">
+                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small"
+                        class="base-workbench-action" v-bind="action" @click="$emit(action.eventName, currentWork)">
                         {{ action.label }}
                     </el-button>
                 </slot>
             </div>
-        </div>
-        <div class="base-workbench__body">
+        </header>
+        <main class="base-workbench__body">
             <slot :currentWork="currentWork"></slot>
-        </div>
+        </main>
         <div class="base-workbench__footer" v-if="layout === 'three'">
-            <div class="base-workbench-action">
+            <div class="base-workbench-action__wrapper">
                 <slot name="action" :currentWork="currentWork">
-                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small" v-bind="action"
-                        @click="$emit(action.eventName, currentWork)">
+                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small"
+                        class="base-workbench-action" v-bind="action" @click="$emit(action.eventName, currentWork)">
                         {{ action.label }}
                     </el-button>
                 </slot>
@@ -123,15 +125,12 @@ export default {
         box-sizing: border-box;
         border-bottom: 1px #EBEEF5 solid;
         display: flex;
-        justify-content: space-between;
         align-items: center;
 
         .base-workbench-title {
             color: #72767b;
             font-size: 16px;
         }
-
-        // .base-workbench-action {}
     }
 
     .base-workbench__body {
@@ -152,12 +151,15 @@ export default {
 
 }
 
-// .is-two {}
+.is-two {
+    .base-workbench__header {
+        justify-content: space-between;
+    }
+}
 
 .is-three {
     .base-workbench__header {
         justify-content: center;
     }
-
 }
 </style>

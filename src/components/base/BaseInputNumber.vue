@@ -166,7 +166,7 @@ export default {
 }
 
 ::v-deep.base-input--medium {
-    height: auto;
+    height: 36px;
 
     .el-input__inner {
         height: 100%;
@@ -174,7 +174,7 @@ export default {
 }
 
 ::v-deep.base-input--small {
-    height: auto;
+    height: 28px;
 
     .el-input__inner {
         height: 100%;
@@ -182,7 +182,7 @@ export default {
 }
 
 ::v-deep.base-input--mini {
-    height: auto;
+    height: 28px;
 
     .el-input__inner {
         height: 100%;

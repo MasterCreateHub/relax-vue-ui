@@ -36,7 +36,9 @@ export default {
     name: "PopTabs",
     props: {
         /**
-         * @description 弹出框类型，可选值为drawer和dialog
+         * @description 弹出框类型
+         * @type {'drawer'|'dialog'}
+         * @default 'drawer'
          */
         container: {
             type: String,
@@ -46,7 +48,9 @@ export default {
             }
         },
         /**
-         * @description 弹川框隐藏或者显示
+         * @description 弹出框显示隐藏
+         * @type {Boolean}
+         * @default false
          */
         visible: {
             type: Boolean,
@@ -54,6 +58,10 @@ export default {
         },
         /**
          * @description tabs数组
+         * @type {Array} tabs
+         * @property {Object} [] - tab对象
+         * @property {String} [].label - tab标签
+         * @property {String} [].name - tab标识名称
          */
         tabs: {
             type: Array,
@@ -64,10 +72,12 @@ export default {
         },
         /**
          * @description 每次打开时默认选中的tab
+         * @type {String} 
          */
         defaultTab: String,
         /**
          * @description 当前选中的tab
+         * @type {String}
          */
         activeTab: {
             type: String,
@@ -135,9 +145,10 @@ export default {
         },
         /**
          * @description tab点击事件
+         * @param {Object} tab - tab对象
          */
-        handleTabClick(tab, event) {
-            this.$emit("tab-click", tab.name, tab, event);
+        handleTabClick(tab) {
+            this.$emit("tab-click", tab.name, tab);
         },
 
     },

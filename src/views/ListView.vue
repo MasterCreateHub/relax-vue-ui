@@ -1,6 +1,6 @@
 <template>
-  <div class="about" ref="aboutDivRef">
-    <base-list ref="testRef" :height="containerHeight" :data="rows">
+  <div class="list">
+    <base-list :height="containerHeight" :data="rows" :column="2">
       <template slot-scope="row">
         <div class="item">
           <el-tag>标题：{{ row.data.id }}</el-tag>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "AboutView",
+  name: "ListView",
   components: {},
   data() {
     return {
@@ -60,7 +60,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.about {
+.list {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -73,10 +73,6 @@ export default {
   transition: 0.3s;
 }
 
-.list{
-  display: flex;
-}
-
 .item {
   width: 80%;
   height: 200px;
@@ -85,5 +81,4 @@ export default {
   margin: 8px auto;
   margin-top: 0px;
 }
-
 </style>

@@ -81,7 +81,7 @@ export default {
 }
 
 .base-radio-group--medium {
-    height: 40px;
+    height: 36px;
 }
 
 .base-radio-group--small {

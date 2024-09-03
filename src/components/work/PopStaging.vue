@@ -4,49 +4,22 @@
       <slot name="reference"></slot>
     </div>
 
-    <el-dialog
-      class="pop-staging-dialog"
-      :visible.sync="show"
-      v-bind="$attrs"
-      :width="$attrs.size || '80%'"
-      :top="$attrs.top || '7.5vh'"
-    >
+    <el-dialog class="pop-staging-dialog" :visible.sync="show" v-bind="$attrs" :width="$attrs.size || '80%'"
+      :top="$attrs.top || '7.5vh'">
       <div class="pop-staging__body">
         <div class="pop-staging-tool">
           <slot name="tool"></slot>
         </div>
-        <el-table
-          class="pop-staging-table"
-          :data="pageData"
-          :height="400"
-          v-bind="tableConfig"
-          @selection-change="handleSelectionChange"
-          v-on="$listeners"
-        >
+        <el-table class="pop-staging-table" :data="pageData" :height="400" v-bind="tableConfig"
+          @selection-change="handleSelectionChange" v-on="$listeners">
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column
-            v-for="column in columns"
-            :key="column.prop"
-            :prop="column.prop"
-            :label="column.label"
-            align="center"
-            v-bind="column"
-          >
+          <el-table-column v-for="column in columns" :key="column.prop" :prop="column.prop" :label="column.label"
+            align="center" v-bind="column">
             <template slot="header" slot-scope="scope">
-              <slot
-                name="tableHeader"
-                :column="scope.column"
-                :index="scope.$index"
-                >{{ column.label }}</slot
-              >
+              <slot name="tableHeader" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
             </template>
             <template slot-scope="scope">
-              <slot
-                name="tableBody"
-                :row="scope.row"
-                :column="scope.column"
-                :index="scope.$index"
-              >
+              <slot name="tableBody" :row="scope.row" :column="scope.column" :index="scope.$index">
                 {{ scope.row[column.prop] }}
               </slot>
             </template>
@@ -60,24 +33,11 @@
         </div>
       </div>
       <div class="pop-staging__footer">
-        <el-pagination
-          class="pop-staging-pagination"
-          small
-          background
-          layout="prev, pager, next"
-          :pager-count="5"
-          :page-size="pageSize"
-          :current-page.sync="pageNumber"
-          :total="tableData.length"
-        />
+        <el-pagination class="pop-staging-pagination" small background layout="prev, pager, next" :pager-count="5"
+          :page-size="pageSize" :current-page.sync="pageNumber" :total="tableData.length" />
         <div class="pop-staging-actions">
           <slot name="actions">
-            <el-button
-              type="primary"
-              size="mini"
-              :disabled="!isFairSelection"
-              @click="handleEnter"
-            >
+            <el-button type="primary" size="mini" :disabled="!isFairSelection" @click="handleEnter">
               {{ enterText }}
             </el-button>
             <el-button size="mini" @click="handleCancel">{{
@@ -95,6 +55,8 @@ export default {
   props: {
     /**
      * @description 工作台是否可见
+     * @type {Boolean}
+     * @default false
      */
     visible: {
       type: Boolean,
@@ -102,6 +64,11 @@ export default {
     },
     /**
      * @description 工作数据表格列
+     * @type {Array} columns
+     * @property {Object} [] - 数据列对象
+     * @property {String} [].label - 列标题
+     * @property {String} [].prop - 列属性
+     * @default []
      */
     columns: {
       type: Array,
@@ -109,6 +76,9 @@ export default {
     },
     /**
      * @description 工作数据
+     * @type {Array}
+     * @property {Object} [] - 数据对象
+     * @default []
      */
     tableData: {
       type: Array,
@@ -116,13 +86,17 @@ export default {
     },
     /**
      * @description 表格配置
+     * @type {Object}
+     * @default {}
      */
     tableConfig: {
       type: Object,
       default: () => ({}),
     },
     /**
-     * @description 是否可以选择多条数据进行操作
+     * @description 是否允许多选
+     * @type {Boolean}
+     * @default false
      */
     multiple: {
       type: Boolean,
@@ -130,6 +104,8 @@ export default {
     },
     /**
      * @description 确定按钮文字
+     * @type {String}
+     * @default "确定"
      */
     enterText: {
       type: String,
@@ -137,6 +113,8 @@ export default {
     },
     /**
      * @description 取消按钮文字
+     * @type {String}
+     * @default "取消"
      */
     cancelText: {
       type: String,
@@ -147,21 +125,27 @@ export default {
     return {
       /**
        * @description 每页显示条数
+       * @type {Number}
+       * @default 10
        */
       pageSize: 10,
       /**
        * @description 当前页码
+       * @type {Number}
+       * @default 1
        */
       pageNumber: 1,
       /**
        * @description 选择的数据是否合理，只校验多选单选
+       * @type {Boolean}
+       * @default true
        */
       isFairSelection: true,
     };
   },
   computed: {
     /**
-     * @description 控制弹窗显示隐藏的计算属性
+     * @description 控制弹窗显示隐藏
      */
     show: {
       get() {
@@ -183,7 +167,8 @@ export default {
   },
   methods: {
     /**
-     * @description 选择操作数据时的回调
+     * @description 处理表格选择变化
+     * @param {Array} rows - 选中的数据
      */
     handleSelectionChange(rows) {
       if (!this.multiple && rows.length > 1) {
@@ -194,13 +179,13 @@ export default {
       this.$emit("selection-change", rows);
     },
     /**
-     * @description 点击确定的回调
+     * @description 点击确定按钮
      */
     handleEnter() {
       this.$emit("enter");
     },
     /**
-     * @description 点击取消的回调
+     * @description 点击取消按钮
      */
     handleCancel() {
       this.$emit("cancel");
@@ -275,9 +260,16 @@ export default {
   .pop-staging-pagination {
     padding: 0px;
 
-    & > :first-child {
+    &> :first-child {
       margin-left: 0px;
     }
   }
+}
+
+.tab {
+  width: 150px;
+  height: 40px;
+  background: #515a6e;
+  border-radius: 10px 10px 0 0;
 }
 </style>
