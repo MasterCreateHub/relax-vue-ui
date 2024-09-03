@@ -18,8 +18,8 @@ import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
 import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 
 // 通用组件
-import BaseSearcher from '@/components/base/BaseSearcher.vue'
-import BaseToolbar from '@/components/base/BaseToolbar.vue'
+import BaseSearcher from '@/components/BaseSearcher'
+import BaseToolbar from '@/components/BaseToolbar'
 import BaseTable from '@/components/base/BaseTable.vue'
 import BaseList from '@/components/base/BaseList.vue'
 import BasePagination from '@/components/base/BasePagination.vue'
