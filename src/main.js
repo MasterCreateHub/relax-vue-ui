@@ -33,6 +33,7 @@ import BasePageList from '@/components/base/BasePageList.vue'
 // 业务组件
 import PopTabs from "@/components/work/PopTabs.vue"
 import PopStaging from "@/components/work/PopStaging.vue"
+import LetterBox from '@/components/work/LetterBox.vue'
 
 Vue.config.productionTip = false;
 
@@ -60,6 +61,7 @@ Vue.component('BasePageList', BasePageList)
 
 Vue.component('PopTabs', PopTabs)
 Vue.component('PopStaging', PopStaging)
+Vue.component('LetterBox', LetterBox)
 
 Vue.use(ElementUI);
 

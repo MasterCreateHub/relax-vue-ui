@@ -1,5 +1,20 @@
 <template>
   <div class="tool">
+    <el-card header="信箱、消息中心">
+      <el-row>
+        <el-col>
+          <letter-box :activeTab.sync="letterBoxActiveTab" :tabs="letterTabs">
+            <template #reference>
+              <el-button circle size="small" icon="el-icon-message" type="warning" />
+            </template>
+            <template #notice="scope">
+              <div>{{ scope.data.content }}</div>
+            </template>
+          </letter-box>
+
+        </el-col>
+      </el-row>
+    </el-card>
     <el-card header="弹出Tab页">
       <el-row>
         <el-col>
@@ -23,7 +38,7 @@
         </template>
       </pop-tabs>
     </el-card>
-    <el-card header="弹出临时工作台">
+    <el-card header="临时工作台">
       <el-row>
         <el-col>
           <el-button size="small" @click="popStagingShow = true">
@@ -48,6 +63,7 @@
         </template>
       </pop-staging>
     </el-card>
+
   </div>
 </template>
 
@@ -126,6 +142,55 @@ export default {
           level: "B",
         },
       ],
+      letterTabs: [
+        {
+          name: 'notice',
+          label: "通知",
+          list: [
+            {
+              id: 1,
+              title: "通知1",
+              content: "通知内容1",
+              time: "2020-01-01",
+            },
+            {
+              id: 2,
+              title: "通知2",
+              content: "通知内容2",
+              time: "2020-01-02",
+            },
+            {
+              id: 3,
+              title: "通知3",
+              content: "通知内容3",
+              time: "2020-01-03",
+            },
+            {
+              id: 4,
+              title: "通知4",
+              content: "通知内容4",
+              time: "2020-01-04",
+            },
+            {
+              id: 5,
+              title: "通知5",
+              content: "通知内容5",
+              time: "2020-01-05",
+            }
+          ],
+        },
+        {
+          name: 'message',
+          label: "私信",
+          list: [],
+        },
+        {
+          name: 'wait',
+          label: "代办",
+          list: [],
+        }
+      ],
+      letterBoxActiveTab: 'notice',
     };
   },
   methods: {
