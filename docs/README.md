@@ -1,14 +1,14 @@
 ---
 home: true
-heroText: Hero 标题
-tagline: Hero 副标题
+heroText: Relax UI
+tagline: 基于elementui 的二次封装组件库
 actionText: 快速上手 →
 features:
 - title: 简洁至上
-  details: 以 Markdown 为中心的项目结构，以最少的配置帮助你专注于写作。
-- title: Vue驱动
-  details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
-- title: 高性能
-  details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
+  details: 减少模板代码，就可以快速地搭建一个页面。
+- title: 优雅继承
+  details: 继承elementui组件的设计，保证用户使用习惯，方便快速上手。
+- title: 按需使用
+  details: 既可安装使用，支持全量安装或按需引入，也可直接拷贝单个组件源码重新定制到。
 footer: MIT Licensed | Copyright © 2018-present Evan You
 ---

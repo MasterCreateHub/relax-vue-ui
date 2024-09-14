@@ -18,10 +18,16 @@ module.exports = {
           children: ['/component/']
         },
         {
-          title: "列表页组件",
+          title: "工具组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/searcher", "/component/converter"],
+          children: ["/component/searcher", "/component/toolbar", "/component/pagintion", "/component/workbench"],
+        },
+        {
+          title: "展示组件",
+          collapsable: false,
+          sidebarDepth: 2,
+          children: ["/component/converter", "/component/descriptions", "/component/detail", "/component/table", "/component/list"],
         },
       ],
     },
@@ -29,21 +35,4 @@ module.exports = {
   head: [],
   plugins: ['demo-container'],
   markdown: {},
-  // configureWebpack: config => {
-  //   config.module.rules.push({
-  //     test: /\.scss$/,
-  //     use: [
-  //       'vue-style-loader',
-  //       'css-loader',
-  //       {
-  //         loader: 'sass-loader',
-  //         // 可以在这里添加更多关于 sass-loader 的选项
-  //         options: {
-  //           implementation: require('sass'), // 使用 dart-sass 实现
-  //           // indentedSyntax: true, // 如果你想用 .scss 而不是 .sass
-  //         },
-  //       },
-  //     ],
-  //   });
-  // },
 };
