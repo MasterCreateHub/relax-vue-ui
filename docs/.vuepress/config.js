@@ -29,6 +29,12 @@ module.exports = {
           sidebarDepth: 2,
           children: ["/component/converter", "/component/descriptions", "/component/detail", "/component/table", "/component/list"],
         },
+        {
+          title: "表单组件",
+          collapsable: false,
+          sidebarDepth: 2,
+          children: ["/component/form"],
+        },
       ],
     },
   },
