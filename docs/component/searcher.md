@@ -1,10 +1,8 @@
 # Searcher
 
-## Searcher Description
-
 搜索栏，用于列表搜索
 
-## Seacher Usage
+## Searcher Usage
 
 ::: demo
 
@@ -88,7 +86,7 @@
 
 :::
 
-## Seacher API
+## Searcher API
 
 ### Attributes
 
