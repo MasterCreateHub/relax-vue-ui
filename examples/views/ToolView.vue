@@ -1,7 +1,7 @@
 <template>
   <div class="tool">
     <el-card header="通用搜索框" :body-style="{ width: '75%' }">
-      <base-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
+      <re-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
       <base-toolbar :tools="toolbarTools" @add="handleAdd" @delete="handleDelete" @refresh="handleRefresh"
@@ -90,9 +90,9 @@
       </base-workbench>
     </el-card>
     <el-card header="通用数据转换组件">
-      <base-converter :value="['A', 'B']" :source="dict" container="el-tag" />
-      <base-converter :value="['name', 'remark']" :source="student" />
-      <base-converter :value="currentDate" :source="formatDate" />
+      <re-converter :value="['A', 'B']" :source="dict" container="el-tag" />
+      <re-converter :value="['name', 'remark']" :source="student" />
+      <re-converter :value="currentDate" :source="formatDate" />
     </el-card>
     <el-card header="通用描述列表组件">
       <base-descriptions :data="personalData" border :column="3" layout="auto">

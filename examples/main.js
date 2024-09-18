@@ -6,6 +6,7 @@ import ElementUI from 'element-ui';
 import '@/assets/style/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
+import  RelaxUI from 'relax-ui'
 // 表单组件
 import BaseInput from "@/components/base/BaseInput.vue"
 import BaseInputNumber from '@/components/base/BaseInputNumber.vue'
@@ -18,13 +19,13 @@ import BaseDatePicker from '@/components/base/BaseDatePicker.vue'
 import BaseTimeSelect from '@/components/base/BaseTimeSelect.vue'
 
 // 通用组件
-import BaseSearcher from '@/components/BaseSearcher'
+// import BaseSearcher from '@/components/BaseSearcher'
 import BaseToolbar from '@/components/BaseToolbar'
 import BaseTable from '@/components/base/BaseTable.vue'
 import BaseList from '@/components/base/BaseList.vue'
 import BasePagination from '@/components/base/BasePagination.vue'
 import BaseWorkbench from '@/components/base/BaseWorkbench.vue'
-import BaseConverter from '@/components/base/BaseConverter.vue'
+// import BaseConverter from '@/components/base/BaseConverter.vue'
 import BaseDescriptions from '@/components/base/BaseDescriptions.vue'
 import BaseDetail from '@/components/base/BaseDetail.vue'
 import BasePageTable from '@/components/base/BasePageTable.vue'
@@ -46,13 +47,13 @@ Vue.component('BaseTimePicker', BaseTimePicker)
 Vue.component('BaseDatePicker', BaseDatePicker)
 Vue.component('BaseTimeSelect', BaseTimeSelect)
 
-Vue.component('BaseSearcher', BaseSearcher)
+// Vue.component('BaseSearcher', BaseSearcher)
 Vue.component('BaseToolbar', BaseToolbar)
 Vue.component('BaseTable', BaseTable)
 Vue.component('BaseList', BaseList)
 Vue.component('BasePagination', BasePagination)
 Vue.component('BaseWorkbench', BaseWorkbench)
-Vue.component('BaseConverter', BaseConverter)
+// Vue.component('BaseConverter', BaseConverter)
 Vue.component('BaseDescriptions', BaseDescriptions)
 Vue.component('BaseDetail', BaseDetail)
 Vue.component('BasePageTable', BasePageTable)
@@ -62,7 +63,7 @@ Vue.component('PopTabs', PopTabs)
 Vue.component('PopStaging', PopStaging)
 
 Vue.use(ElementUI);
-
+Vue.use(RelaxUI)
 new Vue({
   router,
   store,

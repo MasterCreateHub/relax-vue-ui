@@ -1,7 +1,13 @@
 {
-  "name": "base-element",
+  "name": "relax-ui",
   "version": "0.1.0",
-  "private": true,
+  "main": "lib/relax-ui.umd.js",
+  "module": "lib/relax-ui.esm.js",
+  "unpkg": "lib/relax-ui.umd.min.js",
+  "files": [
+    "lib"
+  ],
+  "private": false,
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",

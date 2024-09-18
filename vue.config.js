@@ -14,8 +14,11 @@ module.exports = defineConfig({
   transpileDependencies: true,
   runtimeCompiler: true,
 
+  css: { extract: false },
+
   // 配置路径别名
   chainWebpack: config => {
     config.resolve.alias.set("@", path.join(__dirname, "./examples"))
   }
 });
+
