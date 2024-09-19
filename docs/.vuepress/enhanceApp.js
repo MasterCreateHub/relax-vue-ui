@@ -2,7 +2,7 @@
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-import RelaxUI from "../../packages"
+import RelaxUI from "../../src"
 
 export default async ({ Vue }) => {
   if (typeof process === 'undefined') {

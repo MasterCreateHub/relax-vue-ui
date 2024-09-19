@@ -2,7 +2,8 @@
 
 import Components from '../packages/index'
 import Directives from '../directives/index'
-import { version } from "../package.json";
+import PACKAGE from "../package.json";
+const { version } = PACKAGE
 
 const install = function (Vue, option = {}) {
     if (!option.components) {

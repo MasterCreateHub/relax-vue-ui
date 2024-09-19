@@ -7,6 +7,7 @@ module.exports = {
       { text: "首页", link: "/" },
       { text: "指南", link: "/guide/" },
       { text: "组件", link: "/component/" },
+      { text: "指令", link: "/directive/" },
     ],
     sidebar: {
       "/guide/": [""],
@@ -34,6 +35,20 @@ module.exports = {
           collapsable: false,
           sidebarDepth: 2,
           children: ["/component/form"],
+        },
+      ],
+      "/directive/": [
+        {
+          title: "指令概览",
+          collapsable: false,
+          sidebarDepth: 2,
+          children: ['/directive/']
+        },
+        {
+          title: "指令",
+          collapsable: false,
+          sidebarDepth: 2,
+          children: ["/directive/resize"],
         },
       ],
     },
