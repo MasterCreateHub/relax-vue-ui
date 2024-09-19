@@ -6,7 +6,7 @@ import ElementUI from 'element-ui';
 import '@/assets/style/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
-import  RelaxUI from 'relax-ui'
+import  RelaxUI from '../src/index'
 // 表单组件
 import BaseInput from "@/components/base/BaseInput.vue"
 import BaseInputNumber from '@/components/base/BaseInputNumber.vue'

@@ -1,28 +1,37 @@
-import ReConverter from "./converter/index";
-import ReSearcher from "./searcher/index";
-import { version } from "../package.json";
-// 存储组件列表
-const components = [ReConverter, ReSearcher];
+import ReSearcher from "./searcher";
+import ReToolbar from "./toolbar";
+import ReTable from "./table";
+import ReList from "./list";
+import RePagination from "./pagination";
+import ReWorkbench from "./workbench";
+import ReForm from "./form";
+import ReConverter from "./converter";
+import ReDescriptions from "./descriptions";
+import ReDetail from "./detail";
 
-// 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
-const install = function (Vue) {
-  if (install.installed) return;
-  // 遍历注册全局组件
-  components.forEach((component) => {
-    Vue.component(component.name, component);
-  });
-  install.installed = true;
+// 存储组件列表
+const components = [ReSearcher, ReToolbar, ReTable, ReList, RePagination, ReWorkbench, ReForm, ReConverter, ReDescriptions, ReDetail];
+
+// 定义 componentsInstall 方法
+const componentsInstall = function (Vue, option = []) {
+  if (componentsInstall.installed) return;
+  // 可部分注册，默认全部注册
+  if (Array.isArray(option) && option.length > 0) {
+    components.forEach((component) => {
+      if (option.includes(component.name)) {
+        Vue.component(component.name, component);
+      }
+    });
+  } else {
+    components.forEach((component) => {
+      Vue.component(component.name, component);
+    });
+  }
+  componentsInstall.installed = true;
 };
 
-// 判断是否是直接引入文件
-if (typeof window !== "undefined" && window.Vue) {
-  install(window.Vue);
-}
-// 按需引入
-export { ReConverter, ReSearcher };
+
 export default {
-  version,
   ...components,
-  // 导出的对象必须具有 install，才能被 Vue.use() 方法安装
-  install,
+  componentsInstall,
 };

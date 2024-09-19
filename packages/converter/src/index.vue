@@ -1,7 +1,7 @@
 <template>
-    <div :class="['base-converter', 'base-converter__wrapper', { 'is-targets': isTargets }]">
+    <div :class="['re-converter', 're-converter__wrapper', { 'is-targets': isTargets }]">
         <component v-for="(item, index) in target" :key="'key' + index" :is="container" v-bind="$attrs"
-            class="base-converter-value">
+            class="re-converter-value">
             {{ item }}
         </component>
     </div>
@@ -110,14 +110,14 @@ export default {
 };
 </script>
 
-<!-- <style lang="scss" scoped>
-.base-converter__wrapper {
+<style lang="scss" scoped>
+.re-converter__wrapper {
     display: inline-block;
     box-sizing: border-box;
     padding: 10px;
 
-    &>.base-converter-value:not(:last-child) {
+    &>.re-converter-value:not(:last-child) {
         margin-right: 10px;
     }
 }
-</style> -->
+</style>

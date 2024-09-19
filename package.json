@@ -13,7 +13,7 @@
     "docs:build": "vuepress build docs",
     "example:serve": "vue-cli-service serve",
     "example:build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --dest lib --name relax-ui packages/index.js",
+    "lib": "vue-cli-service build --target lib --dest lib --name relax-ui src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

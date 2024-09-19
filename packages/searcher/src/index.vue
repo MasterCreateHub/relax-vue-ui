@@ -1,14 +1,14 @@
 <template>
-    <el-card class="base-searcher" :body-style="{ paddingBottom: '0px' }">
+    <el-card class="re-searcher" :body-style="{ paddingBottom: '0px' }">
       <el-form :class="[{ 'is-justify': labelPosition === 'justify' }]" :model="form" :label-position="labelPosition"
         v-bind="formConfig" @keyup.enter.native="handleSearch">
-        <el-row class="base-searcher__body" :gutter="factorSpacing">
-          <el-col class="base-searcher-factor__wrapper" v-for="factor in showFactors" :key="factor.prop" :xs="24" :sm="12"
+        <el-row class="re-searcher__body" :gutter="factorSpacing">
+          <el-col class="re-searcher-factor__wrapper" v-for="factor in showFactors" :key="factor.prop" :xs="24" :sm="12"
             :md="8" :lg="6" :xl="4">
             <el-form-item :prop="factor.prop" :label="factor.label">
               <slot :name="factor.prop" :form="form">
                 <component :is="factor.type || 'el-input'" v-model="form[factor.prop]" clearable v-bind="factor.config"
-                  class="base-factor-item">
+                  class="re-factor-item">
                   <template v-if="factor.type === 'el-select'">
                     <el-option v-for="item in factor.options" :key="item.value" :label="item.label"
                       :value="item.value"></el-option>
@@ -27,7 +27,7 @@
               </slot>
             </el-form-item>
           </el-col>
-          <el-col class="base-searcher-action__wrapper" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+          <el-col class="re-searcher-action__wrapper" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
             <el-form-item>
               <slot name="action" :form="form">
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">
@@ -274,7 +274,7 @@
   };
   </script>
   <style lang="scss" scoped>
-  ::v-deep.base-searcher {
+  ::v-deep.re-searcher {
     .is-justify {
       .el-form-item__label {
         text-align: justify;
@@ -282,19 +282,19 @@
       }
     }
   
-    .base-searcher__body {
+    .re-searcher__body {
       display: flex;
       flex-wrap: wrap;
   
-      .base-searcher-factor__wrapper {
+      .re-searcher-factor__wrapper {
         min-width: 240px;
   
-        .base-factor-item {
+        .re-factor-item {
           width: 100%;
         }
       }
   
-      .base-searcher-action__wrapper {
+      .re-searcher-action__wrapper {
         min-width: 240px;
         text-align: right;
         flex: 1;

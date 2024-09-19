@@ -37,7 +37,7 @@
 </template>
 <script>
 export default {
-    name: "ReLetterBox",
+    name: "LetterBox",
     props: {
         /**
          * @description 信箱当前激活的tab
@@ -83,7 +83,7 @@ export default {
     },
 };
 </script>
-<!-- <style lang="scss" scoped>
+<style lang="scss" scoped>
 .letter-list__wrapper {
     max-height: 500px;
     overflow: auto;
@@ -114,5 +114,5 @@ export default {
 .letter-box {
     padding: 12px 0px 0px;
 }
-</style> -->
+</style>
   
