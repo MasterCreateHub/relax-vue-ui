@@ -12,6 +12,7 @@ const Observer = new ResizeObserver((entries) => {
 });
 
 export default {
+    name: "resize-observer",
     bind(el, binding) {
         // 监听元素尺寸的变化
         map.set(el, binding.value);

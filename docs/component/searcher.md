@@ -4,11 +4,9 @@
 
 ## Searcher Usage
 
-::: demo
+::: demo `factors` 配置项是必须要有的
 ```html
-<template>
-  <demo-searcher-BaseDemo></demo-searcher-BaseDemo>
-</template>
+<demo-searcher-BaseDemo></demo-searcher-BaseDemo>
 ```
 :::
 

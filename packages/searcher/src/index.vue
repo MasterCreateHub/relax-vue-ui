@@ -1,5 +1,5 @@
 <template>
-    <el-card class="re-searcher" :body-style="{ paddingBottom: '0px' }">
+    <el-card v-resize-observer="handleResize" class="re-searcher" :body-style="{ paddingBottom: '0px' }">
       <el-form :class="[{ 'is-justify': labelPosition === 'justify' }]" :model="form" :label-position="labelPosition"
         v-bind="formConfig" @keyup.enter.native="handleSearch">
         <el-row class="re-searcher__body" :gutter="factorSpacing">
@@ -270,6 +270,12 @@
         this.expanded = !this.expanded
         this.$emit("toggle", this.expanded);
       },
+      /**
+       * @description 容器大小改变事件
+       */
+      handleResize(entry){
+        console.log(entry);
+      }
     },
   };
   </script>
