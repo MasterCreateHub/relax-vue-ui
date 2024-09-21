@@ -1,10 +1,10 @@
 
 
 
-import ResizeObserver from './resize-observer';
+import Measure from './measure';
 
 // 存储所有自定义指令对象
-const directives = [ResizeObserver]
+const directives = [Measure]
 // 定义 directivesInstall 方法
 const directivesInstall = function (Vue, option = []) {
     if (directivesInstall.installed) return;

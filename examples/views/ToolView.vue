@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <el-card header="通用搜索框" :body-style="{ width: '75%' }">
+    <el-card header="通用搜索框">
       <re-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
