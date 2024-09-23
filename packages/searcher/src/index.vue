@@ -311,7 +311,6 @@ export default {
       } else {
         this.viewportSize = "xl";
       }
-      console.log(this.viewportSize);
     },
   },
 };
