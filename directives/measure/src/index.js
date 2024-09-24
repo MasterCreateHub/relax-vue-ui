@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 const map = new WeakMap();
 
 // 创建 ResizeObserver 实例
-const Observer = new ResizeObserver((entries) => {
+const resizeObserver = new ResizeObserver((entries) => {
   for (const entry of entries) {
     const handler = map.get(entry.target);
     if (handler) {
@@ -20,7 +20,7 @@ export default {
     map.set(el, binding.value);
 
     // 执行观察
-    Observer.observe(el);
+    resizeObserver.observe(el);
   },
 
   update(el, binding) {
@@ -30,6 +30,6 @@ export default {
 
   unbind(el) {
     // 取消监听
-    Observer.unobserve(el);
+    resizeObserver.unobserve(el);
   },
 };

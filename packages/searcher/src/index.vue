@@ -204,7 +204,7 @@ export default {
        * @description size配置
        */
       sizes: [
-        { label: "xs", value: 24 },
+        { label: "xs", value: 12 },
         { label: "sm", value: 12 },
         { label: "md", value: 8 },
         { label: "lg", value: 6 },
