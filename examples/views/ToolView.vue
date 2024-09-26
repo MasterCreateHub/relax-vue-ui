@@ -8,7 +8,7 @@
         @export="handleExport" />
     </el-card>
     <el-card header="通用表格组件">
-      <base-table :columns="tableColumns" :data="tableData">
+      <re-table :columns="tableColumns" :data="tableData" pagination>
         <template slot="header" slot-scope="scope">
           <span style="color: brown;">{{ scope.column?.label }}</span>
         </template>
@@ -18,7 +18,7 @@
         <template slot="sexContent" slot-scope="scope">
           <el-tag>{{ scope.row.sex }}</el-tag>
         </template>
-      </base-table>
+      </re-table>
     </el-card>
     <el-card header="通用列表组件"></el-card>
     <el-card header="通用分页器组件">
@@ -211,7 +211,15 @@ export default {
         { name: "张三", age: 18, sex: "男", address: "北京", phone: "12345678901", email: "12345678901@qq.com" },
         { name: "李四", age: 19, sex: "女", address: "上海", phone: "12345678901", email: "12345678901@qq.com" },
         { name: "王五", age: 20, sex: "男", address: "广州", phone: "12345678901", email: "12345678901@qq.com" },
-        { name: "赵六", age: 21, sex: "女", address: "深圳", phone: "12345678901", email: "12345678901@qq.com" }
+        { name: "赵六", age: 21, sex: "女", address: "深圳", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "钱七", age: 22, sex: "男", address: "杭州", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "孙八", age: 23, sex: "女", address: "重庆", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "周九", age: 24, sex: "男", address: "武汉", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "吴十", age: 25, sex: "女", address: "西安", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "郑十一", age: 26, sex: "男", address: "成都", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "郑十二", age: 27, sex: "女", address: "郑州", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "郑十三", age: 28, sex: "男", address: "南京", phone: "12345678901", email: "12345678901@qq.com" },
+        { name: "郑十四", age: 29, sex: "女", address: "武汉", phone: "12345678901", email: "12345678901@qq.com" }
       ],
       // 描述列表props
       student: {

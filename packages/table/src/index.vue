@@ -1,12 +1,9 @@
 <template>
     <div class="re-table">
-        <div v-if="toolbar" class="re-table-toolbar">
-            <slot name="toolbar">
-                <el-button v-for="tool in toolbarConfig" :key="tool.name" v-bind="tool.config" size="mini" @click="$emit(tool.name)">{{
-                    tool.label }}</el-button>
-            </slot>
+        <div v-if="toolbar" class="re-table-toolbar__wrapper">
+            <slot name="toolbar"></slot>
         </div>
-        <el-table class="re-table__body" :data="data" v-bind="$attrs" v-on="$listeners">
+        <el-table class="re-table__body" :data="showData" v-bind="$attrs" v-on="$listeners">
             <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
                 <template slot="header" slot-scope="scope">
                     <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row"
@@ -24,63 +21,96 @@
                 </template>
             </el-table-column>
             <slot name="append"></slot>
-
         </el-table>
-        <el-pagination v-if="pagination" :class="['re-table-pagination', `is-${paginationConfig.align}`]"
-            :total="data.length" v-bind="paginationConfig">
-        </el-pagination>
+        <div v-if="pagination" class="re-table-pagination__wrapper">
+            <slot>
+                <el-pagination :class="['re-table-pagination', `is-${paginationConfigModel.align}`]" :total="data.length"
+                    v-bind.sync="paginationConfigModel" />
+            </slot>
+        </div>
     </div>
 </template>
 <script>
 export default {
     name: "ReTable",
     props: {
+        /**
+         * @description 表格数据
+         */
         data: {
             type: Array,
             default: () => { return [] }
         },
+        /**
+         * @description 表格列配置
+         */
         columns: {
             type: Array,
             default: () => { return [] }
         },
+        /**
+         * @description 是否显示工具栏
+         */
         toolbar: {
             type: Boolean,
             default: false
         },
-        toolbarConfig: {
-            type: Array,
-            default: () => { return [] },
-            validator(value) {
-                return value.every(item => {
-                    return item.name && item.label
-                });
-            }
-        },
+        /**
+         * @description 是否显示分页器
+         */
         pagination: {
             type: Boolean,
             default: false
         },
+        /**
+         * @description 分页器配置
+         */
         paginationConfig: {
             type: Object,
             default: () => {
                 return {
+                    align: 'center',
                     background: true,
                     layout: 'total, sizes, prev, pager, next, jumper',
                     pageSizes: [10, 20, 30, 50],
-                    align: 'center',
                     currentPage: 1,
                     pageSize: 10,
                     pagerCount: document.body.clientWidth < 992 ? 5 : 7
                 }
+            },
+            validator(value) {
+                return ['align', 'background', 'layout', 'pageSizes', 'currentPage', 'pageSize', 'pagerCount'].every(
+                    key => key in value);
             }
         }
-
     },
     data() {
-        return {
-
+        return {}
+    },
+    computed: {
+        showData() {
+            if (this.pagination && this.paginationConfig.currentPage && this.paginationConfig.pageSize) {
+                const startIndex = (this.paginationConfig.currentPage - 1) * this.paginationConfig.pageSize;
+                const endIndex = startIndex + this.paginationConfig.pageSize;
+                return this.data.slice(startIndex, endIndex);
+            } else {
+                return this.data;
+            }
+        },
+        /**
+         * @description 分页器配置双向绑定
+         */
+        paginationConfigModel: {
+            get() {
+                return this.paginationConfig;
+            },
+            set(val) {
+                this.$emit("update:paginationConfig", val);
+            }
         }
     },
+    methods: {
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -106,8 +136,20 @@ export default {
         }
     }
 
-    .re-table-pagination {
-        margin-top: 10px;
+    .re-table-pagination__wrapper {
+        padding-top: 10px;
+
+        .is-left {
+            text-align: left;
+        }
+
+        .is-center {
+            text-align: center;
+        }
+
+        .is-right {
+            text-align: right;
+        }
     }
 }
 </style>
