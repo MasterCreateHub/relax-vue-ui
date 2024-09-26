@@ -13,42 +13,42 @@
     name: "RePagination",
     props: {
       /**
-       * @description: 分页组件布局
+       * @description 组件布局
        */
       layout: {
         type: String,
         default: "total,sizes,prev,pager,next,jumper",
       },
       /**
-       * @description: 是否使用背景色
+       * @description 是否使用背景色
        */
       background: {
         type: Boolean,
         default: true,
       },
       /**
-       * @description: 总条数
+       * @description 总条数
        */
       total: {
         required: true,
         type: Number,
       },
       /**
-       * @description: 当前页码
+       * @description 当前页码
        */
       currentPage: {
         type: Number,
         default: 1,
       },
       /**
-       * @description: 每页条数
+       * @description 每页条数
        */
       pageSize: {
         type: Number,
         default: 20,
       },
       /**
-       * @description: 每页条数选项
+       * @description 每页条数选项
        */
       pageSizes: {
         type: Array,
@@ -57,14 +57,14 @@
         },
       },
       /**
-       * @description: 移动端页码按钮的数量端
+       * @description 页码按钮
        */
       pagerCount: {
         type: Number,
         default: document.body.clientWidth < 992 ? 5 : 7,
       },
       /**
-       * @description: 分页组件对齐方式
+       * @description 对齐方式
        */
       align: {
         type: String,
@@ -74,7 +74,7 @@
         },
       },
       /**
-       * @description: 是否隐藏
+       * @description 是否隐藏
        */
       hidden: {
         type: Boolean,
@@ -85,6 +85,9 @@
       return {};
     },
     computed: {
+      /**
+       * @description 当前页码
+       */
       currentPageModel: {
         get() {
           return this.currentPage;
@@ -93,6 +96,9 @@
           this.$emit("update:currentPage", val);
         },
       },
+      /**
+       * @description 每页条数
+       */
       pageSizeModel: {
         get() {
           return this.pageSize;
@@ -101,11 +107,17 @@
           this.$emit("update:pageSize", val);
         },
       },
+      /**
+       * @description 是否有插槽
+       */
       hasSlot() {
         return this.layout.includes("slot");
       },
     },
     methods: {
+      /**
+       * @description 每页条数改变事件
+       */
       handleSizeChange(val) {
         if (this.currentPageModel * val > this.total) {
           this.currentPageModel = 1;
@@ -113,12 +125,17 @@
         this.$emit("pagination", {
           currentPage: this.currentPageModel,
           pageSize: val,
+          from: "currentPage"
         });
       },
+      /**
+       * @description 当前页码改变事件
+       */
       handleCurrentChange(val) {
         this.$emit("pagination", {
           currentPage: val,
           pageSize: this.pageSizeModel,
+          from:"pageSize"
         })
       },
     },

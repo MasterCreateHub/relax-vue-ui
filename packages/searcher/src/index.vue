@@ -29,7 +29,7 @@
         </el-col>
         <el-col :style="{ minWidth: factorMinWidth + 'px' }"
           :class="['re-searcher-action__wrapper', `is-${actionPosition}`]" :span="factorSpan">
-          <el-form-item>
+          <el-form-item  label-width="0px">
             <slot name="action" :form="form">
               <el-button type="primary" icon="el-icon-search" @click="handleSearch">
                 {{ searchText }}
@@ -328,12 +328,6 @@ export default {
     .is-right {
       text-align: right;
       flex: 1;
-    }
-
-    .re-searcher-action__wrapper {
-      .el-form-item__content {
-        margin-left: 0px !important;
-      }
     }
   }
 }</style>

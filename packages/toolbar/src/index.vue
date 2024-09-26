@@ -27,6 +27,9 @@
 export default {
     name: 'ReToolbar',
     props: {
+        /**
+         * @description 是否显示阴影
+         */
         shadow:{
             type: Boolean,
             default: false
@@ -55,9 +58,15 @@ export default {
         return {};
     },
     computed: {
+        /**
+         * @description 左侧工具
+         */
         leftTools() {
             return this.tools.filter(item => item.position === 'left');
         },
+        /**
+         * @description 右侧工具
+         */
         rightTools() {
             return this.tools.filter(item => item.position === 'right');
         },
@@ -78,9 +87,6 @@ export default {
         display: flex;
         align-items: center;
     }
-
-
-
     .re-toolbar__right {
         justify-content: flex-end;
 
@@ -88,7 +94,6 @@ export default {
             margin-left: 5px;
         }
     }
-
     .re-toolbar__left {
         justify-content: flex-start;
 

@@ -50,7 +50,7 @@ export default {
             required: true
         },
         /**
-        * @description 工作台配置，一个工作台可配置多个任务，不同任务有可能对应不同的操作按钮，
+        * @description 工作台任务配置，一个工作台可配置多个任务，不同任务有可能对应不同的操作按钮，
         * 该组件会根据当前处理不同的任务来显示不同的操作按钮
         * @label 任务名称
         * @key 任务标识 
@@ -79,9 +79,7 @@ export default {
         },
     },
     data() {
-        return {
-
-        }
+        return {};
     },
     computed: {
         /**

@@ -90,9 +90,9 @@
       </base-workbench>
     </el-card>
     <el-card header="通用数据转换组件">
-      <re-converter :value="['A', 'B']" :source="dict" container="el-tag" />
-      <re-converter :value="['name', 'remark']" :source="student" />
-      <re-converter :value="currentDate" :source="formatDate" />
+      <re-converter :target="['A', 'B']" :source="dict" container="el-tag" />
+      <re-converter :target="['name', 'remark']" :source="student" />
+      <re-converter :target="currentDate" :source="formatDate" />
     </el-card>
     <el-card header="通用描述列表组件">
       <base-descriptions :data="personalData" border :column="3" layout="auto">

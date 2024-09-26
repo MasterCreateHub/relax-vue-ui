@@ -1,6 +1,6 @@
 <template>
-    <div :class="['re-converter', 're-converter__wrapper', { 'is-targets': isTargets }]">
-        <component v-for="(item, index) in target" :key="'key' + index" :is="container" v-bind="$attrs"
+    <div :class="['re-converter', 're-converter__wrapper', { 'is-Multiple': isMultipleValues }]">
+        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs"
             class="re-converter-value">
             {{ item }}
         </component>
@@ -12,14 +12,14 @@ export default {
     name: "ReConverter",
     props: {
         /**
-         * @description 要转换的值
+         * @description 要转换的目标值
          */
-        value: {
+        target: {
             type: [Number, String, Boolean, Array, Date],
             required: true,
         },
         /**
-         * @description 与value相关联的根源数据，通常为数组，对象或者函数
+         * @description 与目标相关联的根源数据，通常为数组，对象或者函数
          * @array 如果是数组，要求每个元素必须是一个带有value属性和label属性的对象[{value: '1', label: '级别A'}]
          * @object 如果是对象，则要求this.value必须是对象中的key
          * @function 如果是函数，则要求该函数必须有返回值
@@ -47,38 +47,41 @@ export default {
             default: 'span',
         },
     },
+    data() {
+      return {};
+    },
     computed: {
         /**
          * @description 最终的渲染值
          */
-        target() {
+        convertedValues() {
             let result = [];
 
             const sourceType = Object.prototype.toString.call(this.source);
 
             switch (sourceType) {
                 case '[object Array]':
-                    if (typeof this.value === 'number' || typeof this.value === 'string') {
-                        const foundItem = this.source.find(item => item.value === this.value);
+                    if (typeof this.target === 'number' || typeof this.target === 'string') {
+                        const foundItem = this.source.find(item => item.value === this.target);
                         result = foundItem ? [foundItem.label] : [];
-                    } else if (Array.isArray(this.value)) {
-                        result = this.source.filter(item => this.value.includes(item.value)).map(item => item.label);
+                    } else if (Array.isArray(this.target)) {
+                        result = this.source.filter(item => this.target.includes(item.value)).map(item => item.label);
                     } else {
-                        result = [this.value];
+                        result = [this.target];
                     }
                     break;
                 case '[object Object]':
-                    if (typeof this.value === 'string') {
-                        result = [this.source[this.value]];
-                    } else if (Array.isArray(this.value)) {
-                        result = this.value.map(item => this.source[item]);
+                    if (typeof this.target === 'string') {
+                        result = [this.source[this.target]];
+                    } else if (Array.isArray(this.target)) {
+                        result = this.target.map(item => this.source[item]);
                     } else {
-                        result = [this.value];
+                        result = [this.target];
                     }
                     break;
                 case '[object Function]':
                     try {
-                        const returnValue = this.source(this.value);
+                        const returnValue = this.source(this.target);
                         if (typeof returnValue === 'string' ||
                             typeof returnValue === 'number' ||
                             typeof returnValue === 'boolean' ||
@@ -93,7 +96,7 @@ export default {
                     }
                     break;
                 default:
-                    result = [this.value];
+                    result = [this.target];
                     break;
             }
 
@@ -102,8 +105,8 @@ export default {
         /**
          * @description 是否有多个值
          */
-        isTargets() {
-            return this.target.length > 0;
+        isMultipleValues() {
+            return this.convertedValues.length > 0;
         }
     },
     methods: {},
