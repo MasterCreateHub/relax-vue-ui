@@ -1,6 +1,11 @@
 <template>
   <div class="home">
-    <div class="abc"></div>
+    <el-row>
+      <el-col>
+        
+      </el-col>
+    </el-row>
+    <re-detail title="测试详情" :data="detailData"></re-detail>
   </div>
 </template>
 
@@ -10,13 +15,79 @@ export default {
   components: {},
   data() {
     return {
-      
+      detailData: [
+        {
+          name: 'baseInfo', // 区域名称
+          label: '基础信息', // 区域标签
+          type: 'descriptions', // 数据展示组件类型，descriptions, table， custom
+          config: { column: 3, border: true },
+          data: [{
+            prop: 'name',
+            label: '姓名',
+            value: '张三',
+            span: 1,
+          },
+          {
+            prop: 'age',
+            label: '年龄',
+            value: 28,
+            span: 1,
+          },
+          {
+            prop: 'gender',
+            label: '性别',
+            value: '男',
+            span: 1,
+          }]
+        },
+        {
+          name: 'contactInfo', // 区域名称
+          label: '联系方式', // 区域标签
+          type: 'table', // 数据展示组件类型，descriptions, table， custom
+          config: {
+            columns: [
+              {
+                prop: 'name',
+                label: '姓名',
+              },
+              {
+                prop: 'address',
+                label: '地址',
+              },
+              {
+                prop: 'phone',
+                label: '电话',
+              },
+              {
+                prop: 'email',
+                label: '邮箱',
+              },
+            ]
+          },
+          data: [{
+            name: '张三',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
+          }, {
+            name: '李四',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
 
+          }, {
+            name: '王五',
+            address: '上海市浦东新区',
+            phone: '13800138000',
+            email: 'zhangsan@example.com',
+          }]
+        }
+      ]
     }
   },
   methods: {
     mounted() {
-      
+
 
 
     }
@@ -26,18 +97,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$angle: 60deg; // 全局变量定义
-
-.abc {
-  width: 100px;
-  height: 100px;
-  background-color: aqua;
-  margin: 0 auto;
-  transform: rotate($angle); // 使用全局变量
-
-  &:hover {
-    $angle: 30deg; // 重新赋值局部变量
-    transform: rotate($angle); // 使用局部变量
-  }
+.home{
+  padding: 20px 50px;
 }
 </style>

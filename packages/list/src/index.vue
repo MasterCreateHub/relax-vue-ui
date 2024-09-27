@@ -132,7 +132,6 @@ export default {
             return `translate3d(0,${this.offset}px,0)`;
         },
     },
-
     methods: {
         /**
          * @description 组件初始化

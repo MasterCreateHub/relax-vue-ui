@@ -23,7 +23,7 @@
             <slot name="append"></slot>
         </el-table>
         <div v-if="pagination" class="re-table-pagination__wrapper">
-            <slot>
+            <slot name="pagination">
                 <el-pagination :class="['re-table-pagination', `is-${paginationConfigModel.align}`]" :total="data.length"
                     v-bind.sync="paginationConfigModel" />
             </slot>
@@ -43,10 +43,23 @@ export default {
         },
         /**
          * @description 表格列配置
+         * @type {Array}
+         * @property {String} columnKey - 列key
+         * @property {String} type - 列类型
+         * @property {String} prop - 列属性
+         * @property {String} label - 列标签
+         * @property {String} width - 列宽度
+         * @property {String} align - 列对齐方式
+         * @property {String} type - 列类型
+         * @property {String} fixed - 列是否固定
+         * @property {String} sortable - 列是是否可排序
+         * @property {String} showOverflowTooltip - 列是否显示tooltip
+         * @property {String} className - 列class
+         * @default []
          */
         columns: {
             type: Array,
-            default: () => { return [] }
+            default: () => { return [] },
         },
         /**
          * @description 是否显示工具栏
@@ -64,6 +77,14 @@ export default {
         },
         /**
          * @description 分页器配置
+         * @type {Object}
+         * @property {String} align - 分页器对齐方式
+         * @property {Boolean} background - 是否显示背景
+         * @property {String} layout - 分页器布局
+         * @property {Array} pageSizes - 每页显示条数选择器的选项设置
+         * @property {Number} currentPage - 当前页
+         * @property {Number} pageSize - 每页显示条目个数
+         * @property {Number} pagerCount - 分页导航的按钮数
          */
         paginationConfig: {
             type: Object,
