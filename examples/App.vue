@@ -7,7 +7,8 @@
         <router-link to="/tool">Tool</router-link> |
         <router-link to="/table">Table</router-link>|
         <router-link to="/list">List</router-link> |
-        <router-link to="/work">Work</router-link>
+        <router-link to="/work">Work</router-link> |
+        <router-link to="/print">Print</router-link>
       </nav>
     </header>
     <aside>

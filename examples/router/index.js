@@ -39,6 +39,11 @@ const routes = [
     name: "work",
     component: () => import("../views/WorkView.vue"),
   },
+  {
+    path: "/print",
+    name: "print",
+    component: () => import("../views/PrintView.vue"),
+  },
 ];
 
 const router = new VueRouter({

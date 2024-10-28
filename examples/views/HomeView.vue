@@ -2,19 +2,29 @@
   <div class="home">
     <el-row>
       <el-col>
+        <el-radio-group v-readonly="readonlyObj" v-model="showType" size="small">
+              <el-radio-button label="simple">simple</el-radio-button>
+              <el-radio-button label="card">card</el-radio-button>
+              <el-radio-button label="collapse">collapse</el-radio-button>
+        </el-radio-group>
         
       </el-col>
     </el-row>
-    <re-detail title="测试详情" :data="detailData"></re-detail>
+    <re-detail title="测试详情" :data="detailData" :showType="showType"></re-detail>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "HomeView",
   components: {},
   data() {
     return {
+      readonlyObj: {
+        visible: true
+      },
+      showType: "simple",
       detailData: [
         {
           name: 'baseInfo', // 区域名称

@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import ElementUI from 'element-ui';
+import Print from 'vue-print-nb';
+
 import '@/assets/style/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
@@ -64,6 +66,7 @@ Vue.component('PopStaging', PopStaging)
 
 Vue.use(ElementUI);
 Vue.use(RelaxUI)
+Vue.use(Print);
 new Vue({
   router,
   store,

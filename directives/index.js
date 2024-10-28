@@ -2,9 +2,10 @@
 
 
 import Measure from './measure';
+import Readonly from './readonly';
 
 // 存储所有自定义指令对象
-const directives = [Measure]
+const directives = [Measure, Readonly]
 // 定义 directivesInstall 方法
 const directivesInstall = function (Vue, option = []) {
     if (directivesInstall.installed) return;
