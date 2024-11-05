@@ -2,15 +2,11 @@
   <div class="home">
     <el-row>
       <el-col>
-        <el-radio-group v-readonly="readonlyObj" v-model="showType" size="small">
-              <el-radio-button label="simple">simple</el-radio-button>
-              <el-radio-button label="card">card</el-radio-button>
-              <el-radio-button label="collapse">collapse</el-radio-button>
-        </el-radio-group>
+        
         
       </el-col>
     </el-row>
-    <re-detail title="测试详情" :data="detailData" :showType="showType"></re-detail>
+    <re-form :form-data.sync="formData" :form-items="formItems" label-position="top"></re-form>
   </div>
 </template>
 
@@ -21,86 +17,55 @@ export default {
   components: {},
   data() {
     return {
-      readonlyObj: {
-        visible: true
+      formData: {
+        name: null,
+        words: null,
+        age: null,
+        money: null
       },
-      showType: "simple",
-      detailData: [
+      formItems: [
         {
-          name: 'baseInfo', // 区域名称
-          label: '基础信息', // 区域标签
-          type: 'descriptions', // 数据展示组件类型，descriptions, table， custom
-          config: { column: 3, border: true },
-          data: [{
-            prop: 'name',
-            label: '姓名',
-            value: '张三',
-            span: 1,
-          },
-          {
-            prop: 'age',
-            label: '年龄',
-            value: 28,
-            span: 1,
-          },
-          {
-            prop: 'gender',
-            label: '性别',
-            value: '男',
-            span: 1,
-          }]
+          label: "姓名",
+          model: "name",
+          type: "el-input",
+          span: 8
         },
         {
-          name: 'contactInfo', // 区域名称
-          label: '联系方式', // 区域标签
-          type: 'table', // 数据展示组件类型，descriptions, table， custom
+          label: "年龄",
+          model: "age",
+          type: "el-input-number",
+          span: 8,
+          change: [
+            {
+              target: "money",
+              value: "{{$values.age*2}}"
+            }
+          ]
+        },
+        {
+          label: "金钱",
+          model: "money",
+          type: "el-input-number",
+          span: 8
+        },
+        {
+          label: "座右铭",
+          model: "words",
+          type: "el-input",
+          span: 24,
           config: {
-            columns: [
-              {
-                prop: 'name',
-                label: '姓名',
-              },
-              {
-                prop: 'address',
-                label: '地址',
-              },
-              {
-                prop: 'phone',
-                label: '电话',
-              },
-              {
-                prop: 'email',
-                label: '邮箱',
-              },
-            ]
-          },
-          data: [{
-            name: '张三',
-            address: '上海市浦东新区',
-            phone: '13800138000',
-            email: 'zhangsan@example.com',
-          }, {
-            name: '李四',
-            address: '上海市浦东新区',
-            phone: '13800138000',
-            email: 'zhangsan@example.com',
-
-          }, {
-            name: '王五',
-            address: '上海市浦东新区',
-            phone: '13800138000',
-            email: 'zhangsan@example.com',
-          }]
+            disabled: "{{!$values.name}}",
+            type: "textarea",
+            rows: 5,
+            placeholder: "{{'请输入'+($values.name ? $values.name : '您')+'的座右铭'}}"
+          }
         }
       ]
+      
+
     }
   },
   methods: {
-    mounted() {
-
-
-
-    }
 
 
   }
