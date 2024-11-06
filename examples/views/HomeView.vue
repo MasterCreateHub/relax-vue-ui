@@ -6,7 +6,7 @@
         
       </el-col>
     </el-row>
-    <re-form :form-data.sync="formData" :form-items="formItems" label-position="top"></re-form>
+    <re-form :form-model.sync="formData" :form-items="formItems" label-position="top"></re-form>
   </div>
 </template>
 
@@ -18,46 +18,44 @@ export default {
   data() {
     return {
       formData: {
-        name: null,
-        words: null,
-        age: null,
-        money: null
+        productName: null,
+        productModel: null,
+        productNum: null,
+        words: null
       },
       formItems: [
         {
-          label: "姓名",
-          model: "name",
-          type: "el-input",
-          span: 8
-        },
-        {
-          label: "年龄",
-          model: "age",
-          type: "el-input-number",
+          label: "产品名称",
           span: 8,
-          change: [
-            {
-              target: "money",
-              value: "{{$values.age*2}}"
-            }
-          ]
+          model: "productName",
+          component: "el-input",
         },
         {
-          label: "金钱",
-          model: "money",
-          type: "el-input-number",
-          span: 8
+          label: "产品型号",
+          span: 8,
+          model: "productModel",
+          component: "el-input",
         },
         {
-          label: "座右铭",
-          model: "words",
-          type: "el-input",
+          label: "产品数量",
+          span: 8,
+          model: "productNum",
+          component: "el-input-number",
+          props: {
+            controls: false,
+            min: 1,
+          },
+        },
+        {
+          label: "退货原因",
           span: 24,
-          config: {
-            disabled: "{{!$values.name}}",
+          model: "words",
+          component: "el-input",
+          hidden: "{{!$values.productName}}",
+          props: {
             type: "textarea",
             rows: 5,
-            placeholder: "{{'请输入'+($values.name ? $values.name : '您')+'的座右铭'}}"
+            placeholder: "{{'请输入'+($values.productName ? $values.productName : '您')+'的座右铭'}}"
           }
         }
       ]

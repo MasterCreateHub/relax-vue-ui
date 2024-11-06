@@ -1,17 +1,25 @@
 <template>
-  <el-form :model="formData" ref="form" v-bind="$attrs" v-on="$listeners">
-    <el-row :gutter="20">
+  <el-form
+    class="re-form"
+    :model="formData"
+    ref="form"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <el-row :gutter="20" class="re-form__body">
       <el-col
-        v-for="(item, index) in formFinalConfig"
+        class="re-form-item__wrapper"
+        v-for="(item, index) in formFinalItems"
         :span="item.span"
         :key="item.model + index"
       >
-        <el-form-item :label="item.label">
-          <slot :name="item.prop" :item="item" :form="form">
+        <el-form-item :label="item.label" class="re-form-item">
+          <slot :name="item.model" :item="item">
             <component
-              :is="item.type"
-              v-bind="item.config"
-              v-model="form[item.model]"
+              class="re-form-item-component"
+              :is="item.component"
+              v-bind="item.props"
+              v-model="formData[item.model]"
             ></component>
           </slot>
         </el-form-item>
@@ -209,7 +217,7 @@ export default {
       return {
         // 表单数据
         $values: this.formData,
-        // 表单各项初始值
+        // 表单各项初始值formFinalItems
         $initialValues: this.formInitialValues,
         // 表单选项数据
         $selectOptions: this.formSelectOptions,
@@ -219,8 +227,8 @@ export default {
      * @description 表单项配置数组解析后的最终配置
      * @type {Array}
      */
-    formFinalConfig() {
-      return deepParse(this.formItems, this.formContext);
+    formFinalItems() {
+      return deepParse(this.formItems, this.formContext).filter(item => !item.hidden);
     },
   },
   watch: {
@@ -270,4 +278,18 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.re-form {
+  .re-form__body {
+    display: flex;
+    flex-wrap: wrap;
+    .re-form-item__wrapper {
+      .re-form-item {
+        .re-form-item-component {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+</style>
