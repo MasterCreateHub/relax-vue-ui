@@ -4,7 +4,7 @@
             <slot name="toolbar"></slot>
         </div>
         <el-table class="re-table__body" :data="showData" v-bind="$attrs" v-on="$listeners">
-            <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
+            <el-table-column v-for="(column,index) in columns" :key="column.prop + index" v-bind="column">
                 <template slot="header" slot-scope="scope">
                     <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row"
                         :index="scope.$index">{{ column.label }}</slot>
