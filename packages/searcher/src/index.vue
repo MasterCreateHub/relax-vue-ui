@@ -1,7 +1,7 @@
 <template>
   <div v-measure="onResize" class="re-searcher">
-    <el-form :class="[{ 'is-justify': labelPosition === 'justify' }]" :model="form" :label-position="labelPosition"
-      v-bind="formConfig" @keyup.enter.native="handleSearch">
+    <el-form :class="[{ 'is-justify': formConfig.labelPosition === 'justify' }]" :model="form" :inline="false"
+      :label-position="formConfig.labelPosition" v-bind="formConfig">
       <el-row class="re-searcher__body" :gutter="factorSpacing">
         <el-col :style="{ minWidth: factorMinWidth + 'px' }" class="re-searcher-factor__wrapper"
           v-for="factor in showFactors" :key="factor.prop" :span="factorSpan">
@@ -29,18 +29,19 @@
         </el-col>
         <el-col :style="{ minWidth: factorMinWidth + 'px' }"
           :class="['re-searcher-action__wrapper', `is-${actionPosition}`]" :span="factorSpan">
-          <el-form-item  label-width="0px">
+          <el-form-item label-width="0px">
             <slot name="action" :form="form">
-              <el-button type="primary" icon="el-icon-search" @click="handleSearch">
-                {{ searchText }}
-              </el-button>
-              <el-button type="primary" icon="el-icon-refresh" plain @click="handleReset">
-                {{ resetText }}
-              </el-button>
-              <el-button v-if="onlyInline" type="text" @click="handleToggle">
-                {{ expanded ? collapseText : expandText }}
-                <i :class="expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
-              </el-button>
+              <el-button-group>
+                <el-button type="primary" icon="el-icon-search" @click="handleSearch">
+                  {{ searchText }}
+                </el-button>
+                <el-button type="primary" icon="el-icon-refresh" @click="handleReset">
+                  {{ resetText }}
+                </el-button>
+                <el-button v-if="onlyInline" type="primary" @click="handleToggle" :icon="expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'">
+                  {{ expanded ? collapseText : expandText }}
+                </el-button>
+              </el-button-group>
             </slot>
           </el-form-item>
         </el-col>
@@ -68,20 +69,14 @@ export default {
       type: Object,
       default: () => {
         return {
-          size: "small",
+          size: " ",
           labelWidth: "60px",
+          labelPosition: 'justify'
         };
       },
-    },
-    /**
-     * @description 搜索条件label位置
-     */
-    labelPosition: {
-      type: String,
-      default: "right",
       validator(value) {
-        return ["left", "right", "justify"].includes(value);
-      },
+        return ['small', 'mini'].includes(value.size) && ['left', 'right', 'justify'].includes(value.labelPosition)
+      }
     },
     /**
      * @description 是否默认展开所有搜索条件
@@ -133,6 +128,13 @@ export default {
       },
     },
     /**
+     * @description 是否启用自动搜索
+     */
+    autoSearch: {
+      type: [Boolean, Number],
+      default: false,
+    },
+    /**
      * @description 搜索按钮文字
      */
     searchText: {
@@ -181,6 +183,10 @@ export default {
        * @description 视口尺寸
        */
       viewportSize: "lg",
+      /**
+       * @description 定时器
+       */
+      timer: null,
     };
   },
   computed: {
@@ -236,6 +242,23 @@ export default {
     factorSpan() {
       return this.sizeArray.find((size) => size.label === this.viewportSize).span;
     },
+    /**
+     * @description 自动搜索延迟
+     */
+    searchDelay() {
+      return this.autoSearch > 300 ? this.autoSearch : 300;
+    }
+  },
+
+  watch: {
+    form: {
+      handler() {
+        if (this.autoSearch) {
+          this.handleDebounceSearch();
+        }
+      },
+      deep: true
+    },
   },
   mounted() {
     this.onInit();
@@ -259,7 +282,23 @@ export default {
      * @description 点击搜索按钮事件
      */
     handleSearch() {
+      if (this.timer) {
+        clearTimeout(this.timer)
+        this.timer = null
+      }
       this.$emit("search", this.form);
+    },
+    /**
+     * @description 防抖搜索
+     */
+    handleDebounceSearch() {
+      if (this.timer) {
+        clearTimeout(this.timer)
+        this.timer = null
+      }
+      this.timer = setTimeout(() => {
+        this.handleSearch()
+      }, this.searchDelay)
     },
     /**
      * @description 点击重置按钮事件
@@ -321,6 +360,13 @@ export default {
       }
     }
 
+    .re-searcher-action__wrapper {
+      & .el-form-item__content {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
     .is-left {
       text-align: left;
     }
@@ -330,4 +376,6 @@ export default {
       flex: 1;
     }
   }
-}</style>
+}
+</style>
+  
