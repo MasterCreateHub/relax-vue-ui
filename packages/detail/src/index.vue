@@ -3,32 +3,41 @@
     <header class="re-detail__header">
       <slot name="header">{{ title }}</slot>
     </header>
-    <aside class="re-detail__aside">
-        <div class="re-detail-anchor">
-            <el-link :underline="false" v-for="item in anchorList" :key="item">{{ item }}</el-link>
-        </div>
-    </aside>
     <main class="re-detail__body">
-      <div class="re-detail-nav"></div>
       <section
         v-for="item in data"
         :key="item.name"
         :class="[
           're-detail-section',
-          `is-${showType}`,
-          { 'is-active': activeSection.includes(item.name) },
+          `is-${finallyShowType}`,
+          {
+            'is-active':
+              finallyShowType === 'collapse' &&
+              finallyActiveSection.includes(item.name),
+          },
         ]"
+        @click="finallyShowType === 'collapse' ? handleActive(item.name) : null"
       >
-        <div class="re-detail-section__title" @click="handleActive(item.name)">
-          <i
-            :class="[
-              { 'el-icon-caret-right': showType === 'collapse' },
-              're-detail-section__icon',
-            ]"
-          />
-          {{ item.label }}
+        <div class="re-detail-section__title">
+          <slot :name="`${item.name}Title`">
+            <i
+              :class="[
+                { 'el-icon-caret-right': finallyShowType === 'collapse' },
+                're-detail-section__icon',
+              ]"
+            />
+            {{ item.label }}
+          </slot>
         </div>
-        <div class="re-detail-section__content"></div>
+        <div class="re-detail-section__content">
+          <slot :name="`${item.name}Content`" :data="item.data">
+            <component
+              :is="item.component"
+              v-bind="item.props"
+              :[item.dataForProps]="item.data"
+            ></component>
+          </slot>
+        </div>
       </section>
     </main>
     <footer class="re-detail__footer">
@@ -43,13 +52,24 @@ export default {
   props: {
     /**
      * @description 标题
+     * @type {string}
+     * @default ''
      */
     title: {
       type: String,
       default: "",
     },
     /**
-     * @description 详情数据
+     * @description 详情章节内容
+     * @type {Array<object>}
+     * @property {object} [] 章节对象
+     * @property {string} [].label 区域标签
+     * @property {string} [].name 区域名称
+     * @property {string} [].component 组件名
+     * @property {object} [].props 组件的属性
+     * @property {object} [].data 章节详情数据
+     * @property {string} [].dataForProps 为组件注入数据使用的属性名
+     * @default []
      */
     data: {
       type: Array,
@@ -58,41 +78,73 @@ export default {
       },
     },
     /**
-     * @description 区域的展现形式，卡片、折叠面板
+     * @description 区域的展现形式，简单、卡片、折叠面板
+     * @type {'simple' | 'card' | 'collapse'}
+     * @default 'simple'
      */
     showType: {
       type: String,
-      default: "collapse",
+      default: "simple",
       validator(value) {
         return ["simple", "card", "collapse"].includes(value);
       },
     },
     /**
-     * @description 区域的统一配置
+     * @description 激活的区域，只当 showType 的值为 'collapse' 时生效
+     * @type {Array<string>}
      */
-    sectionConfig: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
+    activeSection: Array,
   },
   data() {
     return {
-      activeSection: [],
+      localActiveSection: [],
     };
   },
   computed: {
-    anchorList(){
-        return this.data.map(item => item.label)
-    }
+    /**
+     * @description 最终的展现形式
+     */
+    finallyShowType() {
+      switch (this.showType) {
+        case "simple":
+          return "simple";
+        case "card":
+          return "card";
+        case "collapse":
+          return "collapse";
+        default:
+          return "simple";
+      }
+    },
+    /**
+     * @description 最终激活的区域
+     */
+    finallyActiveSection: {
+      get() {
+        return this.activeSection || this.localActiveSection;
+      },
+      set(val) {
+        if (this.activeSection) {
+          this.$emit("update:activeSection", val);
+        } else {
+          this.localActiveSection = val;
+        }
+      },
+    },
   },
   methods: {
     handleActive(name) {
-      if (this.activeSection.includes(name)) {
-        this.activeSection = this.activeSection.filter((item) => item !== name);
+      this.$emit(
+        "active-section",
+        name,
+        this.finallyActiveSection.includes(name)
+      );
+      if (this.finallyActiveSection.includes(name)) {
+        this.finallyActiveSection = this.finallyActiveSection.filter(
+          (item) => item !== name
+        );
       } else {
-        this.activeSection.push(name);
+        this.finallyActiveSection.push(name);
       }
     },
   },
@@ -115,54 +167,11 @@ export default {
     font-weight: 700;
     padding: 5px 0px;
   }
-  
-  .re-detail__aside{
-    padding: 15px 0px;
-    width: 100px;
-    height: 100%;
-    border-right: 1px solid #ebeef5;
-    .re-detail-anchor{
-        width: 90%;
-        padding-right: 10px;
-        display: flex;
-        flex-direction: column;
-        .el-link{
-            display: block;
-            line-height: 30px;
-            text-align: right;
-        }
-    }
-  }
 
   .re-detail__body {
     box-sizing: border-box;
     padding: 15px;
     flex: 1;
-
-    .re-detail-section {
-      .el-descriptions {
-        .el-descriptions__body .el-descriptions__table {
-          table-layout: fixed;
-        }
-      }
-
-      .el-table {
-        .el-table__header-wrapper,
-        .el-table__fixed-header-wrapper {
-          th {
-            word-break: break-word;
-            background-color: #f8f8f9;
-            color: #515a6e;
-            height: 40px;
-            font-size: 13px;
-          }
-        }
-      }
-    }
-
-    .re-detail-section:last-child {
-      margin-bottom: 0;
-    }
   }
 
   .re-detail__footer {
@@ -173,11 +182,11 @@ export default {
 
 .is-simple {
   width: 100%;
-  border-bottom: 1px solid #ebeef5;
   margin-bottom: 15px;
 
   .re-detail-section__title {
     color: #303133;
+    padding: 0px;
     display: flex;
     align-items: center;
     .re-detail-section__icon {
@@ -190,7 +199,7 @@ export default {
   }
 
   .re-detail-section__content {
-    padding: 15px;
+    padding: 15px 15px 0px 15px;
     transition: all 0.3s;
   }
 }
@@ -210,7 +219,7 @@ export default {
     color: #303133;
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 10px 15px;
     border-bottom: 1px solid #ebeef5;
     .re-detail-section__icon {
       width: 4px;
@@ -234,7 +243,7 @@ export default {
     color: #303133;
     display: flex;
     align-items: center;
-    padding: 8px 0px;
+    padding: 10px 0px;
 
     .re-detail-section__icon {
       margin-right: 4px;
@@ -243,7 +252,7 @@ export default {
 
   .re-detail-section__content {
     display: none;
-    padding: 15px;
+    padding: 5px 15px 15px 15px;
     transition: all 0.3s;
   }
 }
@@ -257,8 +266,10 @@ export default {
     display: block;
   }
 }
-
 .is-collapse:first-of-type {
   border-top: 2px solid #ebeef5;
+}
+.is-collapse:last-of-type {
+  margin-bottom: 15px;
 }
 </style>

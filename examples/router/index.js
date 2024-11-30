@@ -40,9 +40,19 @@ const routes = [
     component: () => import("../views/WorkView.vue"),
   },
   {
+    path: "/detail",
+    name: "detail",
+    component: () => import("../views/DetailView.vue"),
+  },
+  {
     path: "/print",
     name: "print",
     component: () => import("../views/PrintView.vue"),
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("../views/TestView.vue"),
   },
 ];
 
