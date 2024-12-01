@@ -55,22 +55,22 @@ export default {
   props: {
     /**
      * @data 描述列表数据配置
-     * @type {Array}
-     * @property {Object} [] 描述列表项对象
-     * @property {String} [].prop 描述列表项对象的属性名
-     * @property {String} [].label 描述列表项对象的标签名
-     * @property {String} [].value 描述列表项对象的值
-     * @property {Number} [].span 描述列表项对象的跨列数
-     * @property {String} [].labelClassName 描述列表项对象的标签class
-     * @property {String} [].contentClassName 描述列表项对象的内容class
-     * @property {Object} [].labelStyle 描述列表项对象的标签样式
-     * @property {Object} [].contentStyle描述列表项对象的内容样式
-     * @property {String} [].labelComponent 描述列表项对象的标签组件
-     * @property {Object} [].labelComponentProps 描述列表项对象的标签组件的props
-     * @property {Object} [].labelComponentEvents 描述列表项对象的标签组件的events
-     * @property {Object} [].contentComponent 描述列表项对象的内容组件
-     * @property {Object} [].contentComponentProps 描述列表项对象的内容组件的props
-     * @property {Object} [].contentComponentEvents 描述列表项对象的内容组件的events
+     * @type {Array<Item>}
+     * @property {Object} item 描述列表项对象
+     * @property {String} item.prop 描述列表项对象的属性名
+     * @property {String} item.label 描述列表项对象的标签名
+     * @property {String} item.value 描述列表项对象的值
+     * @property {Number} item.span 描述列表项对象的跨列数
+     * @property {String} item.labelClassName 描述列表项对象的标签class
+     * @property {String} item.contentClassName 描述列表项对象的内容class
+     * @property {Object} item.labelStyle 描述列表项对象的标签样式
+     * @property {Object} item.contentStyle描述列表项对象的内容样式
+     * @property {String} item.labelComponent 描述列表项对象的标签组件
+     * @property {Object} item.labelComponentProps 描述列表项对象的标签组件的props
+     * @property {Object} item.labelComponentEvents 描述列表项对象的标签组件的events
+     * @property {Object} item.contentComponent 描述列表项对象的内容组件
+     * @property {Object} item.contentComponentProps 描述列表项对象的内容组件的props
+     * @property {Object} item.contentComponentEvents 描述列表项对象的内容组件的events
      * @default []
      */
     data: {

@@ -45,7 +45,7 @@ export default {
           name: "baseInfo", // 区域名称
           label: "基础信息", // 区域标签
           component: "re-descriptions", // 数据展示组件
-          props: { column: 3, border: true }, // 数据展示组件的props
+          componentProps: { column: 3, border: true }, // 数据展示组件的props
           dataForProps: "data",
           data: [
             // 数据展示组件的数据
@@ -102,7 +102,7 @@ export default {
           name: "otherInfo", // 区域名称
           label: "其他信息", // 区域标签
           component: "re-descriptions", // 数据展示组件
-          props: { column: 3, border: true }, // 数据展示组件的props
+          componentProps: { column: 4, border: true }, // 数据展示组件的props
           dataForProps: "data",
           data: [
             // 数据展示组件的数据
@@ -296,8 +296,7 @@ export default {
   },
   methods: {
     handleDetail(event, data){
-        console.log(event, data);
-        console.log('点击链接获取详情');
+        console.log('点击链接获取详情',data);
     }
   },
 };

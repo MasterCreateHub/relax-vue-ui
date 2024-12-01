@@ -1,6 +1,6 @@
 <template>
     <div :class="['re-converter', 're-converter__wrapper', { 'is-Multiple': isMultipleValues }]">
-        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs"
+        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs" v-on="$listeners"
             class="re-converter-value">
             {{ item }}
         </component>

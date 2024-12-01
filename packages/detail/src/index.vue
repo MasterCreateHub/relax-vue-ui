@@ -33,8 +33,9 @@
           <slot :name="`${item.name}Content`" :data="item.data">
             <component
               :is="item.component"
-              v-bind="item.props"
+              v-bind="item.componentProps"
               :[item.dataForProps]="item.data"
+              v-on="item.componentEvents"
             ></component>
           </slot>
         </div>
@@ -61,14 +62,15 @@ export default {
     },
     /**
      * @description 详情章节内容
-     * @type {Array}
-     * @property {Object} [] 章节对象
-     * @property {String} [].label 区域标签
-     * @property {String} [].name 区域名称
-     * @property {String} [].component 组件名
-     * @property {Object} [].props 组件的属性
-     * @property {Object} [].data 章节详情数据
-     * @property {String} [].dataForProps 为组件注入数据使用的属性名
+     * @type {Array<Section>}
+     * @property {Object} Section 章节对象
+     * @property {String} Section.label 区域标签
+     * @property {String} Section.name 区域名称
+     * @property {String} Section.component 组件名
+     * @property {Object} Section.componentProps 组件的属性
+     * @property {Object} Section.componentEvents 组件的事件
+     * @property {Object} Section.data 章节详情数据
+     * @property {String} Section.dataForProps 为组件注入数据使用的属性名
      * @default []
      */
     data: {
