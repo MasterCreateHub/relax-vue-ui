@@ -69,7 +69,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          size: " ",
+          size: "small",
           labelWidth: "60px",
           labelPosition: 'justify'
         };
@@ -249,7 +249,6 @@ export default {
       return this.autoSearch > 300 ? this.autoSearch : 300;
     }
   },
-
   watch: {
     form: {
       handler() {

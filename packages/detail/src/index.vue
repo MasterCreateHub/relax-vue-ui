@@ -61,14 +61,14 @@ export default {
     },
     /**
      * @description 详情章节内容
-     * @type {Array<object>}
-     * @property {object} [] 章节对象
-     * @property {string} [].label 区域标签
-     * @property {string} [].name 区域名称
-     * @property {string} [].component 组件名
-     * @property {object} [].props 组件的属性
-     * @property {object} [].data 章节详情数据
-     * @property {string} [].dataForProps 为组件注入数据使用的属性名
+     * @type {Array}
+     * @property {Object} [] 章节对象
+     * @property {String} [].label 区域标签
+     * @property {String} [].name 区域名称
+     * @property {String} [].component 组件名
+     * @property {Object} [].props 组件的属性
+     * @property {Object} [].data 章节详情数据
+     * @property {String} [].dataForProps 为组件注入数据使用的属性名
      * @default []
      */
     data: {
@@ -91,7 +91,7 @@ export default {
     },
     /**
      * @description 激活的区域，只当 showType 的值为 'collapse' 时生效
-     * @type {Array<string>}
+     * @type {Array<String>}
      */
     activeSection: Array,
   },
