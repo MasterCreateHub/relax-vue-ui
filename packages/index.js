@@ -8,9 +8,10 @@ import ReForm from "./form";
 import ReConverter from "./converter";
 import ReDescriptions from "./descriptions";
 import ReDetail from "./detail";
+import ReEditableTable from "./editable-table";
 
 // 存储组件列表
-const components = [ReSearcher, ReToolbar, ReTable, ReList, RePagination, ReWorkbench, ReForm, ReConverter, ReDescriptions, ReDetail];
+const components = [ReSearcher, ReToolbar, ReTable, ReList, RePagination, ReWorkbench, ReForm, ReConverter, ReDescriptions, ReDetail, ReEditableTable];
 
 // 定义 componentsInstall 方法
 const componentsInstall = function (Vue, option = []) {

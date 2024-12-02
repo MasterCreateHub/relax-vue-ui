@@ -2,23 +2,56 @@
   <div id="app">
     <header>
       <nav>
-        <router-link to="/">Home</router-link> |    
+        <router-link to="/">Home</router-link> |
         <router-link to="/form">Form</router-link> |
         <router-link to="/tool">Tool</router-link> |
         <router-link to="/table">Table</router-link>|
         <router-link to="/list">List</router-link> |
         <router-link to="/work">Work</router-link> |
-        <router-link to="/print">Print</router-link>
+        <router-link to="/detail">Detail</router-link>|
+        <router-link to="/print">Print</router-link>|
+        <router-link to="/test">Test</router-link>
       </nav>
     </header>
-    <aside>
-
+    <aside :style="asideStyle">
+      <el-button
+        class="aside-button"
+        icon="el-icon-s-tools"
+        @click="handleToggle"
+      ></el-button>
     </aside>
     <main>
       <router-view />
     </main>
   </div>
 </template>
+<script>
+export default {
+  data(){
+    return {
+      expand: false,
+      asideStyle: {
+        width: "200px",
+      },
+    };
+  },
+  methods: {
+    handleToggle() {
+      if(this.expand){
+        this.expand = false;
+        this.asideStyle = {
+          width: "80px",
+        };
+      }else{
+        this.expand = true;
+        this.asideStyle = {
+          width: "200px",
+        };
+      }
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 #app {
@@ -29,21 +62,20 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  & header{
+  & header {
     height: 80px;
     width: 100%;
     box-sizing: border-box;
     background-color: azure;
   }
-  & aside{
+  & aside {
     width: 80px;
     height: calc(100% - 80px);
     box-sizing: border-box;
-    background-color: azure
+    background-color: azure;
   }
-  & main{
-    width: calc(100% - 120px);
-    height: calc(100% - 120px);
+  & main {
+    flex: 1;
     padding: 20px;
     background-color: #fff;
     // box-sizing: border-box;
@@ -71,7 +103,6 @@ nav {
 </style>
 
 <style lang="scss">
-
 ::-webkit-scrollbar {
   width: 15px;
   height: 15px;

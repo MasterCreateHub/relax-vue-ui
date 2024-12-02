@@ -1,6 +1,6 @@
 <template>
     <div :class="['re-converter', 're-converter__wrapper', { 'is-Multiple': isMultipleValues }]">
-        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs"
+        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs" v-on="$listeners"
             class="re-converter-value">
             {{ item }}
         </component>
@@ -13,6 +13,7 @@ export default {
     props: {
         /**
          * @description 要转换的目标值
+         * @type {Number | String | Boolean | Array | Date}
          */
         target: {
             type: [Number, String, Boolean, Array, Date],
@@ -20,6 +21,7 @@ export default {
         },
         /**
          * @description 与目标相关联的根源数据，通常为数组，对象或者函数
+         * @type {Array | Object | Function}
          * @array 如果是数组，要求每个元素必须是一个带有value属性和label属性的对象[{value: '1', label: '级别A'}]
          * @object 如果是对象，则要求this.value必须是对象中的key
          * @function 如果是函数，则要求该函数必须有返回值
@@ -41,6 +43,7 @@ export default {
         },
         /**
          * @description 最终的渲染容器
+         * @type {String}
          */
         container: {
             type: String,

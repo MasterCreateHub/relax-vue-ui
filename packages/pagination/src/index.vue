@@ -14,6 +14,8 @@
     props: {
       /**
        * @description 组件布局
+       * @type {String}
+       * @default 'total,sizes,prev,pager,next,jumper'
        */
       layout: {
         type: String,
@@ -21,6 +23,8 @@
       },
       /**
        * @description 是否使用背景色
+       * @type {Boolean}
+       * @default true
        */
       background: {
         type: Boolean,
@@ -28,6 +32,7 @@
       },
       /**
        * @description 总条数
+       * @type {Number}
        */
       total: {
         required: true,
@@ -35,6 +40,8 @@
       },
       /**
        * @description 当前页码
+       * @type {Number}
+       * @default 1
        */
       currentPage: {
         type: Number,
@@ -42,6 +49,8 @@
       },
       /**
        * @description 每页条数
+       * @type {Number}
+       * @default 20
        */
       pageSize: {
         type: Number,
@@ -49,6 +58,8 @@
       },
       /**
        * @description 每页条数选项
+       * @type {Array}
+       * @default [10, 20, 30, 50]
        */
       pageSizes: {
         type: Array,
@@ -58,13 +69,16 @@
       },
       /**
        * @description 页码按钮
+       * @type {Number}
        */
       pagerCount: {
         type: Number,
-        default: document.body.clientWidth < 992 ? 5 : 7,
+        default: 7,
       },
       /**
        * @description 对齐方式
+       * @type {String}
+       * @default 'center'
        */
       align: {
         type: String,
@@ -75,6 +89,8 @@
       },
       /**
        * @description 是否隐藏
+       * @type {Boolean}
+       * @default false
        */
       hidden: {
         type: Boolean,
@@ -117,6 +133,7 @@
     methods: {
       /**
        * @description 每页条数改变事件
+       * @param {Number} val 每页条数
        */
       handleSizeChange(val) {
         if (this.currentPageModel * val > this.total) {
@@ -130,6 +147,7 @@
       },
       /**
        * @description 当前页码改变事件
+       * @param {Number} val 当前页码
        */
       handleCurrentChange(val) {
         this.$emit("pagination", {

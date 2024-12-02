@@ -118,15 +118,20 @@
       <el-table class="bpt-table" :border="$attrs.border || tableBorder" :stripe="$attrs.stripe || tableStripe"
         v-bind="$attrs" v-on="$listeners" :height="600">
         <el-table-column v-for="column in showColumns" :key="column.prop" v-bind="column">
-          <template slot-scope="scope">
-            <template v-if="$slots[`${column.prop}Header`]" slot="header">
-              <slot :name="`${column.prop}Header`"></slot>
-            </template>
-            <template v-if="$slots[`${column.prop}Content`]">
-              <slot :name="`${column.prop}Content`" :row="scope.row" :index="scope.$index"></slot>
-            </template>
-            <template v-else>{{ scope.row[column.prop] }}</template>
-          </template>
+          <template slot="header" slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row"
+                        :index="scope.$index">{{ column.label }}</slot>
+                    <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+                </template>
+                <template slot-scope="scope">
+                    <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
+                        :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                    <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+                        {{ scope.row[column.prop] }}
+                    </slot>
+                </template>
         </el-table-column>
       </el-table>
       <div class="bpt-pagination-container">

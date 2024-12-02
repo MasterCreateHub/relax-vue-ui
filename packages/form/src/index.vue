@@ -14,14 +14,39 @@
         :key="item.model + index"
       >
         <el-form-item :label="item.label" class="re-form-item">
-          <slot :name="item.model" :item="item">
-            <component
-              class="re-form-item-component"
-              :is="item.component"
-              v-bind="item.props"
-              v-model="formData[item.model]"
-            ></component>
-          </slot>
+          <template v-if="!item.children">
+            <slot :name="item.model" :item="item">
+              <component
+                class="re-form-item-component"
+                :is="item.component"
+                v-bind="item.props"
+                v-model="formData[item.model]"
+              ></component>
+            </slot>
+          </template>
+          <template v-else>
+            <div
+              v-for="(childForm, childFormIndx) in formData[item.model]"
+              :key="formData[item.model] + childFormIndx"
+            >
+              <el-row :gutter="10" class="re-form-item__child">
+                <el-col
+                  v-for="(child, index) in item.children"
+                  :key="child.model + index"
+                  :span="child.span"
+                >
+                  <el-form-item>
+                    <component
+                      class="re-form-item-component"
+                      :is="child.component"
+                      v-bind="child.props"
+                      v-model="childForm[child.model]"
+                    ></component>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </template>
         </el-form-item>
       </el-col>
     </el-row>
@@ -228,7 +253,9 @@ export default {
      * @type {Array}
      */
     formFinalItems() {
-      return deepParse(this.formItems, this.formContext).filter(item => !item.hidden);
+      return deepParse(this.formItems, this.formContext).filter(
+        (item) => !item.hidden
+      );
     },
   },
   watch: {

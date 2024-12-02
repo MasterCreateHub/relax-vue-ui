@@ -1,92 +1,104 @@
 <template>
-    <el-descriptions v-bind="$attrs" :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
-        <template slot="title">
-            <slot name="title"></slot>
-        </template>
-        <template slot="extra">
-            <slot name="extra"></slot>
-        </template>
+  <el-descriptions
+    v-bind="$attrs"
+    :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]"
+  >
+    <template slot="title">
+      <slot name="title"></slot>
+    </template>
+    <template slot="extra">
+      <slot name="extra"></slot>
+    </template>
 
-        <el-descriptions-item v-for="item in data" :key="item.prop" :label="item.label" :span="item.span"
-            :labelClassName="item.labelClassName" :contentClassName="item.contentClassName" :labelStyle="item.labelStyle"
-            :contentStyle="item.contentStyle">
-            <template slot="label">
-                <!-- 如果没有自定义的 label 插槽，则显示默认值 -->
-                <slot name="label" :dataItem="item">
-                    <span>{{ item.label }}</span>
-                </slot>
-            </template>
-            <template slot="default">
-                <!-- 如果没有自定义的 content 插槽，则显示 item.value -->
-                <slot name="default" :dataItem="item">
-                    <span>{{ item.value }}</span>
-                </slot>
-            </template>
-        </el-descriptions-item>
-    </el-descriptions>
+    <el-descriptions-item
+      v-for="(item, index) in data"
+      :key="item.prop + index"
+      :label="item.label"
+      :span="item.span"
+      :labelClassName="item.labelClassName"
+      :contentClassName="item.contentClassName"
+      :labelStyle="item.labelStyle"
+      :contentStyle="item.contentStyle"
+    >
+      <template slot="label">
+        <slot name="label" :dataItem="item">
+          <template v-if="item.labelComponent">
+            <component
+              :is="item.labelComponent"
+              v-bind="item.labelComponentProps"
+              v-on="item.labelComponentEvents"
+            >{{ item.label }}</component>
+          </template>
+          <template v-else>{{ item.label }}</template>
+        </slot>
+      </template>
+      <template slot="default">
+        <slot name="content" :dataItem="item">
+          <template v-if="item.contentComponent">
+            <component
+              v-if="item.contentComponent"
+              :is="item.contentComponent"
+              v-bind="item.contentComponentProps"
+              v-on="item.contentComponentEvents"
+            >{{ item.value }}</component>
+          </template>
+          <template v-else>{{ item.value }}</template>
+        </slot>
+      </template>
+    </el-descriptions-item>
+  </el-descriptions>
 </template>
 
 <script>
 export default {
-    name: 'ReDescriptions',
-    props: {
-        /**
-         * @data 描述列表数据
-         * @type Array
-         * @default []
-         * @example
-         * [
-         *     {    
-         *         prop: 'name',
-         *         label: '姓名',
-         *         value: '张三',
-         *         span: 1,
-         *         labelClassName: 'labelClassName',
-         *         contentClassName: 'contentClassName',
-         *         labelStyle: {
-         *             color: 'red'
-         *         },
-         *         contentStyle: {
-         *             color:'blue'
-         *         },
-         * ]
-         */
-        data: {
-            type: Array,
-            default: () => [],
-            validator(value) {
-                return value.every(item => {
-                    return (
-                        typeof item.prop === 'string' &&
-                        typeof item.label === 'string' &&
-                        (typeof item.value === 'string' || typeof item.value === 'number' || typeof item.value === 'boolean' || Array.isArray(item.value))
-                    );
-                });
-            }
-        },
-        /**
-         * @description 描述列表的布局方式，可选值：fixed、auto
-         */
-        layout: {
-            type: String,
-            default: 'fixed',
-            validator(value) {
-                return ['fixed', 'auto'].includes(value)
-            }
-        }
+  name: "ReDescriptions",
+  props: {
+    /**
+     * @data 描述列表数据配置
+     * @type {Array<Item>}
+     * @property {Object} item 描述列表项对象
+     * @property {String} item.prop 描述列表项对象的属性名
+     * @property {String} item.label 描述列表项对象的标签名
+     * @property {String} item.value 描述列表项对象的值
+     * @property {Number} item.span 描述列表项对象的跨列数
+     * @property {String} item.labelClassName 描述列表项对象的标签class
+     * @property {String} item.contentClassName 描述列表项对象的内容class
+     * @property {Object} item.labelStyle 描述列表项对象的标签样式
+     * @property {Object} item.contentStyle描述列表项对象的内容样式
+     * @property {String} item.labelComponent 描述列表项对象的标签组件
+     * @property {Object} item.labelComponentProps 描述列表项对象的标签组件的props
+     * @property {Object} item.labelComponentEvents 描述列表项对象的标签组件的events
+     * @property {Object} item.contentComponent 描述列表项对象的内容组件
+     * @property {Object} item.contentComponentProps 描述列表项对象的内容组件的props
+     * @property {Object} item.contentComponentEvents 描述列表项对象的内容组件的events
+     * @default []
+     */
+    data: {
+      type: Array,
+      default: () => [],
     },
-    data() {
-      return {};
+    /**
+     * @description 描述列表的布局方式，可选值：fixed、auto
+     * @type {'fixed' | 'auto'}
+     */
+    layout: {
+      type: String,
+      default: "fixed",
+      validator(value) {
+        return ["fixed", "auto"].includes(value);
+      },
     },
-    methods: {
-
-    },
-}
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+};
 </script>
 <style lang="scss" scoped>
 ::v-deep.is-layout-fixed {
-    .el-descriptions__body .el-descriptions__table {
-        table-layout: fixed;
-    }
+  .el-descriptions__body .el-descriptions__table {
+    table-layout: fixed;
+  }
 }
 </style>

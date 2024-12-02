@@ -1,7 +1,19 @@
 <template>
   <div class="table-view">
-    <base-page-table :factor-span="6" :factors="seacherFactors" :columns="columns" :data="tableData" :total="total"
-      :page.sync="queryForm.pageNumber" :limit.sync="queryForm.pageSize" @pagination="handleGet"></base-page-table>
+    <base-page-table
+      :factor-span="6"
+      :factors="seacherFactors"
+      :columns="columns"
+      :data="tableData"
+      :total="total"
+      :page.sync="queryForm.pageNumber"
+      :limit.sync="queryForm.pageSize"
+      @pagination="handleGet"
+    >
+      <template #genderContent="scope">
+        <el-tag>{{ scope.row.gender }}</el-tag>
+      </template>
+    </base-page-table>
   </div>
 </template>
 
@@ -33,6 +45,9 @@ export default {
           label: "序号",
           prop: "id",
           align: "center",
+          width: 80,
+          type: "index",
+          fixed: "left",
         },
         {
           label: "姓名",
@@ -55,125 +70,66 @@ export default {
           align: "center",
         },
         {
+          label: "电话",
+          prop: "phone",
+          align: "center",
+        },
+        {
+          label: "地址",
+          prop: "address",
+          align: "center",
+        },
+        {
+          label: "生日",
+          prop: "birthday",
+          align: "center",
+        },
+        {
+          label: "职位",
+          prop: "post",
+          align: "center",
+        },
+        {
+          label: "部门",
+          prop: "department",
+          align: "center",
+        },
+        {
+          label: "学历",
+          prop: "education",
+          align: "center",
+        },
+        {
+          label: "毕业院校",
+          prop: "school",
+          align: "center",
+        },
+        {
+          label: "毕业时间",
+          prop: "graduationTime",
+          align: "center",
+        },
+        {
           label: "描述",
           prop: "desc",
           align: "center",
-        },
-        { label: "备注", prop: "remark", align: "center" },
-      ],
-      fetchData: [
-        {
-          id: 1,
-          name: "张三",
-          age: 18,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
+          fixed: "right",
+          width: 120,
+          showOverflowTooltip: true,
         },
         {
-          id: 2,
-          name: "李四",
-          age: 19,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 3,
-          name: "王五",
-          age: 20,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 4,
-          name: "赵六",
-          age: 21,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 5,
-          name: "孙七",
-          age: 22,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 6,
-          name: "周八",
-          age: 23,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 7,
-          name: "吴九",
-          age: 24,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 8,
-          name: "郑十",
-          age: 25,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 9,
-          name: "郑十一",
-          age: 26,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 10,
-          name: "郑十二",
-          age: 27,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 11,
-          name: "郑十三",
-          age: 28,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
-        },
-        {
-          id: 12,
-          name: "郑十四",
-          age: 29,
-          email: "123@qq.com",
-          gender: "男",
-          desc: "描述",
-          remark: "备注",
+          label: "备注",
+          prop: "remark",
+          align: "center",
+          fixed: "right",
+          width: 120,
+          showOverflowTooltip: true,
         },
       ],
+      fetchData: [],
       queryForm: {
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 20,
         name: "",
         age: "",
         gender: "",
@@ -190,11 +146,33 @@ export default {
   },
   methods: {
     handleGet() {
-      this.total = this.fetchData.length;
-      this.tableData = this.fetchData.slice(
-        (this.queryForm.pageNumber - 1) * this.queryForm.pageSize,
-        this.queryForm.pageNumber * this.queryForm.pageSize
-      );
+      this.fetchData = [];
+      setTimeout(() => {
+        for (let i = 0; i < 100; i++) {
+          this.fetchData.push({
+            id: i,
+            name: `名字${i}`,
+            age: 18,
+            gender: "男",
+            email: "12345678901@qq.com",
+            desc: "我是一个描述",
+            phone: "12345678901",
+            address: "北京",
+            birthday: "1999-09-09",
+            post: "前端工程师",
+            department: "前端部",
+            education: "本科",
+            school: "北京大学",
+            graduationTime: "2019-09-09",
+            remark: "我是一个备注",
+          });
+        }
+        this.tableData = this.fetchData.slice(
+          (this.queryForm.pageNumber - 1) * this.queryForm.pageSize,
+          this.queryForm.pageNumber * this.queryForm.pageSize
+        );
+        this.total = this.fetchData.length;
+      }, 1000);
     },
   },
 };

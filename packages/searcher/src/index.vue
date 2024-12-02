@@ -55,6 +55,8 @@ export default {
   props: {
     /**
      * @description 搜索表单数据对象
+     * @type {Object}
+     * @default {}
      */
     formModel: {
       type: Object,
@@ -64,12 +66,16 @@ export default {
     },
     /**
      * @description 搜索表单配置
+     * @type {Object}
+     * @property {String} size 搜索表单大小，可选值：small、mini
+     * @property {String} labelWidth 搜索表单标签宽度
+     * @property {String} labelPosition 搜索表单标签位置，可选值：left、right、justify
      */
     formConfig: {
       type: Object,
       default: () => {
         return {
-          size: " ",
+          size: "small",
           labelWidth: "60px",
           labelPosition: 'justify'
         };
@@ -80,6 +86,8 @@ export default {
     },
     /**
      * @description 是否默认展开所有搜索条件
+     * @type {Boolean}
+     * @default false
      */
     defaultExpand: {
       type: Boolean,
@@ -87,6 +95,8 @@ export default {
     },
     /**
      * @description 搜索条件间距
+     * @type {Number}
+     * @default 20
      */
     factorSpacing: {
       type: Number,
@@ -94,6 +104,8 @@ export default {
     },
     /**
      * @description 搜索条件最小宽度
+     * @type {Number}
+     * @default 240
      */
     factorMinWidth: {
       type: Number,
@@ -101,14 +113,13 @@ export default {
     },
     /**
      * @description 搜索条件数组
-     * @type {Array}
-     * @ArrayItem {label: String, prop: String, type: String, config: Object, options: Array, valueType: String}
-     * @ArrayItem.label {String} 搜索条件名称
-     * @ArrayItem.prop {String} 搜索条件绑定的属性，即表单组件要绑定的v-model
-     * @ArrayItem.type {String} 搜索条件组件类型，默认为el-input
-     * @ArrayItem.config {Object} 搜索条件组件的配置项，默认为{}
-     * @ArrayItem.options {Array} 搜索条件组件的选项，默认为[]，一般用于el-select、el-radio-group、el-checkbox-group等组件
-     * @ArrayItem.valueType {String} 搜索条件组件绑定值的类型，默认为String
+     * @type {Array<Factor>}
+     * @property {Object} factor 搜索条件对象
+     * @property {String} factor.label  搜索条件标签名称
+     * @property {String} factor.model  搜索条件双向绑定的属性名
+     * @property {String} factor.component 搜索条件组件名称，默认为el-input
+     * @property {Object} factor.componentProps 搜索条件组件的配置项，默认为{}
+     * @property {'string'|'number'|'boolean'|'array'} factor.valueType 搜索条件组件绑定值的类型，默认为string
      */
     factors: {
       type: Array,
@@ -249,7 +260,6 @@ export default {
       return this.autoSearch > 300 ? this.autoSearch : 300;
     }
   },
-
   watch: {
     form: {
       handler() {

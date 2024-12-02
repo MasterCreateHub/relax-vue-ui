@@ -1,7 +1,7 @@
 <template>
   <div class="tool">
     <el-card header="通用搜索框">
-      <re-searcher :default-expand="false" label-position="justify" :factors="seacherFactors" @search="handleSearch" />
+      <re-searcher :default-expand="false" :factors="seacherFactors" @search="handleSearch" />
     </el-card>
     <el-card header="通用工具栏组件">
       <base-toolbar :tools="toolbarTools" @add="handleAdd" @delete="handleDelete" @refresh="handleRefresh"
@@ -9,14 +9,9 @@
     </el-card>
     <el-card header="通用表格组件">
       <re-table :columns="tableColumns" :data="tableData" pagination>
-        <template slot="header" slot-scope="scope">
-          <span style="color: brown;">{{ scope.column?.label }}</span>
-        </template>
-        <template slot="emailLabel">
-          <span>邮箱</span><i class="el-icon-info"></i>
-        </template>
-        <template slot="sexContent" slot-scope="scope">
-          <el-tag>{{ scope.row.sex }}</el-tag>
+        <template slot="body" slot-scope="scope">
+          <el-tag v-if="scope.column.property === 'sex'">{{ scope.row.sex }}</el-tag>
+          <el-tag v-else-if="scope.column.property === 'age'">{{ scope.row.age }}</el-tag>
         </template>
       </re-table>
     </el-card>
