@@ -4,7 +4,8 @@
             <slot name="title">
                 <span class="re-workbench-title">{{ currentWorkLabel }}</span>
             </slot>
-            <div class="re-workbench-action__wrapper" v-if="layout === 'two'">
+
+            <div v-if="layout === 'two'" class="re-workbench-action__wrapper">
                 <slot name="action" :currentWork="currentWork">
                     <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small"
                         class="re-workbench-action" v-bind="action" @click="$emit(action.eventName, currentWork)">
@@ -14,9 +15,13 @@
             </div>
         </header>
         <main class="re-workbench__body">
-            <slot :currentWork="currentWork"></slot>
+            <slot :currentWork="currentWork">
+                <component :is="currentWorkConfig.component" v-model="currentWorkConfig.model"
+                    v-bind="currentWorkConfig.props">
+                </component>
+            </slot>
         </main>
-        <div class="re-workbench__footer" v-if="layout === 'three'">
+        <footer v-if="layout === 'three'" class="re-workbench__footer">
             <div class="re-workbench-action__wrapper">
                 <slot name="action" :currentWork="currentWork">
                     <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small"
@@ -25,7 +30,7 @@
                     </el-button>
                 </slot>
             </div>
-        </div>
+        </footer>
     </div>
 </template>
 <script>
@@ -62,6 +67,8 @@ export default {
         },
         /**
          * @description 工作台所有可执行动作
+         * @component 工作台操作组件
+         * @props 工作台操作组件的props
          * @label 动作名称
          * @eventName 动作触发的事件
          * @icon 动作图标
