@@ -5,37 +5,37 @@
     </header>
     <main class="re-detail__body">
       <section
-        v-for="item in data"
-        :key="item.name"
+        v-for="section in data"
+        :key="section.name"
         :class="[
           're-detail-section',
           `is-${finallyShowType}`,
           {
             'is-active':
               finallyShowType === 'collapse' &&
-              finallyActiveSection.includes(item.name),
+              finallyActiveSection.includes(section.name),
           },
         ]"
-        @click="finallyShowType === 'collapse' ? handleActive(item.name) : null"
+        @click="finallyShowType === 'collapse' ? handleActive(section.name) : null"
       >
         <div class="re-detail-section__title">
-          <slot :name="`${item.name}Title`">
+          <slot :name="`${section.name}Title`">
             <i
               :class="[
                 { 'el-icon-caret-right': finallyShowType === 'collapse' },
                 're-detail-section__icon',
               ]"
             />
-            {{ item.label }}
+            {{ section.label }}
           </slot>
         </div>
         <div class="re-detail-section__content">
-          <slot :name="`${item.name}Content`" :data="item.data">
+          <slot :name="`${section.name}Content`" :data="section.data">
             <component
-              :is="item.component"
-              v-bind="item.componentProps"
-              :[item.dataForProps]="item.data"
-              v-on="item.componentEvents"
+              :is="section.component"
+              v-bind="section.componentProps"
+              :[section.dataForProps]="section.data"
+              v-on="section.componentEvents"
             ></component>
           </slot>
         </div>
@@ -143,7 +143,7 @@ export default {
       );
       if (this.finallyActiveSection.includes(name)) {
         this.finallyActiveSection = this.finallyActiveSection.filter(
-          (item) => item !== name
+          (sectionName) => sectionName !== name
         );
       } else {
         this.finallyActiveSection.push(name);
@@ -158,9 +158,9 @@ export default {
   border: 2px solid #ebeef5;
   border-radius: 5px;
   overflow-y: auto;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  // display: flex;
+  // align-items: center;
+  // flex-wrap: wrap;
 
   .re-detail__header {
     width: 100%;
@@ -173,7 +173,7 @@ export default {
   .re-detail__body {
     box-sizing: border-box;
     padding: 15px;
-    flex: 1;
+    // flex: 1;
   }
 
   .re-detail__footer {
