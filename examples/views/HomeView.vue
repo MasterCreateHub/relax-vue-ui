@@ -10,7 +10,7 @@
       :form-items="formItems"
       label-position="top"
     ></re-form>
-    <re-editable-table :columns="columns" :value="editRows" row-key="id" :active-keys.sync="activeKeys"></re-editable-table>
+    <re-editable-table :columns="columns" v-model="editRows" row-key="id" :active-keys.sync="activeKeys"></re-editable-table>
   </div>
 </template>
 

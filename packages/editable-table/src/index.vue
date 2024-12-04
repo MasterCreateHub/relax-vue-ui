@@ -1,16 +1,6 @@
 <template>
-  <el-table
-    class="editable-table"
-    v-bind="$attrs"
-    v-on="$listeners"
-    ref="table"
-    :data="modelValue"
-  >
-    <el-table-column
-      v-for="(column, index) in columns"
-      :key="column.prop + index"
-      v-bind="column"
-    >
+  <el-table class="editable-table" v-bind="$attrs" v-on="$listeners" ref="table" :data="modelValue">
+    <el-table-column v-for="(column, index) in columns" :key="column.prop + index" v-bind="column">
       <template slot-scope="scope">
         <template v-if="!column.editable">
           <slot :name="`${column.prop}`" :row="scope.row" :index="scope.$index">
@@ -19,26 +9,21 @@
         </template>
         <template v-else>
           <template v-if="activeRowKeys.includes(scope.row[rowKey])">
-            <slot
-              :name="`editing_${column.prop}`"
-              :row="scope.row"
-              :index="scope.$index"
-            >
-              <component
-                :is="column.editType || 'el-input'"
-                v-model="scope.row[column.prop]"
-                v-bind="column.editConfig"
-                class="base-editing-cell"
-              >
-              </component>
+            <slot :name="`editing_${column.prop}`" :row="scope.row" :index="scope.$index">
+              <template v-if="isInForm">
+                <el-form-item :prop="column.prop" :rules="column.rules">
+                  <component :is="column.editType || 'el-input'" v-model="scope.row[column.prop]"
+                    v-bind="column.editConfig" class="editing-cell" />
+                </el-form-item>
+              </template>
+              <template v-else>
+                <component :is="column.editType || 'el-input'" v-model="scope.row[column.prop]" v-bind="column.editConfig"
+                  class="editing-cell" />
+              </template>
             </slot>
           </template>
           <template v-else>
-            <slot
-              :name="`normal_${column.prop}`"
-              :row="scope.row"
-              :index="scope.$index"
-            >
+            <slot :name="`normal_${column.prop}`" :row="scope.row" :index="scope.$index">
               {{ scope.row[column.prop] }}
             </slot>
           </template>
@@ -48,23 +33,10 @@
     <el-table-column>
       <template slot-scope="scope">
         <slot name="action" :row="scope.row" :index="scope.$index">
-          <el-button
-            v-if="!activeRowKeys.includes(scope.row[rowKey])"
-            type="text"
-            size="small"
-            @click="editRow(scope.row[rowKey])"
-            >编辑</el-button
-          >
-          <el-button
-            v-else
-            type="text"
-            size="small"
-            @click="saveRow(scope.row[rowKey])"
-            >保存</el-button
-          >
-          <el-button type="text" size="small" @click="delRow(scope.row[rowKey])"
-            >删除</el-button
-          >
+          <el-button v-if="!activeRowKeys.includes(scope.row[rowKey])" type="text" size="small"
+            @click="editRow(scope.row[rowKey])">编辑</el-button>
+          <el-button v-else type="text" size="small" @click="saveRow(scope.row[rowKey])">保存</el-button>
+          <el-button type="text" size="small" @click="delRow(scope.row[rowKey])">删除</el-button>
         </slot>
       </template>
     </el-table-column>
@@ -74,9 +46,11 @@
 <script>
 export default {
   name: "ReEditableTable",
+  inject: ["elForm"],
   props: {
     /**
      * @description 表格数据
+     * @type {Array}
      */
     value: {
       type: Array,
@@ -84,28 +58,23 @@ export default {
     },
     /**
      * @description 表格行唯一标识字段
+     * @type {String}
      */
     rowKey: {
       type: String,
       default: "value",
     },
     /**
-     * 表格列配置
-     * @type {Array<Object>}
-     * @property {String} label 列名
-     * @property {String} prop 列值
-     * @property {Object} rules 列校验规则
-     * {
-     *     required: true,
-     *     type: 'string',
-     *     pattern: /^[0-9]*$/,
-     *     min: 3,
-     *     max: 5,
-     *     minLength: 'blur'
-     *     maxLength: '请输入数字',
-     *     length: 3,
-     *     validator: fn
-     * }
+     * @description 表格列配置
+     * @type {Array<Column>}
+     * @property {Object} Column 列对象
+     * @property {String} Column.label 列标签
+     * @property {String} Column.prop 列key
+     * @property {Boolean} Column.editable 是否可编辑
+     * @property {String} Column.editComponent 编辑组件
+     * @property {Object} Column.editComponentProps 编辑组件的属性
+     * @property {Object} Column.editComponentEvents 编辑组件的事件
+     * @property {Object} Column.rules 列校验规则
      *
      */
     columns: {
@@ -114,13 +83,17 @@ export default {
     },
     /**
      * @description 是否允许多行同时处于编辑状态
+     * @type {Boolean}
+     * @default false
      */
     multiple: {
       type: Boolean,
       default: false,
     },
     /**
-     * 正在编辑的行的key值数组
+     * @description 正在编辑的行的key值数组
+     * @type {Array<String>}
+     * @default []
      */
     activeKeys: {
       type: Array,
@@ -134,7 +107,7 @@ export default {
   },
   computed: {
     /**
-     * 实现表格数据编辑的v-model
+     * @description 实现表格数据编辑的v-model
      */
     modelValue: {
       get() {
@@ -146,7 +119,7 @@ export default {
       },
     },
     /**
-     * 表格行对象的键数组
+     * @description 表格行对象的键数组
      */
     rowObjectKeys() {
       if (Array.isArray(this.value) && this.value.length > 0) {
@@ -156,7 +129,7 @@ export default {
       }
     },
     /**
-     * 表格处于编辑状态的行
+     * @description 表格处于编辑状态的行
      */
     activeRowKeys: {
       get() {
@@ -172,15 +145,21 @@ export default {
       },
     },
     /**
-     * 表格行的校验规则
+     * @description 表格行的校验规则
      */
     rowValidateRules() {
-      return this.columns.map((item) => {
+      return this.columns.map((column) => {
         return {
-          field: item.prop,
-          ...item.rules,
+          field: column.prop,
+          rules: column.rules
         };
       });
+    },
+    /**
+     * @description 是否在el-form中使用
+     */
+    isInForm() {
+      return new Boolean(this.elForm);
     },
   },
   methods: {
@@ -210,7 +189,7 @@ export default {
         this.editRow(newRow[this.rowKey]);
       }
     },
-    // 编辑
+    // 编辑行
     editRow(key) {
       if (this.multiple) {
         this.activeRowKeys.push(key);
@@ -218,7 +197,7 @@ export default {
         this.activeRowKeys = [key];
       }
     },
-    // 保存
+    // 保存行
     saveRow(key) {
       if (this.multiple) {
         this.activeRowKeys = this.activeRowKeys.filter((item) => item !== key);
@@ -226,17 +205,39 @@ export default {
         this.activeRowKeys = [];
       }
     },
-    // 删除
+    // 删除行
     delRow(key) {
+      console.log('调用了');
       this.modelValue = this.modelValue.filter(
         (item) => item[this.rowKey] !== key
       );
     },
+    // 校验行
+    validate() {
+      if (this.isInForm) {
+        return this.elForm.validate();
+      } else {
+        return new Promise((resolve, reject) => {
+          let valid = true;
+          this.tableData.forEach(row => {
+            for (const column of this.columns) {
+              if (column.rules) {
+                const ruleResults = column.rules.map(rule => rule.validator(row[column.prop]));
+                if (ruleResults.some(result => result === false)) {
+                  valid = false;
+                }
+              }
+            }
+          });
+          valid ? resolve() : reject(new Error('表单校验失败'));
+        });
+      }
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
-.base-editing-cell {
+.editing-cell {
   width: 100%;
 }
 

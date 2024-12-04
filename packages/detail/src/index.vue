@@ -4,39 +4,28 @@
       <slot name="header">{{ title }}</slot>
     </header>
     <main class="re-detail__body">
-      <section
-        v-for="section in data"
-        :key="section.name"
-        :class="[
-          're-detail-section',
-          `is-${finallyShowType}`,
-          {
-            'is-active':
-              finallyShowType === 'collapse' &&
-              finallyActiveSection.includes(section.name),
-          },
-        ]"
-        @click="finallyShowType === 'collapse' ? handleActive(section.name) : null"
-      >
+      <section v-for="section in data" :key="section.name" :class="[
+        're-detail-section',
+        `is-${finallyShowType}`,
+        {
+          'is-active':
+            finallyShowType === 'collapse' &&
+            finallyActiveSection.includes(section.name),
+        },
+      ]" @click="finallyShowType === 'collapse' ? handleActive(section.name) : null">
         <div class="re-detail-section__title">
           <slot :name="`${section.name}Title`">
-            <i
-              :class="[
-                { 'el-icon-caret-right': finallyShowType === 'collapse' },
-                're-detail-section__icon',
-              ]"
-            />
+            <i :class="[
+              { 'el-icon-caret-right': finallyShowType === 'collapse' },
+              're-detail-section__icon',
+            ]" />
             {{ section.label }}
           </slot>
         </div>
         <div class="re-detail-section__content">
           <slot :name="`${section.name}Content`" :data="section.data">
-            <component
-              :is="section.component"
-              v-bind="section.componentProps"
-              :[section.dataForProps]="section.data"
-              v-on="section.componentEvents"
-            ></component>
+            <component v-for="(comp, index) in section.components" :key="comp.name + index" :is="comp.name"
+              v-bind="comp.props" :[comp.dataForProps]="comp.data" v-on="comp.events" />
           </slot>
         </div>
       </section>
@@ -157,10 +146,8 @@ export default {
   padding: 15px 20px;
   border: 2px solid #ebeef5;
   border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  // display: flex;
-  // align-items: center;
-  // flex-wrap: wrap;
 
   .re-detail__header {
     width: 100%;
@@ -173,7 +160,6 @@ export default {
   .re-detail__body {
     box-sizing: border-box;
     padding: 15px;
-    // flex: 1;
   }
 
   .re-detail__footer {
@@ -191,6 +177,7 @@ export default {
     padding: 0px;
     display: flex;
     align-items: center;
+
     .re-detail-section__icon {
       width: 10px;
       height: 10px;
@@ -223,6 +210,7 @@ export default {
     align-items: center;
     padding: 10px 15px;
     border-bottom: 1px solid #ebeef5;
+
     .re-detail-section__icon {
       width: 4px;
       height: 20px;
@@ -268,9 +256,11 @@ export default {
     display: block;
   }
 }
+
 .is-collapse:first-of-type {
   border-top: 2px solid #ebeef5;
 }
+
 .is-collapse:last-of-type {
   margin-bottom: 15px;
 }
