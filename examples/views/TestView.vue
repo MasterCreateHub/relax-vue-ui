@@ -1,6 +1,6 @@
 <template>
   <div class="test-view">
-    <re-detail title="合同详情" :data="contractDetail" show-type="card">
+    <!-- <re-detail title="合同详情" :data="contractDetail" show-type="card">
       <template #askInfoContent="scope">
         <el-table :data="scope.data">
           <el-table-column prop="systemModel" label="系统型号" align="center" />
@@ -26,7 +26,7 @@
           <el-table-column prop="yearAndMoon" label="日期" align="center" />
         </el-table>
       </template>
-    </re-detail>
+    </re-detail> -->
 
   </div>
 </template>
@@ -292,6 +292,18 @@ export default {
                 prop: "planner",
                 label: "计划员",
                 value: "",
+                span: 1,
+              },
+            ],
+          },{
+            name: "re-descriptions",
+            props: { column: 3, border: true },
+            dataForProps: "data",
+            data: [
+              {
+                prop: "isPlan",
+                label: "是否需要计划",
+                value: "否",
                 span: 1,
               },
             ],

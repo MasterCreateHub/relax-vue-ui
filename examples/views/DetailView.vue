@@ -8,21 +8,21 @@
         <el-button size="small" @click="showType = 'tab'">tab风格</el-button>
       </el-col>
     </el-row>
-    <re-detail :data="detailData" :show-type="showType" :title="'用户详情'" />
-    <el-row style="margin-bottom: 10px"> </el-row>
-    <re-descriptions :data="personalData" border :column="3" layout="auto">
+    <!-- <re-detail :data="detailData" :show-type="showType" :title="'用户详情'" />
+    <el-row style="margin-bottom: 10px"> </el-row> -->
+    <re-descriptions :items="personalDataConfig" border :column="3" layout="auto" :data="personalData">
       <template #label="scope">
-        {{ scope.dataItem.label + ":" }}
+        {{ scope.item.label + ":" }}
       </template>
       <template #content="scope">
-        <template v-if="scope.dataItem.prop === 'position'">
-          <el-tag type="success">{{ scope.dataItem.value }}</el-tag>
+        <template v-if="scope.item.prop === 'position'">
+          <el-tag type="success">{{ scope.item.value }}</el-tag>
         </template>
-        <template v-else-if="scope.dataItem.prop === 'email'">
-          <el-tag type="primary">{{ scope.dataItem.value }}</el-tag>
+        <template v-else-if="scope.item.prop === 'email'">
+          <el-tag type="primary">{{ scope.item.value }}</el-tag>
         </template>
-        <template v-else-if="scope.dataItem.prop === 'address'">
-          <el-tag type="primary">{{ scope.dataItem.value }}</el-tag>
+        <template v-else-if="scope.item.prop === 'address'">
+          <el-tag type="primary">{{ scope.item.value }}</el-tag>
         </template>
       </template>
     </re-descriptions>
@@ -96,11 +96,10 @@ export default {
           }],
         },
       ],
-      personalData: [
+      personalDataConfig: [
         {
           prop: "name",
           label: "姓名",
-          value: "张三",
           span: 1,
           labelClassName: "labelClassName",
           contentClassName: "contentClassName",
@@ -114,43 +113,36 @@ export default {
         {
           prop: "age",
           label: "年龄",
-          value: 28,
           span: 1,
         },
         {
           prop: "gender",
           label: "性别",
-          value: "男",
           span: 1,
         },
         {
           prop: "phone",
           label: "电话",
-          value: "13800138000",
           span: 1,
         },
         {
           prop: "address",
           label: "地址",
-          value: "上海市浦东新区",
           span: 1,
         },
         {
           prop: "education",
           label: "学历",
-          value: "本科",
           span: 1,
         },
         {
           prop: "company",
           label: "公司",
-          value: "阿里巴巴集团",
           span: 1,
         },
         {
           prop: "email",
           label: "邮箱",
-          value: "zhangsan@example.com",
           span: 1,
         },
         {
@@ -168,7 +160,6 @@ export default {
         {
           prop: "webSite",
           label: "个人网站",
-          value: "https://www.baidu.com",
           span: 2,
           contentComponent: "el-link",
           contentComponentProps: {
@@ -181,7 +172,26 @@ export default {
             },
           },
         },
+        {
+          prop: "happy",
+          label: "爱好",
+          span: 3,
+        }
       ],
+      personalData: {
+        name: "张三",
+        age: 28,
+        gender: "男",
+        phone: "13800138000",
+        address: "上海市浦东新区",
+        education: "本科",
+        company: "阿里巴巴集团",
+        email: "zhangsan@example.com",
+        position: "软件工程师",
+        hobbies: "编程, 阅读, 游泳",
+        webSite: "https://www.baidu.com",
+        happy: ["读书","游泳","跑步"]
+      }
     };
   },
   computed: {},

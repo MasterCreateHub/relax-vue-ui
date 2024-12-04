@@ -1,8 +1,5 @@
 <template>
-  <el-descriptions
-    v-bind="$attrs"
-    :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]"
-  >
+  <el-descriptions v-bind="$attrs" :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
     <template slot="title">
       <slot name="title"></slot>
     </template>
@@ -10,37 +7,24 @@
       <slot name="extra"></slot>
     </template>
 
-    <el-descriptions-item
-      v-for="(item, index) in data"
-      :key="item.prop + index"
-      :label="item.label"
-      :span="item.span"
-      :labelClassName="item.labelClassName"
-      :contentClassName="item.contentClassName"
-      :labelStyle="item.labelStyle"
-      :contentStyle="item.contentStyle"
-    >
+    <el-descriptions-item v-for="(item, index) in finallyItems" :key="item.prop + index" :label="item.label"
+      :span="item.span" :labelClassName="item.labelClassName" :contentClassName="item.contentClassName"
+      :labelStyle="item.labelStyle" :contentStyle="item.contentStyle">
       <template slot="label">
-        <slot name="label" :dataItem="item">
+        <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component
-              :is="item.labelComponent"
-              v-bind="item.labelComponentProps"
-              v-on="item.labelComponentEvents"
-            >{{ item.label }}</component>
+            <component :is="item.labelComponent || null" v-bind="item.labelComponentProps || {}"
+              v-on="item.labelComponentEvents || {}">{{ item.label }}</component>
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
       </template>
       <template slot="default">
-        <slot name="content" :dataItem="item">
+        <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
-            <component
-              v-if="item.contentComponent"
-              :is="item.contentComponent"
-              v-bind="item.contentComponentProps"
-              v-on="item.contentComponentEvents"
-            >{{ item.value }}</component>
+            <component :is="item.contentComponent || null" v-bind="item.contentComponentProps || {}"
+              v-on="item.contentComponentEvents || {}">{{ item.value }}
+            </component>
           </template>
           <template v-else>{{ item.value }}</template>
         </slot>
@@ -54,17 +38,16 @@ export default {
   name: "ReDescriptions",
   props: {
     /**
-     * @data 描述列表数据配置
+     * @description 描述列表数据配置
      * @type {Array<Item>}
      * @property {Object} item 描述列表项对象
      * @property {String} item.prop 描述列表项对象的属性名
      * @property {String} item.label 描述列表项对象的标签名
-     * @property {String} item.value 描述列表项对象的值
-     * @property {Number} item.span 描述列表项对象的跨列数
+     * @property {Number} item.span 描述列表项对象的占几列
      * @property {String} item.labelClassName 描述列表项对象的标签class
      * @property {String} item.contentClassName 描述列表项对象的内容class
      * @property {Object} item.labelStyle 描述列表项对象的标签样式
-     * @property {Object} item.contentStyle描述列表项对象的内容样式
+     * @property {Object} item.contentStyle 描述列表项对象的内容样式
      * @property {String} item.labelComponent 描述列表项对象的标签组件
      * @property {Object} item.labelComponentProps 描述列表项对象的标签组件的props
      * @property {Object} item.labelComponentEvents 描述列表项对象的标签组件的events
@@ -73,9 +56,19 @@ export default {
      * @property {Object} item.contentComponentEvents 描述列表项对象的内容组件的events
      * @default []
      */
-    data: {
+    items: {
       type: Array,
       default: () => [],
+    },
+    /**
+     * @description 描述列表数据对象
+     * @type {Object}
+     */
+    data: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     /**
      * @description 描述列表的布局方式，可选值：fixed、auto
@@ -91,6 +84,14 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    finallyItems() {
+      return this.items.map(item => {
+        item.value = this.data[item.prop] || null
+        return item
+      })
+    }
   },
   methods: {},
 };
