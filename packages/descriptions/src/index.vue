@@ -1,5 +1,8 @@
 <template>
-  <el-descriptions v-bind="$attrs" :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
+  <el-descriptions
+    v-bind="$attrs"
+    :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]"
+  >
     <template slot="title">
       <slot name="title"></slot>
     </template>
@@ -7,14 +10,25 @@
       <slot name="extra"></slot>
     </template>
 
-    <el-descriptions-item v-for="(item, index) in finallyItems" :key="item.prop + index" :label="item.label"
-      :span="item.span" :labelClassName="item.labelClassName" :contentClassName="item.contentClassName"
-      :labelStyle="item.labelStyle" :contentStyle="item.contentStyle">
+    <el-descriptions-item
+      v-for="(item, index) in finallyItems"
+      :key="item.prop + index"
+      :label="item.label"
+      :span="item.span"
+      :labelClassName="item.labelClassName"
+      :contentClassName="item.contentClassName"
+      :labelStyle="item.labelStyle"
+      :contentStyle="item.contentStyle"
+    >
       <template slot="label">
         <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component :is="item.labelComponent || null" v-bind="item.labelComponentProps || {}"
-              v-on="item.labelComponentEvents || {}">{{ item.label }}</component>
+            <component
+              :is="item.labelComponent || null"
+              v-bind="item.labelComponentProps || {}"
+              v-on="item.labelComponentEvents || {}"
+              >{{ item.label }}</component
+            >
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
@@ -22,8 +36,11 @@
       <template slot="default">
         <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
-            <component :is="item.contentComponent || null" v-bind="item.contentComponentProps || {}"
-              v-on="item.contentComponentEvents || {}">{{ item.value }}
+            <component
+              :is="item.contentComponent || null"
+              v-bind="item.contentComponentProps || {}"
+              v-on="item.contentComponentEvents || {}"
+              >{{ item.value }}
             </component>
           </template>
           <template v-else>{{ item.value }}</template>
@@ -34,6 +51,7 @@
 </template>
 
 <script>
+import { cloneDeep } from "lodash";
 export default {
   name: "ReDescriptions",
   props: {
@@ -54,6 +72,7 @@ export default {
      * @property {Object} item.contentComponent 描述列表项对象的内容组件
      * @property {Object} item.contentComponentProps 描述列表项对象的内容组件的props
      * @property {Object} item.contentComponentEvents 描述列表项对象的内容组件的events
+     * @property {String} item.dataInProps 描述列表项对象的内容组件所需数据的prop名称，组件才能将数据自动注入
      * @default []
      */
     items: {
@@ -67,8 +86,8 @@ export default {
     data: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     /**
      * @description 描述列表的布局方式，可选值：fixed、auto
@@ -86,12 +105,21 @@ export default {
     return {};
   },
   computed: {
+    /**
+     * @description 最终描述列表项数组
+     */
     finallyItems() {
-      return this.items.map(item => {
-        item.value = this.data[item.prop] || null
-        return item
-      })
-    }
+      const itemsClone = cloneDeep(this.items);
+      return itemsClone.map((item) => {
+        item.value = this.data[item.prop] || null;
+        if (item.dataInProps && typeof item.dataInProps === "string") {
+          item.contentComponentProps &&
+            (item.contentComponentProps[item.dataInProps] =
+              this.data[item.prop]);
+        }
+        return item;
+      });
+    },
   },
   methods: {},
 };
