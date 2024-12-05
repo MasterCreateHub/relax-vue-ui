@@ -11,17 +11,11 @@
     <!-- <re-detail :data="detailData" :show-type="showType" :title="'用户详情'" />
     <el-row style="margin-bottom: 10px"> </el-row> -->
     <re-descriptions :items="personalDataConfig" border :column="3" layout="auto" :data="personalData">
-      <template #label="scope">
-        {{ scope.item.label + ":" }}
-      </template>
       <template #content="scope">
         <template v-if="scope.item.prop === 'position'">
           <el-tag type="success">{{ scope.item.value }}</el-tag>
         </template>
         <template v-else-if="scope.item.prop === 'email'">
-          <el-tag type="primary">{{ scope.item.value }}</el-tag>
-        </template>
-        <template v-else-if="scope.item.prop === 'address'">
           <el-tag type="primary">{{ scope.item.value }}</el-tag>
         </template>
       </template>
@@ -176,6 +170,12 @@ export default {
           prop: "happy",
           label: "爱好",
           span: 3,
+          contentComponent: "re-converter",
+          contentComponentProps: {
+            container: "el-tag",
+            source: [{label:'读书',value:'读书'},{label:'游泳',value:'游泳'},{label:'跑步',value:'跑步'}],
+          },
+          dataInProps: "target",
         }
       ],
       personalData: {
