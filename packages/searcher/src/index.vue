@@ -208,9 +208,15 @@ export default {
       get() {
         return this.formModel;
       },
-      set() {
-        this.$emit("update:formModel", this.form);
+      set(val) {
+        this.$emit("update:formModel", val);
       },
+    },
+    /**
+     * @description 表单数据对象的拷贝，用于监听表单字段值的改变
+     */
+    formModelCopy(){
+      return JSON.parse(JSON.stringify(this.formModel))
     },
     /**
      *  @description 搜索表单可见的检索条件
@@ -261,10 +267,15 @@ export default {
     }
   },
   watch: {
-    form: {
-      handler() {
+    formModelCopy: {
+      handler(newVal, oldVal) {
         if (this.autoSearch) {
-          this.handleDebounceSearch();
+          const changeFields = this.factors.some((factor) => {
+            return newVal[factor.prop] !== oldVal[factor.prop];
+          })
+          if(changeFields){
+            this.handleDebounceSearch();
+          }
         }
       },
       deep: true

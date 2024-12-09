@@ -221,6 +221,9 @@ export default {
 
   },
   methods: {
+    handleCilckHappy(){
+
+    },
     handleDetail(event, data) {
       console.log('点击链接获取详情', data);
     }
