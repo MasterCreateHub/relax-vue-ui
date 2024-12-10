@@ -11,7 +11,7 @@
     </template>
 
     <el-descriptions-item
-      v-for="(item, index) in finallyItems"
+      v-for="(item, index) in renderConfig"
       :key="item.prop + index"
       :label="item.label"
       :span="item.span"
@@ -106,16 +106,21 @@ export default {
   },
   computed: {
     /**
-     * @description 最终描述列表项数组
+     * @description 最终渲染配置
      */
-    finallyItems() {
+    renderConfig() {
       const itemsClone = cloneDeep(this.items);
       return itemsClone.map((item) => {
+        item.labelComponent = item.labelComponent || null;
+        item.labelComponentProps = item.labelComponentProps || {};
+        item.labelComponentEvents = item.labelComponentEvents || {};
+        item.contentComponent = item.contentComponent || null;
+        item.contentComponentProps = item.contentComponentProps || {};
+        item.contentComponentEvents = item.contentComponentEvents || {};
+        item.dataInProps = item.dataInProps || null;
         item.value = this.data[item.prop] || null;
         if (item.dataInProps && typeof item.dataInProps === "string") {
-          item.contentComponentProps &&
-            (item.contentComponentProps[item.dataInProps] =
-              this.data[item.prop]);
+          item.contentComponentProps[item.dataInProps] = this.data[item.prop]
         }
         return item;
       });

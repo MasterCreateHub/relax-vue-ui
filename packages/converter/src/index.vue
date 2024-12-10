@@ -1,7 +1,7 @@
 <template>
-    <div :class="['re-converter', 're-converter__wrapper', { 'is-Multiple': isMultipleValues }]">
-        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="$attrs" v-on="$listeners"
-            class="re-converter-value">
+    <div :class="['re-converter', { 'is-Multiple': isMultipleValues }]">
+        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="containerProps"
+            v-on="finallyContainerEvents(item)" class="re-converter-value">
             {{ item }}
         </component>
     </div>
@@ -18,16 +18,17 @@ export default {
         target: {
             type: [Number, String, Boolean, Array, Date],
             required: true,
+            default: null,
         },
         /**
-         * @description 与目标相关联的根源数据，通常为数组，对象或者函数
-         * @type {Array | Object | Function}
-         * @array 如果是数组，要求每个元素必须是一个带有value属性和label属性的对象[{value: '1', label: '级别A'}]
-         * @object 如果是对象，则要求this.value必须是对象中的key
-         * @function 如果是函数，则要求该函数必须有返回值
+         * @description 与目标相关联的根源数据，通常为数组，对象或者函数;
+         * 如果是数组，要求每个元素必须是一个带有value属性和label属性的对象;
+         * 如果是函数，则要求该函数必须有返回值;
+         * 如果是字符串，要求是一个表达式，可使用变量$targetValue,表示要转换的数据
+         * @type {Array | Object | Function | String}
          */
         source: {
-            type: [Array, Object, Function],
+            type: [Array, Object, Function, String],
             required: true,
             validator(value) {
                 if (Array.isArray(value)) {
@@ -42,74 +43,137 @@ export default {
             },
         },
         /**
-         * @description 最终的渲染容器
+         * @description 渲染容器的标签
          * @type {String}
          */
         container: {
             type: String,
             default: 'span',
         },
+        /**
+         * @description 容器的props
+         * @type {Object}
+         */
+        containerProps: {
+            type: Object,
+            default: () => {
+                return {};
+            },
+        },
+        /**
+         * @description 容器的events
+         * @type {Object}
+         */
+        containerEvents: {
+            type: Object,
+            default: () => {
+                return {};
+            },
+        },
+        /**
+         * @description 默认渲染
+         * @type {String | Number}
+         */
+        defaultRender: [String, Number],
     },
     data() {
-      return {};
+        return {};
     },
     computed: {
         /**
          * @description 最终的渲染值
          */
         convertedValues() {
-            let result = [];
-
             const sourceType = Object.prototype.toString.call(this.source);
-
             switch (sourceType) {
                 case '[object Array]':
-                    if (typeof this.target === 'number' || typeof this.target === 'string') {
+                    if (this.target === null || this.target === undefined || this.target === '') {
+                        return this.defaultValue ? [this.defaultValue] : []
+                    }
+                    if (Boolean(this.target) && typeof this.target === 'number' || typeof this.target === 'string') {
                         const foundItem = this.source.find(item => item.value === this.target);
-                        result = foundItem ? [foundItem.label] : [];
-                    } else if (Array.isArray(this.target)) {
-                        result = this.source.filter(item => this.target.includes(item.value)).map(item => item.label);
-                    } else {
-                        result = [this.target];
+                        return foundItem ? [foundItem.label] : [];
                     }
-                    break;
+                    if (Array.isArray(this.target)) {
+                        return this.source.filter(item => this.target.includes(item.value)).map(item => item.label);
+                    }
+                    return [this.target]
+
                 case '[object Object]':
-                    if (typeof this.target === 'string') {
-                        result = [this.source[this.target]];
-                    } else if (Array.isArray(this.target)) {
-                        result = this.target.map(item => this.source[item]);
-                    } else {
-                        result = [this.target];
+                    if (this.target === null || this.target === undefined || this.target === '') {
+                        return this.defaultValue ? [this.defaultValue] : []
                     }
-                    break;
+                    if (Boolean(this.target) && typeof this.target === 'string') {
+                        return [this.source[this.target]];
+                    }
+                    if (Array.isArray(this.target)) {
+                        return this.target.map(item => this.source[item]);
+                    }
+                    return [this.target]
+
                 case '[object Function]':
                     try {
                         const returnValue = this.source(this.target);
-                        if (typeof returnValue === 'string' ||
+                        const isAllowType = Boolean(typeof returnValue === 'string' ||
                             typeof returnValue === 'number' ||
                             typeof returnValue === 'boolean' ||
-                            Array.isArray(returnValue)) {
-                            result = Array.isArray(returnValue) ? returnValue : [returnValue];
+                            Array.isArray(returnValue))
+                        const isAllowValue = Boolean(returnValue !== null && returnValue !== undefined && returnValue !== '')
+                        if (isAllowValue && isAllowType) {
+                            return Array.isArray(returnValue) ? returnValue : [returnValue];
                         } else {
-                            result = [];
+                            return this.defaultValue ? [this.defaultValue] : []
                         }
                     } catch (error) {
                         console.error('An error occurred while calling the source function:', error);
-                        result = [];
+                        return this.defaultValue ? [this.defaultValue] : []
                     }
-                    break;
-                default:
-                    result = [this.target];
-                    break;
-            }
 
-            return result;
+                case '[object String]':
+                    try {
+                        const func = new Function(['$targetValue'], 'return ' + this.source)
+                        const returnValue = func(this.target)
+                        const isAllowType = Boolean(typeof returnValue === 'string' ||
+                            typeof returnValue === 'number' ||
+                            typeof returnValue === 'boolean' ||
+                            Array.isArray(returnValue))
+                        const isAllowValue = Boolean(returnValue !== null && returnValue !== undefined && returnValue !== '')
+
+                        if (isAllowValue && isAllowType) {
+                            return Array.isArray(returnValue) ? returnValue : [returnValue];
+                        } else {
+                            return this.defaultValue ? [this.defaultValue] : []
+                        }
+                    } catch (error) {
+                        console.error('An error occurred while evaluating the source expression:', error);
+                        return this.defaultValue ? [this.defaultValue] : []
+                    }
+                default:
+                    if (this.target === null || this.target === undefined || this.target === '') {
+                        return this.defaultValue ? [this.defaultValue] : []
+                    }
+                    return Array.isArray(this.target) ? this.target : [this.target];
+            }
         },
         /**
          * @description 是否有多个值
          */
         isMultipleValues() {
             return this.convertedValues.length > 0;
+        },
+        /**
+         * @description 最终的容器事件
+         */
+        finallyContainerEvents() {
+            return (item) => {
+                const events = {};
+                Object.keys(this.containerEvents).forEach((event) => {
+                    events[event] = (...args) => {
+                        this.containerEvents[event](...args, item);
+                    };
+                })
+                return { ...events };
+            };
         }
     },
     methods: {},
@@ -117,7 +181,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.re-converter__wrapper {
+.re-converter {
     display: inline-block;
     box-sizing: border-box;
     padding: 10px;

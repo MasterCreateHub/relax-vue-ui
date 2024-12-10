@@ -1,6 +1,12 @@
 <template>
   <div class="detail">
     <el-row style="margin-bottom: 10px">
+      <el-col :span="24">
+        <re-converter v-bind="convterConfig"></re-converter>
+        <re-converter v-bind="convterConfig1"></re-converter>
+      </el-col>
+    </el-row>
+    <el-row style="margin-bottom: 10px">
       <el-col>
         <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
         <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
@@ -18,9 +24,6 @@
         <template v-else-if="scope.item.prop === 'email'">
           <el-tag type="primary">{{ scope.item.value }}</el-tag>
         </template>
-        <template v-else-if="scope.item.prop === 'address'">
-          <el-tag type="primary">{{ scope.item.value }}</el-tag>
-        </template>
       </template>
     </re-descriptions>
   </div>
@@ -32,6 +35,21 @@ export default {
   components: {},
   data() {
     return {
+      convterConfig: {
+        target: ["读书", "游泳", "跑步"],
+        container: "el-tag",
+        source: '$targetValue',
+        type: "success",
+        containerEvents:{
+          click: this.handleCilckHappy
+        } ,
+      },
+      convterConfig1: {
+        target: 'https://www.baidu.com,https://www.sina.com',
+        container: "el-link",
+        source: `$targetValue.split(',')`,
+        type: "primary",
+      },
       showType: "simple",
       detailData: [
         {
@@ -194,7 +212,7 @@ export default {
         hobbies: "编程, 阅读, 游泳",
         webSite: "https://www.baidu.com",
         happy: ["读书","游泳","跑步"]
-      }
+      },
     };
   },
   computed: {},
@@ -203,6 +221,9 @@ export default {
 
   },
   methods: {
+    handleCilckHappy(){
+
+    },
     handleDetail(event, data) {
       console.log('点击链接获取详情', data);
     }
