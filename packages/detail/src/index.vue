@@ -4,7 +4,7 @@
       <slot name="header">{{ title }}</slot>
     </header>
     <main class="re-detail__body">
-      <section v-for="section in data" :key="section.name" :class="[
+      <section v-for="section in finallySections" :key="section.name" :class="[
         're-detail-section',
         `is-${finallyShowType}`,
         {
@@ -24,8 +24,8 @@
         </div>
         <div class="re-detail-section__content">
           <slot :name="`${section.name}Content`" :data="section.data">
-            <component v-for="(comp, index) in section.components" :key="comp.name + index" :is="comp.name"
-              v-bind="comp.props" :[comp.dataForProps]="comp.data" v-on="comp.events" />
+            <component v-for="(comp, index) in section.components" :key="comp.name + comp.dataKey + index" :is="comp.name"
+              v-bind="comp.props" v-on="comp.events"/>
           </slot>
         </div>
       </section>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { cloneDeep } from "lodash";
 export default {
   name: "ReDetail",
   props: {
@@ -50,22 +51,34 @@ export default {
       default: "",
     },
     /**
-     * @description 详情章节内容
+     * @description 章节数组
      * @type {Array<Section>}
-     * @property {Object} Section 章节对象
-     * @property {String} Section.label 区域标签
-     * @property {String} Section.name 区域名称
-     * @property {String} Section.component 组件名
-     * @property {Object} Section.componentProps 组件的属性
-     * @property {Object} Section.componentEvents 组件的事件
-     * @property {Object} Section.data 章节详情数据
-     * @property {String} Section.dataForProps 为组件注入数据使用的属性名
+     * @property {Object} section 章节对象
+     * @property {String} section.label 章节标签
+     * @property {String} section.name 章节名称
+     * @property {Array<Component>} section.components 章节所用的组件
+     * @property {Object} component 组件对象
+     * @property {String} component.name 组件的属性
+     * @property {String} component.dataKey 组件获取从data中获取数据的标识
+     * @property {Object} component.props 组件的属性
+     * @property {Object} component.events 组件的事件
+     * @property {String} component.dataInProps 为组件注入数据使用的属性名
      * @default []
      */
-    data: {
+    sections: {
       type: Array,
       default: () => {
         return [];
+      },
+    },
+    /**
+     * @description 描述列表数据对象，对象的键为章节的name
+     * @type {Object}
+     */
+    data: {
+      type: Object,
+      default: () => {
+        return {};
       },
     },
     /**
@@ -122,6 +135,27 @@ export default {
         }
       },
     },
+    finallySections() {
+      // const sectionsClone = cloneDeep(this.sections);
+      const dataClone = cloneDeep(this.data);
+      return this.sections.map((section) => {
+        section.data = dataClone[section.name] || {}
+        section.components = section.components.map(component => {
+          component.props = component.props || {}
+          component.events = component.events || {}
+          component.props = { 
+            ...component.props, 
+            test: 'test',
+            [component.dataInProps]: section.data[component.dataKey] 
+          }
+          return component
+        })
+        return section;
+      })
+    },
+  },
+  mounted() {
+    console.log(this.finallySections, this.data);
   },
   methods: {
     handleActive(name) {
