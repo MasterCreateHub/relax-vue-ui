@@ -4,19 +4,21 @@
       <slot name="header">{{ title }}</slot>
     </header>
     <main class="re-detail__body">
-      <section v-for="section in finallySections" :key="section.name" :class="[
+      <section v-for="section in renderConfig" :key="section.name" :class="[
         're-detail-section',
-        `is-${finallyShowType}`,
+        `is-${sectionShowType}`,
         {
-          'is-active':
-            finallyShowType === 'collapse' &&
-            finallyActiveSection.includes(section.name),
+          'is-collapse': collapsible
         },
-      ]" @click="finallyShowType === 'collapse' ? handleActive(section.name) : null">
+        {
+          'is-active': collapsible && currentActiveSections.includes(section.name),
+        },
+      ]" @click="collapsible ? handleActive(section.name) : null">
         <div class="re-detail-section__title">
           <slot :name="`${section.name}Title`">
             <i :class="[
-              { 'el-icon-caret-right': finallyShowType === 'collapse' },
+              { 'el-icon-menu': !collapsible },
+              { 'el-icon-caret-right': collapsible },
               're-detail-section__icon',
             ]" />
             {{ section.label }}
@@ -24,8 +26,8 @@
         </div>
         <div class="re-detail-section__content">
           <slot :name="`${section.name}Content`" :data="section.data">
-            <component v-for="(comp, index) in section.components" :key="comp.name + comp.dataKey + index" :is="comp.name"
-              v-bind="comp.props" v-on="comp.events"/>
+            <component v-for="(comp, index) in section.components" :key="section.name + comp.dataKey + index"
+              :is="comp.name" v-bind="comp.props" v-on="comp.events" />
           </slot>
         </div>
       </section>
@@ -82,71 +84,78 @@ export default {
       },
     },
     /**
-     * @description 区域的展现形式，简单、卡片、折叠面板
-     * @type {'simple' | 'card' | 'collapse'}
+     * @description 章节的展现形式，简单、卡片
+     * @type {'simple' | 'card'}
      * @default 'simple'
      */
     showType: {
       type: String,
       default: "simple",
       validator(value) {
-        return ["simple", "card", "collapse"].includes(value);
+        return ["simple", "card"].includes(value);
       },
     },
     /**
-     * @description 激活的区域，只当 showType 的值为 'collapse' 时生效
+     * @description 章节是否可折叠
+     * @type {Object}
+     */
+    collapsible: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * @description 激活（展开）的章节
      * @type {Array<String>}
      */
-    activeSection: Array,
+    activeSections: Array,
   },
   data() {
     return {
-      localActiveSection: [],
+      internalActiveSections: this.sections.map((section) => section.name) || [],
     };
   },
   computed: {
     /**
-     * @description 最终的展现形式
+     * @description 章节的展现形式
      */
-    finallyShowType() {
+    sectionShowType() {
       switch (this.showType) {
         case "simple":
           return "simple";
         case "card":
           return "card";
-        case "collapse":
-          return "collapse";
         default:
           return "simple";
       }
     },
     /**
-     * @description 最终激活的区域
+     * @description 当前展开的章节
      */
-    finallyActiveSection: {
+    currentActiveSections: {
       get() {
-        return this.activeSection || this.localActiveSection;
+        return this.activeSections || this.internalActiveSections;
       },
       set(val) {
-        if (this.activeSection) {
-          this.$emit("update:activeSection", val);
+        if (this.activeSections) {
+          this.$emit("update:activeSections", val);
         } else {
-          this.localActiveSection = val;
+          this.internalActiveSections = val;
         }
       },
     },
-    finallySections() {
-      // const sectionsClone = cloneDeep(this.sections);
-      const dataClone = cloneDeep(this.data);
-      return this.sections.map((section) => {
-        section.data = dataClone[section.name] || {}
+    /**
+     * @description 最终的渲染配置
+     */
+    renderConfig() {
+      const sectionsClone = cloneDeep(this.sections);
+      return sectionsClone.map((section) => {
+        section.data = this.data[section.name] || {}
         section.components = section.components.map(component => {
           component.props = component.props || {}
           component.events = component.events || {}
-          component.props = { 
-            ...component.props, 
-            test: 'test',
-            [component.dataInProps]: section.data[component.dataKey] 
+          component.props = {
+            ...component.props,
+            [component.dataInProps]: section.data[component.dataKey]
           }
           return component
         })
@@ -154,22 +163,19 @@ export default {
       })
     },
   },
-  mounted() {
-    console.log(this.finallySections, this.data);
-  },
   methods: {
     handleActive(name) {
       this.$emit(
         "active-section",
         name,
-        this.finallyActiveSection.includes(name)
+        this.currentActiveSections.includes(name)
       );
-      if (this.finallyActiveSection.includes(name)) {
-        this.finallyActiveSection = this.finallyActiveSection.filter(
+      if (this.currentActiveSections.includes(name)) {
+        this.currentActiveSections = this.currentActiveSections.filter(
           (sectionName) => sectionName !== name
         );
       } else {
-        this.finallyActiveSection.push(name);
+        this.currentActiveSections.push(name);
       }
     },
   },
@@ -204,27 +210,31 @@ export default {
 
 .is-simple {
   width: 100%;
-  margin-bottom: 15px;
+  border-bottom: 2px solid #ebeef5;
 
   .re-detail-section__title {
     color: #303133;
-    padding: 0px;
     display: flex;
     align-items: center;
+    padding: 10px 15px;
 
     .re-detail-section__icon {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
       margin-right: 8px;
-      background-color: #515a6e;
     }
   }
 
   .re-detail-section__content {
-    padding: 15px 15px 0px 15px;
+    padding: 5px 15px 15px 15px;
     transition: all 0.3s;
   }
+}
+
+.is-simple:first-of-type {
+  border-top: 2px solid #ebeef5;
+}
+
+.is-simple:last-of-type {
+  margin-bottom: 15px;
 }
 
 .is-card {
@@ -246,10 +256,7 @@ export default {
     border-bottom: 1px solid #ebeef5;
 
     .re-detail-section__icon {
-      width: 4px;
-      height: 20px;
       margin-right: 8px;
-      background-color: #515a6e;
     }
   }
 
@@ -262,17 +269,6 @@ export default {
 .is-collapse {
   width: 100%;
   border-bottom: 2px solid #ebeef5;
-
-  .re-detail-section__title {
-    color: #303133;
-    display: flex;
-    align-items: center;
-    padding: 10px 0px;
-
-    .re-detail-section__icon {
-      margin-right: 4px;
-    }
-  }
 
   .re-detail-section__content {
     display: none;

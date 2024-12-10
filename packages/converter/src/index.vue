@@ -1,7 +1,7 @@
 <template>
-    <div :class="['re-converter', { 'is-Multiple': isMultipleValues }]">
+    <div :class="['re-converter', { 'is-Multiple': hasMultipleValues }]">
         <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="containerProps"
-            v-on="finallyContainerEvents(item)" class="re-converter-value">
+            v-on="formatContainerEvents(item)" class="re-converter-value">
             {{ item }}
         </component>
     </div>
@@ -71,10 +71,13 @@ export default {
             },
         },
         /**
-         * @description 默认渲染
+         * @description 默认渲染的值
          * @type {String | Number}
          */
-        defaultRender: [String, Number],
+        defaultValue: {
+            type: [String, Number],
+            default: null,
+        },
     },
     data() {
         return {};
@@ -158,18 +161,18 @@ export default {
         /**
          * @description 是否有多个值
          */
-        isMultipleValues() {
+        hasMultipleValues() {
             return this.convertedValues.length > 0;
         },
         /**
          * @description 最终的容器事件
          */
-        finallyContainerEvents() {
+        formatContainerEvents() {
             return (item) => {
                 const events = {};
                 Object.keys(this.containerEvents).forEach((event) => {
                     events[event] = (...args) => {
-                        this.containerEvents[event](...args, item);
+                        this.containerEvents[event](item, ...args);
                     };
                 })
                 return { ...events };

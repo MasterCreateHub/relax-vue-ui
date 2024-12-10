@@ -1,8 +1,5 @@
 <template>
-  <el-descriptions
-    v-bind="$attrs"
-    :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]"
-  >
+  <el-descriptions v-bind="$attrs" :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
     <template slot="title">
       <slot name="title"></slot>
     </template>
@@ -10,25 +7,14 @@
       <slot name="extra"></slot>
     </template>
 
-    <el-descriptions-item
-      v-for="(item, index) in renderConfig"
-      :key="item.prop + index"
-      :label="item.label"
-      :span="item.span"
-      :labelClassName="item.labelClassName"
-      :contentClassName="item.contentClassName"
-      :labelStyle="item.labelStyle"
-      :contentStyle="item.contentStyle"
-    >
+    <el-descriptions-item v-for="(item, index) in renderConfig" :key="item.prop + index" :label="item.label"
+      :span="item.span" :labelClassName="item.labelClassName" :contentClassName="item.contentClassName"
+      :labelStyle="item.labelStyle" :contentStyle="item.contentStyle">
       <template slot="label">
         <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component
-              :is="item.labelComponent || null"
-              v-bind="item.labelComponentProps || {}"
-              v-on="item.labelComponentEvents || {}"
-              >{{ item.label }}</component
-            >
+            <component :is="item.labelComponent || null" v-bind="item.labelComponentProps || {}"
+              v-on="item.labelComponentEvents || {}">{{ item.label }}</component>
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
@@ -36,11 +22,8 @@
       <template slot="default">
         <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
-            <component
-              :is="item.contentComponent || null"
-              v-bind="item.contentComponentProps || {}"
-              v-on="item.contentComponentEvents || {}"
-              >{{ item.value }}
+            <component :is="item.contentComponent || null" v-bind="item.contentComponentProps || {}"
+              v-on="item.contentComponentEvents || {}">{{ item.value }}
             </component>
           </template>
           <template v-else>{{ item.value }}</template>

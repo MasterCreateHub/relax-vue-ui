@@ -4,63 +4,30 @@
       <slot name="toolbar">
         <div class="re-table-toolbar">
           <div class="re-table-toolbar__left">
-            <span
-              class="re-table-toolbar-tool is-left"
-              :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in leftTools"
-              :key="tool.name + index"
-            >
-              <el-tooltip
-                :disabled="!tool.useTip"
-                :content="tool.tooltip || tool.label"
-                placement="top"
-              >
+            <span class="re-table-toolbar-tool is-left" :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in leftTools" :key="tool.name + index">
+              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
                 <slot :name="`${tool.name}Tool`" :tool="tool">
                   <template v-if="tool.component">
-                    <component
-                      :is="tool.component"
-                      v-bind="tool.toolProps"
-                      v-on="tool.toolEvents"
-                    />
+                    <component :is="tool.component" v-bind="tool.toolProps" v-on="tool.toolEvents" />
                   </template>
                   <template v-else>
-                    <el-button
-                      v-bind="tool.toolProps"
-                      size="mini"
-                      @click="$emit(tool.name)"
-                      >{{ tool.label }}</el-button
-                    >
+                    <el-button v-bind="tool.toolProps" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
                   </template>
                 </slot>
               </el-tooltip>
             </span>
           </div>
           <div class="re-table-toolbar__right">
-            <span
-              class="re-table-toolbar-tool is-right"
-              :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in rightTools"
-              :key="tool.name + index"
-            >
-              <el-tooltip
-                :disabled="!tool.useTip"
-                :content="tool.tooltip || tool.label"
-                placement="top"
-              >
+            <span class="re-table-toolbar-tool is-right" :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in rightTools" :key="tool.name + index">
+              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
                 <slot :name="`${tool.name}Tool`" :tool="tool">
                   <template v-if="tool.component">
-                    <component
-                      :is="tool.component"
-                      v-bind="tool.toolProps"
-                      v-on="tool.toolEvents"
-                    />
+                    <component :is="tool.component" v-bind="tool.toolProps" v-on="tool.toolEvents" />
                   </template>
                   <template v-else>
-                    <el-button
-                      v-bind="tool.toolProps"
-                      size="mini"
-                      @click="$emit(tool.name)"
-                    />
+                    <el-button v-bind="tool.toolProps" size="mini" @click="$emit(tool.name)" />
                   </template>
                 </slot>
               </el-tooltip>
@@ -69,52 +36,33 @@
         </div>
       </slot>
     </div>
-    <el-table
-      ref="tableRef"
-      class="re-table__body"
-      :data="tableShowData"
-      v-bind="$attrs"
-      v-on="$listeners"
-    >
-      <el-table-column
-        v-for="(column, index) in columns"
-        :key="column.prop + index"
-        v-bind="column"
-      >
+    <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
+      <el-table-column v-for="(column, index) in columns" :key="column.prop + index" v-bind="column">
         <template slot="header" slot-scope="scope">
-          <slot
-            v-if="$scopedSlots[`${column.prop}Label`]"
-            :name="`${column.prop}Label`"
-            :row="scope.row"
-            :index="scope.$index"
-            >{{ column.label }}</slot
-          >
-          <slot
-            v-else
-            name="header"
-            :column="scope.column"
-            :index="scope.$index"
-            >{{ column.label }}</slot
-          >
+          <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row"
+            :index="scope.$index">{{ column.label }}</slot>
+          <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
         </template>
         <template slot-scope="scope">
-          <slot
-            v-if="$scopedSlots[`${column.prop}Content`]"
-            :name="`${column.prop}Content`"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-          >
+          <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
+            :column="scope.column" :index="scope.$index">
             {{ scope.row[column.prop] }}
+            <template v-if="column.contentComponent">
+              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+                {{ scope.row[column.prop] }}
+              </component>
+            </template>
+            <template v-else>{{ scope.row[column.prop] }}</template>
           </slot>
-          <slot
-            v-else
-            name="body"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-          >
-            {{ scope.row[column.prop] }}
+          <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+            <template v-if="column.contentComponent">
+              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+                {{ scope.row[column.prop] }}
+              </component>
+            </template>
+            <template v-else>{{ scope.row[column.prop] }}</template>
           </slot>
         </template>
       </el-table-column>
@@ -123,11 +71,8 @@
     </el-table>
     <div v-if="pagination" class="re-table-pagination__wrapper">
       <slot name="pagination">
-        <el-pagination
-          :class="['re-table-pagination', `is-${paginationConfigModel.align}`]"
-          :total="data.length"
-          v-bind.sync="paginationConfigModel"
-        />
+        <el-pagination :class="['re-table-pagination', `is-${paginationConfigModel.align}`]" :total="data.length"
+          v-bind.sync="paginationConfigModel" />
       </slot>
     </div>
   </div>
@@ -340,8 +285,10 @@ export default {
 ::v-deep.re-table {
   width: 100%;
   flex: 1;
+
   .re-table-toolbar__wrapper {
     padding-bottom: 10px;
+
     .re-table-toolbar {
       display: flex;
       justify-content: space-between;
@@ -351,6 +298,7 @@ export default {
         display: flex;
         align-items: center;
       }
+
       .re-table-toolbar__right {
         justify-content: flex-end;
 
@@ -358,6 +306,7 @@ export default {
           margin-left: 5px;
         }
       }
+
       .re-table-toolbar__left {
         justify-content: flex-start;
 
@@ -369,6 +318,7 @@ export default {
   }
 
   .re-table__body {
+
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {

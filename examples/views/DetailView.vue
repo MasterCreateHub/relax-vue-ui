@@ -6,16 +6,7 @@
         <re-converter v-bind="convterConfig1"></re-converter>
       </el-col>
     </el-row>
-    <el-row style="margin-bottom: 10px">
-      <el-col>
-        <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
-        <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
-        <el-button size="small" @click="showType = 'collapse'">折叠风格</el-button>
-        <el-button size="small" @click="showType = 'tab'">tab风格</el-button>
-      </el-col>
-    </el-row>
-    <!-- <re-detail :data="detailData" :show-type="showType" :title="'用户详情'" />
-    <el-row style="margin-bottom: 10px"> </el-row> -->
+    <el-row style="margin: 10px 0px"> </el-row>
     <re-descriptions :items="personalDataConfig" :border="true" :column="3" layout="auto" :data="personalData">
       <template #content="scope">
         <template v-if="scope.item.prop === 'position'">
@@ -26,6 +17,15 @@
         </template>
       </template>
     </re-descriptions>
+
+    <el-row style="margin: 10px 0px">
+      <el-col>
+        <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
+        <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
+        <el-button size="small" @click="collapsible = !collapsible">章节可折叠</el-button>
+      </el-col>
+    </el-row>
+    <re-detail :data="detailData" :sections="sections" :show-type="showType" :title="'用户详情'" :collapsible="collapsible"/>
   </div>
 </template>
 
@@ -40,9 +40,9 @@ export default {
         container: "el-tag",
         source: '$targetValue',
         type: "success",
-        containerEvents:{
+        containerEvents: {
           click: this.handleCilckHappy
-        } ,
+        },
       },
       convterConfig1: {
         target: 'https://www.baidu.com,https://www.sina.com',
@@ -51,66 +51,129 @@ export default {
         type: "primary",
       },
       showType: "simple",
-      detailData: [
+      collapsible: true,
+      sections: [
         {
           name: "baseInfo", // 区域名称
           label: "基础信息", // 区域标签
           components: [{
             name: "re-descriptions", // 数据展示组件
-            props: { column: 3, border: true }, // 数据展示组件的props
-            dataForProps: "data",
-            data: [
-              {
-                prop: "name",
-                label: "姓名",
-                value: "张三",
-                span: 1,
-              },
-              {
-                prop: "age",
-                label: "年龄",
-                value: 28,
-                span: 1,
-              },
-              {
-                prop: "gender",
-                label: "性别",
-                value: "男",
-                span: 1,
-              },
-              {
-                prop: "birthday",
-                label: "生日",
-                value: "1999-09-09",
-                span: 1,
-              },
-              {
-                prop: "post",
-                label: "职位",
-                value: "前端工程师",
-                span: 1,
-              },
-              {
-                prop: "department",
-                label: "部门",
-                value: "前端部",
-                span: 1,
-              },
-              {
-                prop: "education",
-                label: "学历",
-                value: "本科",
-                span: 1,
-              },
-              {
-                prop: "school",
-                label: "毕业院校",
-                value: "北京大学",
-              },
-            ],
+            props: {
+              column: 3, border: true,
+              items: [
+                {
+                  prop: "name",
+                  label: "姓名",
+                  span: 1,
+                },
+                {
+                  prop: "age",
+                  label: "年龄",
+                  span: 1,
+                },
+                {
+                  prop: "gender",
+                  label: "性别",
+                  span: 1,
+                },
+                {
+                  prop: "birthday",
+                  label: "生日",
+                  span: 1,
+                },
+                {
+                  prop: "post",
+                  label: "职位",
+                  span: 1,
+                },
+                {
+                  prop: "department",
+                  label: "部门",
+                  span: 1,
+                },
+                {
+                  prop: "education",
+                  label: "学历",
+                  span: 1,
+                },
+                {
+                  prop: "school",
+                  label: "毕业院校",
+                  span: 1,
+                },
+              ]
+            }, // 数据展示组件的props
+            dataKey: "base",
+            dataInProps: "data",
+          }],
+        },
+        {
+          name: "otherInfo", // 区域名称
+          label: "其他信息", // 区域标签
+          components: [{
+            name: "re-descriptions", // 数据展示组件
+            props: {
+              column: 3, border: true,
+              items: [
+                {
+                  prop: "name",
+                  label: "姓名",
+                  span: 1,
+                },
+                {
+                  prop: "age",
+                  label: "年龄",
+                  span: 1,
+                },
+                {
+                  prop: "gender",
+                  label: "性别",
+                  span: 1,
+                },
+                {
+                  prop: "birthday",
+                  label: "生日",
+                  span: 1,
+                },
+                {
+                  prop: "post",
+                  label: "职位",
+                  span: 1,
+                },
+                {
+                  prop: "department",
+                  label: "部门",
+                  span: 1,
+                },
+                {
+                  prop: "education",
+                  label: "学历",
+                  span: 1,
+                },
+                {
+                  prop: "school",
+                  label: "毕业院校",
+                  span: 1,
+                },
+              ]
+            }, // 数据展示组件的props
+            dataKey: "other",
+            dataInProps: "data",
           }],
         },
       ],
+      detailData: {
+        baseInfo: {
+          base: {
+
+          }
+        },
+        otherInfo: {
+          other: {
+
+          }
+        }
+      },
       personalDataConfig: [
         {
           prop: "name",
@@ -211,17 +274,32 @@ export default {
         position: "软件工程师",
         hobbies: "编程, 阅读, 游泳",
         webSite: "https://www.baidu.com",
-        happy: ["读书","游泳","跑步"]
+        happy: ["读书", "游泳", "跑步"]
       },
     };
   },
   computed: {},
 
   mounted() {
-
+    this.handleGetdata()
   },
   methods: {
-    handleCilckHappy(){
+    handleGetdata() {
+      setTimeout(() => {
+        this.detailData.baseInfo.base = {
+          name: "张三",
+          age: 18,
+          gender: "男",
+          birthday: "1990-01-01",
+          phone: "13800138000",
+          address: "上海市浦东新区",
+          education: "本科",
+          company: "阿里巴巴集团",
+          email: "zhangsan@example.com",
+        }
+      },1300)
+    },
+    handleCilckHappy() {
 
     },
     handleDetail(event, data) {
