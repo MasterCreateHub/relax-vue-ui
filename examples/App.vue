@@ -2,14 +2,9 @@
   <div id="app">
     <header>
       <nav>
-        <router-link to="/">Home</router-link> |
         <router-link to="/form">Form</router-link> |
-        <router-link to="/tool">Tool</router-link> |
         <router-link to="/table">Table</router-link>|
-        <router-link to="/list">List</router-link> |
-        <router-link to="/work">Work</router-link> |
         <router-link to="/detail">Detail</router-link>|
-        <router-link to="/print">Print</router-link>|
         <router-link to="/test">Test</router-link>
       </nav>
     </header>

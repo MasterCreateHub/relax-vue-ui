@@ -1,5 +1,5 @@
 <template>
-  <div class="detail">
+  <div class="detail-view">
     <el-row style="margin-bottom: 10px">
       <el-col :span="24">
         <re-converter v-bind="convterConfig"></re-converter>

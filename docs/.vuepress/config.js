@@ -28,7 +28,7 @@ module.exports = {
           title: "展示组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/converter", "/component/descriptions", "/component/detail", "/component/table", "/component/list"],
+          children: ["/component/converter", "/component/descriptions", "/component/detail", "/component/table"],
         },
         {
           title: "表单组件",
