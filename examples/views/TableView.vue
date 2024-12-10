@@ -1,6 +1,6 @@
 <template>
   <div class="table-view">
-    <base-page-table
+    <!-- <base-page-table
       :factor-span="6"
       :factors="seacherFactors"
       :columns="columns"
@@ -13,7 +13,7 @@
       <template #genderContent="scope">
         <el-tag>{{ scope.row.gender }}</el-tag>
       </template>
-    </base-page-table>
+    </base-page-table> -->
   </div>
 </template>
 
