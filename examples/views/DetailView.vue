@@ -25,7 +25,7 @@
         <el-button size="small" @click="collapsible = !collapsible">章节可折叠</el-button>
       </el-col>
     </el-row>
-    <re-detail :data="detailData" :sections="sections" :show-type="showType" :title="'用户详情'" :collapsible="collapsible"/>
+    <re-detail :data="detailData" :sections="sections" :show-type="showType" :title="'用户详情'" :collapsible="collapsible" />
   </div>
 </template>
 
@@ -280,8 +280,17 @@ export default {
   },
   computed: {},
 
+
   mounted() {
     this.handleGetdata()
+    // 发起API请求
+    fetch('/audience/data').then(res => {
+      return res.json()
+    }).then(data => {
+      console.log(data);
+    })
+
+
   },
   methods: {
     handleGetdata() {
@@ -297,7 +306,7 @@ export default {
           company: "阿里巴巴集团",
           email: "zhangsan@example.com",
         }
-      },1300)
+      }, 1300)
     },
     handleCilckHappy() {
 
