@@ -19,22 +19,22 @@ module.exports = {
           children: ['/component/']
         },
         {
-          title: "工具组件",
+          title: "列表相关组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/searcher", "/component/toolbar", "/component/pagintion", "/component/workbench"],
+          children: ["/component/searcher", "/component/table", "/component/toolbar", "/component/pagintion"],
         },
         {
-          title: "展示组件",
+          title: "详情相关组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/converter", "/component/descriptions", "/component/detail", "/component/table"],
+          children: ["/component/converter", "/component/descriptions", "/component/detail",],
         },
         {
-          title: "表单组件",
+          title: "表单相关组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/form"],
+          children: ["/component/form", "/component/workbench"],
         },
       ],
       "/directive/": [
