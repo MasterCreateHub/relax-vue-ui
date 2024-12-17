@@ -92,7 +92,7 @@ export default {
       type: String,
       default: "simple",
       validator(value) {
-        return ["simple", "card"].includes(value);
+        return ["simple", "bar", "card"].includes(value);
       },
     },
     /**
@@ -119,14 +119,7 @@ export default {
      * @description 章节的展现形式
      */
     sectionShowType() {
-      switch (this.showType) {
-        case "simple":
-          return "simple";
-        case "card":
-          return "card";
-        default:
-          return "simple";
-      }
+     return ["simple", "bar", "card"].includes(this.showType) ? this.showType : "simple";
     },
     /**
      * @description 当前展开的章节
@@ -150,12 +143,12 @@ export default {
       const sectionsClone = cloneDeep(this.sections);
       return sectionsClone.map((section) => {
         section.data = this.data[section.name] || {}
-        section.components = section.components.map(component => {
+        section.components = (section.components || []).map(component => {
           component.props = component.props || {}
           component.events = component.events || {}
           component.props = {
             ...component.props,
-            [component.dataInProps]: section.data[component.dataKey]
+            [component.dataInProps || 'data']: section.data[component.dataKey] || null
           }
           return component
         })
@@ -192,7 +185,7 @@ export default {
   .re-detail__header {
     width: 100%;
     text-align: center;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     padding: 5px 0px;
   }
@@ -209,6 +202,27 @@ export default {
 }
 
 .is-simple {
+  width: 100%;
+
+  .re-detail-section__title {
+    color: #ebeef5;
+    display: flex;
+    background-color: #606266;
+    align-items: center;
+    padding: 10px 15px;
+
+    .re-detail-section__icon {
+      margin-right: 8px;
+    }
+  }
+
+  .re-detail-section__content {
+    padding: 15px;
+    transition: all 0.3s;
+  }
+}
+
+.is-bar {
   width: 100%;
   border-bottom: 2px solid #ebeef5;
 
@@ -229,11 +243,11 @@ export default {
   }
 }
 
-.is-simple:first-of-type {
+.is-bar:first-of-type {
   border-top: 2px solid #ebeef5;
 }
 
-.is-simple:last-of-type {
+.is-bar:last-of-type {
   margin-bottom: 15px;
 }
 
@@ -272,7 +286,6 @@ export default {
 
   .re-detail-section__content {
     display: none;
-    padding: 5px 15px 15px 15px;
     transition: all 0.3s;
   }
 }

@@ -1,49 +1,28 @@
 <template>
   <div class="test-view">
-    <re-detail
-      title="合同详情"
-      :sections="contractDetail"
-      show-type="card"
-      :data="contractDetailData"
-    >
+    <re-detail title="合同详情" :sections="contractDetail" show-type="card" :data="contractDetailData">
       <template #askInfoContent="scope">
-        <el-table :data="scope.data">
+        <el-table :data="scope.data.askTable">
           <el-table-column prop="systemModel" label="系统型号" align="center" />
           <el-table-column prop="model" label="产品型号" align="center" />
           <el-table-column prop="productName" label="产品名称" align="center" />
           <el-table-column prop="productType" label="生产分类" align="center" />
-          <el-table-column
-            prop="consumptionQuantity"
-            label="产品数量"
-            align="center"
-          />
-          <el-table-column
-            prop="shippedQuantity"
-            label="已发货数量"
-            align="center"
-          />
+          <el-table-column prop="consumptionQuantity" label="产品数量" align="center" />
+          <el-table-column prop="shippedQuantity" label="已发货数" align="center" />
           <el-table-column prop="unitPrice" label="含税单价" align="center" />
           <el-table-column prop="unit" label="单位" align="center" />
           <el-table-column prop="totalPrice" label="总价" align="center" />
           <el-table-column prop="services" label="军种" align="center" />
-          <el-table-column
-            prop="technicalConditions"
-            label="阶段状态"
-            align="center"
-          />
-          <el-table-column label="入库绑定数量" align="center" />
+          <el-table-column prop="technicalConditions" label="阶段状态" align="center" />
+          <el-table-column label="已入库数" align="center" />
         </el-table>
       </template>
       <template #deliveryInfoContent="scope">
-        <el-table :data="scope.data">
+        <el-table :data="scope.data.deliveryTable">
           <el-table-column prop="productName" label="产品名称" align="center" />
           <el-table-column prop="model" label="产品型号" align="center" />
           <el-table-column prop="unitPrice" label="含税单价" align="center" />
-          <el-table-column
-            prop="plannedDelivery"
-            label="计划交付数量"
-            align="center"
-          />
+          <el-table-column prop="plannedDelivery" label="计划交付数" align="center" />
           <el-table-column prop="yearAndMoon" label="日期" align="center" />
         </el-table>
       </template>
@@ -289,38 +268,18 @@ export default {
             },
           ],
         },
-        // {
-        //   name: "askInfo",
-        //   label: "产品要求",
-        //   data: [
-        //     {
-        //       productName: '测速器',
-        //       model: 'ACKDL',
-        //       unitPrice: 1000,
-        //       plannedDelivery: 5,
-        //       yearAndMoon: '2020-05',
-        //     }
-        //   ],
-        // },
-        // {
-        //   name: "deliveryInfo",
-        //   label: "产品要求",
-        //   data: [
-        //     {
-        //       productName: '测速器',
-        //       model: 'ACKDL',
-        //       unitPrice: 1000,
-        //       plannedDelivery: 5,
-        //       yearAndMoon: '2020-05',
-        //     }
-        //   ],
-        // },
+        {
+          name: "askInfo",
+          label: "产品信息",
+          components: [],
+        },
+        {
+          name: "deliveryInfo",
+          label: "交付信息",
+          components: [],
+        }
       ],
       contractDetailData: {
-        baseInfoList: {
-            contractNumber: "xxxx",
-            contractType: "销售合同",
-          },
         baseInfo: {
           baseInfoList: {
             contractNumber: "xxxx",
@@ -332,11 +291,19 @@ export default {
             clientId: "北京航天航空",
           },
         },
+        askInfo: {
+          askTable: []
+
+        },
+        deliveryInfo: {
+          deliveryTable: []
+
+        },
       },
     };
   },
   mounted() {
-   
+
   },
   methods: {},
 };

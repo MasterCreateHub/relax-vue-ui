@@ -8,7 +8,6 @@ import '@/assets/style/main.scss'
 import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
 
 import  RelaxUI from '../src/index'
-import '../mock/index'
 
 Vue.config.productionTip = false;
 

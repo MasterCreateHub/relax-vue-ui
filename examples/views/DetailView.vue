@@ -21,6 +21,7 @@
     <el-row style="margin: 10px 0px">
       <el-col>
         <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
+        <el-button size="small" @click="showType = 'bar'">带状风格</el-button>
         <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
         <el-button size="small" @click="collapsible = !collapsible">章节可折叠</el-button>
       </el-col>
@@ -161,6 +162,60 @@ export default {
             dataInProps: "data",
           }],
         },
+        {
+          name: "productInfo",
+          label: "产品信息",
+          components: [{
+            name: "re-descriptions", // 数据展示组件
+            props: {
+              column: 3, border: true,
+              items: [
+                {
+                  prop: "name",
+                  label: "姓名",
+                  span: 1,
+                },
+                {
+                  prop: "age",
+                  label: "年龄",
+                  span: 1,
+                },
+                {
+                  prop: "gender",
+                  label: "性别",
+                  span: 1,
+                },
+                {
+                  prop: "birthday",
+                  label: "生日",
+                  span: 1,
+                },
+                {
+                  prop: "post",
+                  label: "职位",
+                  span: 1,
+                },
+                {
+                  prop: "department",
+                  label: "部门",
+                  span: 1,
+                },
+                {
+                  prop: "education",
+                  label: "学历",
+                  span: 1,
+                },
+                {
+                  prop: "school",
+                  label: "毕业院校",
+                  span: 1,
+                },
+              ]
+            }, // 数据展示组件的props
+            dataKey: "product",
+            dataInProps: "data",
+          }]
+        }
       ],
       detailData: {
         baseInfo: {
@@ -170,6 +225,11 @@ export default {
         },
         otherInfo: {
           other: {
+
+          }
+        },
+        productInfo: {
+          product: {
 
           }
         }
@@ -279,18 +339,8 @@ export default {
     };
   },
   computed: {},
-
-
   mounted() {
     this.handleGetdata()
-    // 发起API请求
-    fetch('/audience/data').then(res => {
-      return res.json()
-    }).then(data => {
-      console.log(data);
-    })
-
-
   },
   methods: {
     handleGetdata() {
@@ -311,7 +361,7 @@ export default {
     handleCilckHappy() {
 
     },
-    handleDetail(event, data) {
+    handleDetail(data) {
       console.log('点击链接获取详情', data);
     }
   },
