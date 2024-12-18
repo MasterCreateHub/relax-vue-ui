@@ -1,63 +1,30 @@
 <template>
   <div :class="['re-toolbar', { 'is-shadow': shadow }]">
     <div class="re-toolbar__left">
-      <span
-        class="re-toolbar-tool is-left"
-        :class="[`re-toolbar-${tool.name}`]"
-        v-for="(tool, index) in leftTools"
-        :key="tool.name + index"
-      >
-        <el-tooltip
-          :disabled="!tool.useTip"
-          :content="tool.tooltip || tool.label"
-          placement="top"
-        >
+      <span class="re-toolbar-tool is-left" :class="[`re-toolbar-${tool.name}`]" v-for="(tool, index) in leftTools"
+        :key="tool.name + index">
+        <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
           <slot :name="tool.name" :tool="tool">
             <template v-if="tool.component">
-              <component
-                :is="tool.component"
-                v-bind="tool.toolProps"
-                v-on="tool.toolEvents"
-              />
+              <component :is="tool.component" v-bind.sync="tool.props" v-on="tool.events" />
             </template>
             <template v-else>
-              <el-button
-                v-bind="tool.toolProps"
-                size="mini"
-                @click="$emit(tool.name)"
-                >{{ tool.label }}</el-button
-              >
+              <el-button v-bind.sync="tool.props" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
             </template>
           </slot>
         </el-tooltip>
       </span>
     </div>
     <div class="re-toolbar__right">
-      <span
-        class="re-toolbar-tool is-right"
-        :class="[`re-toolbar-${tool.name}`]"
-        v-for="(tool, index) in rightTools"
-        :key="tool.name + index"
-      >
-        <el-tooltip
-          :disabled="!tool.useTip"
-          :content="tool.tooltip || tool.label"
-          placement="top"
-        >
+      <span class="re-toolbar-tool is-right" :class="[`re-toolbar-${tool.name}`]" v-for="(tool, index) in rightTools"
+        :key="tool.name + index">
+        <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
           <slot :name="tool.name" :tool="tool">
             <template v-if="tool.component">
-              <component
-                :is="tool.component"
-                v-bind="tool.toolProps"
-                v-on="tool.toolEvents"
-              />
+              <component :is="tool.component" v-bind.sync="tool.props" v-on="tool.events" />
             </template>
             <template v-else>
-              <el-button
-                v-bind="tool.toolProps"
-                size="mini"
-                @click="$emit(tool.name)"
-              />
+              <el-button v-bind.sync="tool.props" size="mini" @click="$emit(tool.name)" />
             </template>
           </slot>
         </el-tooltip>
@@ -86,11 +53,11 @@ export default {
      * @property {String} tool.name 工具名称，工具的标识，用于触发事件
      * @property {String} tool.label 工具标签名称，用于显示在工具栏上
      * @property {Boolean} tool.useTip 是否使用提示
-     * @property {String} tool.tooltip 提示内容
+     * @property {String} tool.tooltip 提示内容，默认为工具标签
      * @property {String} tool.position 工具位置，left表示左侧，right表示右侧
      * @property {String} tool.component 工具组件，默认为el-button
-     * @property {Object} tool.toolProps 工具组件配置
-     * @property {Object} tool.toolEvents 工具绑定的事件
+     * @property {Object} tool.props 工具组件配置
+     * @property {Object} tool.events 工具绑定的事件
      * @default []
      */
     tools: {
@@ -137,6 +104,7 @@ export default {
     display: flex;
     align-items: center;
   }
+
   .re-toolbar__right {
     justify-content: flex-end;
 
@@ -144,6 +112,7 @@ export default {
       margin-left: 5px;
     }
   }
+
   .re-toolbar__left {
     justify-content: flex-start;
 
@@ -152,6 +121,7 @@ export default {
     }
   }
 }
+
 .is-shadow {
   padding: 5px;
   background-color: #ffffff;

@@ -38,7 +38,8 @@
                 <el-button type="primary" icon="el-icon-refresh" @click="handleReset">
                   {{ resetText }}
                 </el-button>
-                <el-button v-if="onlyInline" type="primary" @click="handleToggle" :icon="expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'">
+                <el-button v-if="onlyInline" type="primary" @click="handleToggle"
+                  :icon="expanded ? 'el-icon-arrow-up' : 'el-icon-arrow-down'">
                   {{ expanded ? collapseText : expandText }}
                 </el-button>
               </el-button-group>
@@ -215,7 +216,7 @@ export default {
     /**
      * @description 表单数据对象的拷贝，用于监听表单字段值的改变
      */
-    formModelCopy(){
+    formModelClone() {
       return JSON.parse(JSON.stringify(this.formModel))
     },
     /**
@@ -267,13 +268,13 @@ export default {
     }
   },
   watch: {
-    formModelCopy: {
+    formModelClone: {
       handler(newVal, oldVal) {
         if (this.autoSearch) {
           const changeFields = this.factors.some((factor) => {
             return newVal[factor.prop] !== oldVal[factor.prop];
           })
-          if(changeFields){
+          if (changeFields) {
             this.handleDebounceSearch();
           }
         }

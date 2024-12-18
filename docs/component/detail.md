@@ -288,9 +288,9 @@ export default {
 
 ### Slots
 
-| 名称           | 说明                 |
-| -------------- | -------------------- |
-| header         | 头部与标题自定义内容 |
-| footer         | 底部自定义内容       |
-| sectionTitle   | 章节标题自定义内容   |
-| sectionContent | 章节自定义内容       |
+| 名称                   | 说明                 |
+| ---------------------- | -------------------- |
+| header                 | 头部与标题自定义内容 |
+| footer                 | 底部自定义内容       |
+| ${section.name}Title   | 章节标题自定义内容   |
+| ${section.name}Content | 章节自定义内容       |
