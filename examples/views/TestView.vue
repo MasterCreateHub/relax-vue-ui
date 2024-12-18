@@ -1,7 +1,18 @@
 <template>
   <div class="test-view">
-    <re-detail title="合同详情" :sections="contractDetail" show-type="card" :data="contractDetailData">
+    <re-detail title="合同详情" :sections="contractDetail" show-type="card" :data="contractDetailData"> 
       <template #askInfoContent="scope">
+        <el-descriptions :column="2" :border="true">
+          <el-descriptions-item label="批架次号">{{ scope.data.productInfo.batch }}</el-descriptions-item>
+          <el-descriptions-item label="有无计划">{{ scope.data.productInfo.isNeedPlan }}</el-descriptions-item>
+        </el-descriptions>
+        <el-table :data="scope.data.systemModelTable">
+          <el-table-column prop="systemModel" label="系统型号" align="center" />
+                <el-table-column prop="systemModelName" label="型号名称" align="center" />
+                <el-table-column prop="usageCount" label="数量" align="center" />
+                <el-table-column prop="price" label="型号单价" align="center" />
+                <el-table-column prop="totalPrice" label="总价" align="center" />
+        </el-table>
         <el-table :data="scope.data.askTable">
           <el-table-column prop="systemModel" label="系统型号" align="center" />
           <el-table-column prop="model" label="产品型号" align="center" />
@@ -18,12 +29,26 @@
         </el-table>
       </template>
       <template #deliveryInfoContent="scope">
-        <el-table :data="scope.data.deliveryTable">
-          <el-table-column prop="productName" label="产品名称" align="center" />
-          <el-table-column prop="model" label="产品型号" align="center" />
-          <el-table-column prop="unitPrice" label="含税单价" align="center" />
-          <el-table-column prop="plannedDelivery" label="计划交付数" align="center" />
-          <el-table-column prop="yearAndMoon" label="日期" align="center" />
+        <el-table :data="scope.data.deliveryTable" border>
+          <el-table-column prop="systemModel" label="系统型号" align="center" :resizable="false" />
+          <el-table-column prop="productName" label="产品名称" align="center" :resizable="false" />
+          <el-table-column prop="model" label="产品型号" align="center" :resizable="false" />
+          <el-table-column prop="unitPrice" label="含税单价" align="center" :resizable="false" />
+          <el-table-column prop="plannedDelivery" label="交付数量" align="center" width="50" :resizable="false" />
+          <el-table-column prop="years" label="年份" align="center" width="60" :resizable="false" />
+          <el-table-column prop="one" label="1月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="two" label="2月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="three" label="3月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="four" label="4月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="five" label="5月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="six" label="6月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="seven" label="7月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="eight" label="8月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="nine" label="9月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="ten" label="10月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="eleven" label="11月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="twelve" label="12月" align="center" width="50" :resizable="false" />
+          <el-table-column prop="totalAmount" label="合计总价" align="center" :resizable="false" />
         </el-table>
       </template>
     </re-detail>
@@ -292,6 +317,8 @@ export default {
           },
         },
         askInfo: {
+          productInfo: {},
+          systemModelTable: [],
           askTable: []
 
         },
@@ -303,6 +330,7 @@ export default {
     };
   },
   mounted() {
+    
 
   },
   methods: {},

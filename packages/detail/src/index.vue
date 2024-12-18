@@ -119,7 +119,7 @@ export default {
      * @description 章节的展现形式
      */
     sectionShowType() {
-     return ["simple", "bar", "card"].includes(this.showType) ? this.showType : "simple";
+      return ["simple", "bar", "card"].includes(this.showType) ? this.showType : "simple";
     },
     /**
      * @description 当前展开的章节
@@ -203,6 +203,7 @@ export default {
 
 .is-simple {
   width: 100%;
+  margin-bottom: 2px;
 
   .re-detail-section__title {
     color: #ebeef5;
@@ -281,9 +282,6 @@ export default {
 }
 
 .is-collapse {
-  width: 100%;
-  border-bottom: 2px solid #ebeef5;
-
   .re-detail-section__content {
     display: none;
     transition: all 0.3s;
@@ -298,10 +296,6 @@ export default {
   .re-detail-section__content {
     display: block;
   }
-}
-
-.is-collapse:first-of-type {
-  border-top: 2px solid #ebeef5;
 }
 
 .is-collapse:last-of-type {
