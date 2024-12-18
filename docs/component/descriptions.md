@@ -56,24 +56,24 @@ export default {
 
 ### Attributes
 
-| 参数             | 说明                     | 类型    | 可选值                      | 默认值       |
-| ---------------- | ------------------------ | ------- | --------------------------- | ------------ |
-| items            | 描述列表项数组           | Array   | -                           | `[]`         |
-| data             | 描述列表数据对象         | String  | -                           | `{}`         |
-| layout           | 描述列表的布局方式       | String  | `fixed`, `auto`             | `fixed`      |
-| border           | 是否带有边框             | boolean | -                           | `false`      |
-| column           | 一行列表项的数量         | number  | -                           | `3`          |
-| direction        | 排列的方向               | string  | `vertical` / `horizontal`   | `horizontal` |
-| size             | 列表的尺寸               | string  | `medium` / `small` / `mini` | -            |
-| title            | 标题文本，显示在左上方   | string  | -                           | -            |
-| extra            | 操作区文本，显示在右上方 | string  | -                           | -            |
-| colon            | 是否显示冒号             | boolean | -                           | `true`       |
-| labelClassName   | 自定义标签类名           | string  | -                           | -            |
-| contentClassName | 自定义内容类名           | string  | -                           | -            |
-| labelStyle       | 自定义标签样式           | object  | -                           | -            |
-| contentStyle     | 自定义内容样式           | object  | -                           | -            |
+| 参数             | 说明                     | 类型          | 可选值                      | 默认值       |
+| ---------------- | ------------------------ | ------------- | --------------------------- | ------------ |
+| items            | 描述列表项数组           | Array\<Item\> | -                           | `[]`         |
+| data             | 描述列表数据对象         | String        | -                           | `{}`         |
+| layout           | 描述列表的布局方式       | String        | `fixed`, `auto`             | `fixed`      |
+| border           | 是否带有边框             | boolean       | -                           | `false`      |
+| column           | 一行列表项的数量         | number        | -                           | `3`          |
+| direction        | 排列的方向               | string        | `vertical` / `horizontal`   | `horizontal` |
+| size             | 列表的尺寸               | string        | `medium` / `small` / `mini` | -            |
+| title            | 标题文本，显示在左上方   | string        | -                           | -            |
+| extra            | 操作区文本，显示在右上方 | string        | -                           | -            |
+| colon            | 是否显示冒号             | boolean       | -                           | `true`       |
+| labelClassName   | 自定义标签类名           | string        | -                           | -            |
+| contentClassName | 自定义内容类名           | string        | -                           | -            |
+| labelStyle       | 自定义标签样式           | object        | -                           | -            |
+| contentStyle     | 自定义内容样式           | object        | -                           | -            |
 
-#### items 数组结构
+#### Item 对象结构
 
 | 属性                   | 说明                         | 类型   | 可选值 | 默认值 |
 | ---------------------- | ---------------------------- | ------ | ------ | ------ |

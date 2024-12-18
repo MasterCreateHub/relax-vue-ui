@@ -74,7 +74,7 @@ export default {
       },
     },
     /**
-     * @description 描述列表数据对象，对象的键为章节的name
+     * @description 详情数据对象，对象的键为章节的name
      * @type {Object}
      */
     data: {
@@ -84,7 +84,7 @@ export default {
       },
     },
     /**
-     * @description 章节的展现形式，简单、卡片
+     * @description 章节的展现形式，简单、条状、卡片
      * @type {'simple' | 'card'}
      * @default 'simple'
      */

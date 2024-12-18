@@ -20,10 +20,10 @@
 
     <el-row style="margin: 10px 0px">
       <el-col>
-        <el-button size="small" @click="showType = 'simple'">简单风格</el-button>
-        <el-button size="small" @click="showType = 'bar'">带状风格</el-button>
-        <el-button size="small" @click="showType = 'card'">卡片风格</el-button>
-        <el-button size="small" @click="collapsible = !collapsible">章节可折叠</el-button>
+        <el-radio v-model="showType" label="simple">简单风格</el-radio>
+        <el-radio v-model="showType" label="bar">带状风格</el-radio>
+        <el-radio v-model="showType" label="card">卡片风格</el-radio>
+        <el-switch v-model="collapsible" inactive-text="折叠模式" />
       </el-col>
     </el-row>
     <re-detail :data="detailData" :sections="sections" :show-type="showType" :title="'用户详情'" :collapsible="collapsible" />
