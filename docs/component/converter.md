@@ -4,9 +4,7 @@
 
 ## Converter Usage
 
-### 基础示例
-
-展示对象键值
+#### 1、展示对象键值
 ::: demo
 
 ```vue
@@ -41,7 +39,7 @@ export default {
 
 :::
 
-映射字典的值
+#### 2、映射字典的值
 ::: demo 当`source`为字典数组时，`target`为字典的单个或多个值，最终会渲染字典的`label`，并且可以在字典中为容器单独定制`containerProps`，字典中定制的`containerProps`优先级高于直接传入的`containerProps`。
 
 ```vue
@@ -96,7 +94,7 @@ export default {
 
 :::
 
-使用函数
+#### 3、使用函数转换值
 ::: demo
 
 ```vue
@@ -148,7 +146,7 @@ export default {
 
 :::
 
-使用表达式
+#### 4、使用表达式转换值
 ::: demo
 
 ```vue
@@ -185,7 +183,7 @@ export default {
 
 :::
 
-使用默认值
+#### 5、使用默认值
 ::: demo
 
 ```vue
@@ -209,8 +207,7 @@ export default {
 
 :::
 
-### 其他示例
-为渲染值的容器绑定事件
+#### 5、为渲染值容器绑定事件
 ::: demo 为渲染值的容器绑定事件时，事件的第一个参数默认为渲染后的值
 
 ```vue

@@ -4,7 +4,9 @@
 
 ## Descriptions Usage
 
-### 基础示例
+#### 1、详细描述某个事物
+
+`re-descriptions`组件支持仅通过配置来实现对某个事物的详情展示
 
 :::demo
 
