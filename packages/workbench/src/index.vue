@@ -24,10 +24,11 @@
         <footer v-if="layout === 'three'" class="re-workbench__footer">
             <div class="re-workbench-action__wrapper">
                 <slot name="action" :currentWork="currentWork">
-                    <el-button v-for="action in currentWorkActions" :key="action.eventName" size="small"
-                        class="re-workbench-action" v-bind="action" @click="$emit(action.eventName, currentWork)">
+                    <component v-for="action in currentWorkActions" :is="action.component" :key="action.name"
+                        class="re-workbench-action" v-bind="action.props" v-on="action.events"
+                        @click="$emit(action.name, currentWork)">
                         {{ action.label }}
-                    </el-button>
+                    </component>
                 </slot>
             </div>
         </footer>
@@ -39,6 +40,8 @@ export default {
     props: {
         /**
          * @description 布局方式，可选值为two和three,two表示header和body，three表示header和body和footer
+         * @type {String}
+         * @default 'two'
          */
         layout: {
             type: String,
@@ -49,6 +52,7 @@ export default {
         },
         /**
          * @description 当前工作台的任务，值为works中任务的key
+         * @type {String}
          */
         currentWork: {
             type: String,
@@ -57,32 +61,33 @@ export default {
         /**
         * @description 工作台任务配置，一个工作台可配置多个任务，不同任务有可能对应不同的操作按钮，
         * 该组件会根据当前处理不同的任务来显示不同的操作按钮
-        * @label 任务名称
-        * @key 任务标识 
-        * @actions 任务可执行的动作，字符串数组，元素为actions的事件，如果不传则默认所有动作
+        * @type {Array<Work>}
+        * @property {Object} Work 工作任务对象
+        * @property {String} Work.label 工作任务标签文本
+        * @property {String} Work.key 工作任务标识 
+        * @property {Array} Work.actions 该任务可执行的操作，字符串数组，元素为action的name，如果不传则默认所有操作
+        * @default []
         */
         works: {
             type: Array,
             required: true
         },
         /**
-         * @description 工作台所有可执行动作
-         * @component 工作台操作组件
-         * @props 工作台操作组件的props
-         * @label 动作名称
-         * @eventName 动作触发的事件
-         * @icon 动作图标
+         * @description 工作台所有可执行操作
+         * @type {Array<Action>}
+         * @property {Object} Action 操作配置对象
+         * @property {String} Action.label 操作的文本标签
+         * @property {String} Action.name  操作标识，也是`el-button`默认触发的事件 
+         * @property {String} Action.component 操作使用的组件，默认为 el-button
+         * @property {Object} Action.props 工作台操作组件的props
+         * @property {Object} Action.events 工作台操作组件的events
+         * @default []
          */
         actions: {
             type: Array,
             default: () => {
                 return []
             },
-            validator(value) {
-                return value.every(item => {
-                    return item.label && item.eventName
-                })
-            }
         },
     },
     data() {
@@ -93,7 +98,7 @@ export default {
          * @description 工作台的当前任务配置信息
          */
         currentWorkConfig() {
-            return this.works.find(item => item.key === this.currentWork)
+            return this.works.find(work => work.key === this.currentWork)
         },
         /**
          * @description 工作台的当前任务名称
@@ -102,11 +107,11 @@ export default {
             return this.currentWorkConfig.label || ''
         },
         /**
-         * @description 工作台的当前任务的可执行动作
+         * @description 工作台的当前任务的可执行操作
          */
         currentWorkActions() {
-            return this.actions.filter(item => {
-                return ((this.currentWorkConfig.actions) && Array.isArray(this.currentWorkConfig.actions)) ? this.currentWorkConfig.actions.includes(item.eventName) : true
+            return this.actions.filter(action => {
+                return ((this.currentWorkConfig.actions) && Array.isArray(this.currentWorkConfig.actions)) ? this.currentWorkConfig.actions.includes(action.name) : true
             })
         }
     },

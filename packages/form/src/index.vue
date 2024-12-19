@@ -85,21 +85,21 @@ export default {
     },
     /**
      * @description 表单项配置
-     * @type {Array<Object>}
+     * @type {Array<FormItem>}
+     * @property {Object} FormItem-表单项配置数组
+     * @property {String} FormItem.label 表单项标签
+     * @property {String} FormItem.model 表单项数据路径，也是表单项唯一标识
+     * @property {String} FormItem.required 表单项是否必填，默认为false
+     * @property {String} FormItem.readonly 表单项是否只读，默认为false
+     * @property {Boolean} FormItem.disabled 表单项是否禁用，默认为false
+     * @property {Boolean} FormItem.hidden 表单项是否隐藏，默认为false
+     * @property {String} FormItem.component 表单项组件类型，表明用什么组件渲染，默认为el-input
+     * @property {Object} FormItem.props 表单项组件配置，会透传给组件，默认为{}
+     * @property {String} FormItem.initialValue 表单项初始值，默认为null
+     * @property {String} FormItem.rule 表单校验规则，默认为[]
+     * @property {Array} FormItem.children 表单项子项，默认为[]
+     * @property {String} FormItem.change 表单项值联动配置，默认为[]
      * @default []
-     * @property {Object[]} formItems-表单项配置数组
-     * @property {String} formItems[].label 表单项标签
-     * @property {String} formItems[].model 表单项数据路径，也是表单项唯一标识
-     * @property {String} formItems[].required 表单项是否必填，默认为false
-     * @property {String} formItems[].readonly 表单项是否只读，默认为false
-     * @property {Boolean} formItems[].disabled 表单项是否禁用，默认为false
-     * @property {Boolean} formItems[].hidden 表单项是否隐藏，默认为false
-     * @property {String} formItems[].component 表单项组件类型，表明用什么组件渲染，默认为el-input
-     * @property {Object} formItems[].props 表单项组件配置，会透传给组件，默认为{}
-     * @property {String} formItems[].initialValue 表单项初始值，默认为null
-     * @property {String} formItems[].rule 表单校验规则，默认为[]
-     * @property {Array} formItems[].children 表单项子项，默认为[]
-     * @property {String} formItems[].change 表单项值联动配置，默认为[]
      */
     formItems: {
       type: Array,
