@@ -39,7 +39,7 @@ export default {
       detailSections: [
         {
           name: "baseInfo", // 区域名称
-          label: "基础信息", // 区域标签
+          label: "基本信息", // 区域标签
           components: [
             {
               name: "re-descriptions", // 数据展示组件
@@ -65,16 +65,6 @@ export default {
                   {
                     prop: "birthday",
                     label: "生日",
-                    span: 1,
-                  },
-                  {
-                    prop: "post",
-                    label: "职位",
-                    span: 1,
-                  },
-                  {
-                    prop: "department",
-                    label: "部门",
                     span: 1,
                   },
                   {
@@ -95,6 +85,38 @@ export default {
           ],
         },
         {
+          name: "contactInfo", // 区域名称
+          label: "联系信息", // 区域标签
+          components: [
+            {
+              name: "re-descriptions", // 数据展示组件
+              props: {
+                column: 3,
+                border: true,
+                items: [
+                  {
+                    prop: "phone",
+                    label: "电话",
+                    span: 1,
+                  },
+                  {
+                    prop: "address",
+                    label: "地址",
+                    span: 1,
+                  },
+                  {
+                    prop: "email",
+                    label: "邮箱",
+                    span: 1,
+                  },
+                ],
+              }, // 数据展示组件的props
+              dataKey: "contact",
+              dataInProps: "data",
+            },
+          ],
+        },
+        {
           name: "otherInfo", // 区域名称
           label: "其他信息", // 区域标签
           components: [
@@ -105,23 +127,8 @@ export default {
                 border: true,
                 items: [
                   {
-                    prop: "name",
-                    label: "姓名",
-                    span: 1,
-                  },
-                  {
-                    prop: "age",
-                    label: "年龄",
-                    span: 1,
-                  },
-                  {
-                    prop: "gender",
-                    label: "性别",
-                    span: 1,
-                  },
-                  {
-                    prop: "birthday",
-                    label: "生日",
+                    prop: "company",
+                    label: "公司",
                     span: 1,
                   },
                   {
@@ -132,16 +139,6 @@ export default {
                   {
                     prop: "department",
                     label: "部门",
-                    span: 1,
-                  },
-                  {
-                    prop: "education",
-                    label: "学历",
-                    span: 1,
-                  },
-                  {
-                    prop: "school",
-                    label: "毕业院校",
                     span: 1,
                   },
                 ],
@@ -151,73 +148,16 @@ export default {
             },
           ],
         },
-        {
-          name: "productInfo",
-          label: "产品信息",
-          components: [
-            {
-              name: "re-descriptions", // 数据展示组件
-              props: {
-                column: 3,
-                border: true,
-                items: [
-                  {
-                    prop: "name",
-                    label: "姓名",
-                    span: 1,
-                  },
-                  {
-                    prop: "age",
-                    label: "年龄",
-                    span: 1,
-                  },
-                  {
-                    prop: "gender",
-                    label: "性别",
-                    span: 1,
-                  },
-                  {
-                    prop: "birthday",
-                    label: "生日",
-                    span: 1,
-                  },
-                  {
-                    prop: "post",
-                    label: "职位",
-                    span: 1,
-                  },
-                  {
-                    prop: "department",
-                    label: "部门",
-                    span: 1,
-                  },
-                  {
-                    prop: "education",
-                    label: "学历",
-                    span: 1,
-                  },
-                  {
-                    prop: "school",
-                    label: "毕业院校",
-                    span: 1,
-                  },
-                ],
-              }, // 数据展示组件的props
-              dataKey: "product",
-              dataInProps: "data",
-            },
-          ],
-        },
       ],
       detailData: {
         baseInfo: {
           base: {},
         },
+        contactInfo: {
+          contact: {},
+        },
         otherInfo: {
           other: {},
-        },
-        productInfo: {
-          product: {},
         },
       },
     };
@@ -234,11 +174,18 @@ export default {
           age: 18,
           gender: "男",
           birthday: "1990-01-01",
-          phone: "13800138000",
-          address: "上海市浦东新区",
           education: "本科",
-          company: "阿里巴巴集团",
+          school: "清华大学",
+        };
+        this.detailData.contactInfo.contact = {
+          phone: "13800138000",
+          address: "北京市海淀区",
           email: "zhangsan@example.com",
+        };
+        this.detailData.otherInfo.other = {
+          company: "阿里巴巴集团",
+          post: "软件工程师",
+          department: "技术部",
         };
       }, 1300);
     },

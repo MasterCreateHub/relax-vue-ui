@@ -1,5 +1,5 @@
 export default {
-    name: "visible",
+    name: "emerge",
     bind(el, binding) {
       // 获取回调函数和配置
       const callback = binding.value;
