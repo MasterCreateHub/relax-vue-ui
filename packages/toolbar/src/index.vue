@@ -52,7 +52,7 @@ export default {
      * @property {Object} tool 工具对象
      * @property {String} tool.name 工具名称，工具的标识，用于触发事件
      * @property {String} tool.label 工具标签名称，用于显示在工具栏上
-     * @property {Boolean} tool.useTip 是否使用提示
+     * @property {Boolean} tool.useTip 是否使用提示，默认为false
      * @property {String} tool.tooltip 提示内容，默认为工具标签
      * @property {String} tool.position 工具位置，left表示左侧，right表示右侧
      * @property {String} tool.component 工具组件，默认为el-button
@@ -123,7 +123,7 @@ export default {
 }
 
 .is-shadow {
-  padding: 5px;
+  padding: 15px;
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);

@@ -4,6 +4,77 @@
 
 ## Usage
 
+#### 1、基本用法
+
+::: demo
+
+```vue
+<template>
+  <re-toolbar
+    :tools="tools"
+    :shadow="true"
+    @add="handleAdd"
+    @delete="handleDelete"
+    @refresh="handleRefresh"
+  />
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      tools: [
+        {
+          name: "add",
+          label: "新增",
+          position: "left",
+          props: {
+            type: "primary",
+            icon: "el-icon-plus",
+            plain: true,
+          },
+        },
+        {
+          name: "delete",
+          label: "删除",
+          position: "left",
+          props: {
+            type: "danger",
+            icon: "el-icon-delete",
+            plain: true,
+          },
+        },
+        {
+          name: "refresh",
+          label: "刷新",
+          useTip: true,
+          position: "right",
+          props: {
+            icon: "el-icon-refresh",
+            circle: true,
+            plain: true,
+          },
+        },
+      ],
+    };
+  },
+  methods: {
+    handleAdd() {
+      this.$message.success("点击了添加");
+    },
+    handleDelete() {
+      this.$message.success("点击了删除");
+    },
+    handleRefresh() {
+      this.$message.success("点击了刷新");
+    },
+  },
+};
+</script>
+```
+
+:::
+
 ## Toolbar API
 
 ### Attributes
