@@ -54,28 +54,10 @@ module.exports = {
           children: ['/directive/']
         },
         {
-          title: "指令",
+          title: "所有指令",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/directive/measure"],
-        },
-        {
-          title: "指令",
-          collapsable: false,
-          sidebarDepth: 2,
-          children: ["/directive/emerge"],
-        },
-        {
-          title: "指令",
-          collapsable: false,
-          sidebarDepth: 2,
-          children: ["/directive/readonly"],
-        },
-        {
-          title: "指令",
-          collapsable: false,
-          sidebarDepth: 2,
-          children: ["/directive/disabled"],
+          children: ["/directive/measure", "/directive/emerge", "/directive/readonly", "/directive/disabled"],
         },
       ],
     },
