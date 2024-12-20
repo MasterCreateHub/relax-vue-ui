@@ -22,7 +22,7 @@
         default: "total,sizes,prev,pager,next,jumper",
       },
       /**
-       * @description 是否使用背景色
+       * @description 使用背景色
        * @type {Boolean}
        * @default true
        */
@@ -142,7 +142,7 @@
         this.$emit("pagination", {
           currentPage: this.currentPageModel,
           pageSize: val,
-          from: "currentPage"
+          from:"pageSize"
         });
       },
       /**
@@ -153,7 +153,7 @@
         this.$emit("pagination", {
           currentPage: val,
           pageSize: this.pageSizeModel,
-          from:"pageSize"
+          from: "currentPage"
         })
       },
     },
