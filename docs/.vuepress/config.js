@@ -2,6 +2,15 @@ module.exports = {
   theme: "",
   title: "Relax UI",
   description: "基于Element库二次封装的组件库",
+  head: [
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: '/favicon.ico'
+      }
+    ]
+  ],
   themeConfig: {
     nav: [
       { text: "首页", link: "/" },

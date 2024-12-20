@@ -45,7 +45,7 @@ export default {
 
 ```vue
 <template>
-  <re-pagination :total="total" :align="align" @pagination="handlePagination" />
+  <re-pagination :total="total" @pagination="handlePagination" />
 </template>
 
 <script>
