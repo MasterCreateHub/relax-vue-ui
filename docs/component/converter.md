@@ -4,7 +4,8 @@
 
 ## Converter Usage
 
-#### 1、展示对象键值
+### 展示对象键值
+
 ::: demo
 
 ```vue
@@ -39,7 +40,8 @@ export default {
 
 :::
 
-#### 2、映射字典的值
+### 映射字典键值
+
 ::: demo 当`source`为字典数组时，`target`为字典的单个或多个值，最终会渲染字典的`label`，并且可以在字典中为容器单独定制`containerProps`，字典中定制的`containerProps`优先级高于直接传入的`containerProps`。
 
 ```vue
@@ -94,7 +96,8 @@ export default {
 
 :::
 
-#### 3、使用函数转换值
+### 使用函数转换值
+
 ::: demo
 
 ```vue
@@ -124,7 +127,7 @@ export default {
 export default {
   data() {
     return {
-      status: ['1','2','3'],
+      status: ["1", "2", "3"],
     };
   },
   methods: {
@@ -138,7 +141,7 @@ export default {
       if (value === "3") {
         return "辞职";
       }
-    }
+    },
   },
 };
 </script>
@@ -146,7 +149,8 @@ export default {
 
 :::
 
-#### 4、使用表达式转换值
+### 使用表达式转换值
+
 ::: demo
 
 ```vue
@@ -183,7 +187,8 @@ export default {
 
 :::
 
-#### 5、使用默认值
+### 使用默认值展示
+
 ::: demo
 
 ```vue
@@ -207,7 +212,8 @@ export default {
 
 :::
 
-#### 5、为渲染值容器绑定事件
+### 渲染容器绑定事件
+
 ::: demo 为渲染值的容器绑定事件时，事件的第一个参数默认为渲染后的值
 
 ```vue
@@ -227,33 +233,32 @@ export default {
 export default {
   data() {
     return {
-      links: ['baidu.com', 'douban.com', 'google.com'],
+      links: ["baidu.com", "douban.com", "google.com"],
       linkEvents: {
         click: this.handleClick,
-      }
-    }
+      },
+    };
   },
   methods: {
     handleClick(item) {
-      this.$message.success(`点击了${item}`)
-    }
-  }
-}
+      this.$message.success(`点击了${item}`);
+    },
+  },
+};
 </script>
 ```
 
 :::
 
-
 ## Converter API
 
 ### Attributes
 
-| 参数            | 说明                                     | 类型                               | 可选值 | 默认值 | 必需 |
-| --------------- | ---------------------------------------- | ---------------------------------- | ------ | ------ | ---- |
-| target          | 要转换的字段或要转换的值                 | `Number,String,Boolean,Array,Date` | -      | -      | 是   |
-| source          | 源数据或转换源数据的方法                 | `Array,Object,Function,String`     | -      | -      | 是   |
-| container       | 最终的渲染容器                           | `String`                           | -      | `span` | 否   |
-| containerProps  | 容器的属性                               | `Object`                           | -      | `{}`   | 否   |
-| containerEvents | 容器的事件                               | `Object`                           | -      | `{}`   | 否   |
-| defaultValue    | 默认值，当没有找到对应值时，使用此默认值 | `String`                           | -      | `null` | 否   |
+| 参数            | 说明                                     | 类型                               | 可选值 | 默认值 |
+| --------------- | ---------------------------------------- | ---------------------------------- | ------ | ------ |
+| target          | 要转换的字段或要转换的值，`必需`         | `Number,String,Boolean,Array,Date` | -      | -      |
+| source          | 源数据或转换源数据的方法，`必需`         | `Array,Object,Function,String`     | -      | -      |
+| container       | 最终的渲染容器，默认为`span`             | `String`                           | -      | `span` |
+| containerProps  | 容器的属性配置，默认为`{}`               | `Object`                           | -      | `{}`   |
+| containerEvents | 容器的绑定的事件，默认为`{}`             | `Object`                           | -      | `{}`   |
+| defaultValue    | 默认值，当没有找到对应值时，使用此默认值 | `String`                           | -      | `null` |

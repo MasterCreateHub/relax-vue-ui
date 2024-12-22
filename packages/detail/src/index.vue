@@ -15,7 +15,7 @@
         },
       ]" @click="collapsible ? handleActive(section.name) : null">
         <div class="re-detail-section__title">
-          <slot :name="`${section.name}Title`">
+          <slot :name="`${section.name}Title`" :section="section">
             <i :class="[
               { 'el-icon-menu': !collapsible },
               { 'el-icon-caret-right': collapsible },
@@ -25,7 +25,7 @@
           </slot>
         </div>
         <div class="re-detail-section__content">
-          <slot :name="`${section.name}Content`" :data="section.data">
+          <slot :name="`${section.name}Content`" :section="section" :data="section.data">
             <component v-for="(comp, index) in section.components" :key="section.name + comp.dataKey + index"
               :is="comp.name" v-bind="comp.props" v-on="comp.events" />
           </slot>

@@ -1,7 +1,7 @@
 <template>
     <div class="re-workbench" :class="[`is-${layout}`]">
         <header class="re-workbench__header">
-            <slot name="title">
+            <slot name="title" :currentWork="currentWork">
                 <span class="re-workbench-title">{{ currentWorkLabel }}</span>
             </slot>
 

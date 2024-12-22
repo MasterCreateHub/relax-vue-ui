@@ -4,10 +4,14 @@
 
 ## Searcher Usage
 
+### 基础用法
+
 ::: demo `factors` 配置项是必须要有的
+
 ```html
 <demo-searcher-BaseDemo></demo-searcher-BaseDemo>
 ```
+
 :::
 
 ## Searcher API
@@ -29,16 +33,16 @@
 
 ### Events
 
-| 事件名称 | 说明                    | 回调参数             |
-| -------- | ----------------------- | -------------------- |
-| search   | 点击搜索按钮时触发      | `function(formData)` |
-| change   | 筛选条件发生变化时触发  | `function(formData)` |
-| reset    | 点击重置按钮时触发      | `function(formData)` |
-| toggle   | 点击展开/收起按钮时触发 | `function(expanded)` |
+| 事件名称 | 说明                    | 回调参数   |
+| -------- | ----------------------- | ---------- |
+| search   | 点击搜索按钮时触发      | `formData` |
+| change   | 筛选条件发生变化时触发  | `formData` |
+| reset    | 点击重置按钮时触发      | `formData` |
+| toggle   | 点击展开/收起按钮时触发 | `expanded` |
 
 ### Slots
 
-| 名称        | 说明                       |
-| ----------- | -------------------------- |
-| factor.name | 单个搜索条件区域自定义内容 |
-| action      | 按钮区域自定义内容         |
+| 名称           | 说明                       | 参数          |
+| -------------- | -------------------------- | ------------- |
+| ${factor.name} | 单个搜索条件区域自定义内容 | {form,factor} |
+| ${action}      | 按钮区域自定义内容         | {form}        |

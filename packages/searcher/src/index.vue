@@ -6,7 +6,7 @@
         <el-col :style="{ minWidth: factorMinWidth + 'px' }" class="re-searcher-factor__wrapper"
           v-for="factor in showFactors" :key="factor.prop" :span="factorSpan">
           <el-form-item :prop="factor.prop" :label="factor.label">
-            <slot :name="factor.prop" :form="form">
+            <slot :name="factor.prop" :form="form" :factor="factor">
               <component :is="factor.type || 'el-input'" v-model="form[factor.prop]" clearable v-bind="factor.config"
                 class="re-factor-item">
                 <template v-if="factor.type === 'el-select'">

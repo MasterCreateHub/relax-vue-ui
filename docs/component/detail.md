@@ -2,7 +2,7 @@
 
 ## Usage
 
-### 基础示例
+### 基础用法
 
 ::: demo
 
@@ -209,7 +209,7 @@ export default {
 | collapsible    | 章节是否可折叠     | boolean          | -                             | `false`    |
 | activeSections | 激活（展开）的章节 | Array\<String\>  | -                             | -          |
 
-### Section 对象结构
+#### Section 对象结构
 
 | 属性名     | 类型               | 描述               |
 | ---------- | ------------------ | ------------------ |
@@ -217,7 +217,7 @@ export default {
 | name       | string             | 章节名称           |
 | components | Array\<Component\> | 章节所用的组件数组 |
 
-### Component 对象结构
+#### Component 对象结构
 
 | 属性名      | 类型   | 描述                               |
 | ----------- | ------ | ---------------------------------- |
@@ -235,9 +235,9 @@ export default {
 
 ### Slots
 
-| 名称                   | 说明                 |
-| ---------------------- | -------------------- |
-| header                 | 头部与标题自定义内容 |
-| footer                 | 底部自定义内容       |
-| ${section.name}Title   | 章节标题自定义内容   |
-| ${section.name}Content | 章节自定义内容       |
+| 名称                   | 说明                 | 参数             |
+| ---------------------- | -------------------- | ---------------- |
+| header                 | 头部与标题自定义内容 | -                |
+| footer                 | 底部自定义内容       | -                |
+| ${section.name}Title   | 章节标题自定义内容   | `{section}`      |
+| ${section.name}Content | 章节自定义内容       | `{section,data}` |
