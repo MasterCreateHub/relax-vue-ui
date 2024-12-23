@@ -1,17 +1,19 @@
 ---
 home: true
 heroText: Relax UI
-tagline: 基于elementui 的二次封装组件库
+tagline: 基于 element-ui 的二次封装组件库
 actionText: 快速上手 →
 actionLink: /guide/
 features:
-- title: 简洁至上
-  details: 减少模板代码，就可以快速地搭建一个页面。
-- title: 优雅继承
-  details: 继承elementui组件的设计，保证用户使用习惯，方便快速上手。
-- title: 按需使用
-  details: 既可安装使用，支持全量安装或按需引入，也可直接拷贝单个组件源码重新定制使用。
-footer: MIT Licensed | Copyright © 2018-present Evan You
+  - title: 简洁至上
+    details: Relax UI 的组件通过丰富的属性配置即可实现大部分功能，大量减少模板代码，提升开发和维护效率。
+
+  - title: 优雅继承
+    details: Relax UI 保留了 element-ui 的属性配置和使用习惯，确保开发者能够无缝迁移并享受更流畅的开发体验。
+
+  - title: 随心使用
+    details: Relax UI 支持全量安装、按需引入及单个组件定制，灵活满足不同项目需求，轻松实现个性化开发。
+footer: MIT Licensed | Copyright © 2024-present MCH
 ---
 
 <div></div>
