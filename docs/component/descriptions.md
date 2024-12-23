@@ -54,6 +54,10 @@ export default {
 
 :::
 
+### 自定义标签和内容
+
+### 与`re-converter`结合使用
+
 ## Descriptions API
 
 ### Attributes
@@ -65,8 +69,8 @@ export default {
 | layout           | 描述列表的布局方式       | String        | `fixed`, `auto`             | `fixed`      |
 | border           | 是否带有边框             | boolean       | -                           | `false`      |
 | column           | 一行列表项的数量         | number        | -                           | `3`          |
-| direction        | 排列的方向               | string        | `vertical` / `horizontal`   | `horizontal` |
-| size             | 列表的尺寸               | string        | `medium` / `small` / `mini` | -            |
+| direction        | 排列的方向               | string        | `vertical`, `horizontal`   | `horizontal` |
+| size             | 列表的尺寸               | string        | `medium`, `small`, `mini` | -            |
 | title            | 标题文本，显示在左上方   | string        | -                           | -            |
 | extra            | 操作区文本，显示在右上方 | string        | -                           | -            |
 | colon            | 是否显示冒号             | boolean       | -                           | `true`       |

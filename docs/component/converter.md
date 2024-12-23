@@ -4,6 +4,116 @@
 
 ## Converter Usage
 
+### 基础用法
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <re-converter target="name" :source="person" container="span" />
+    <re-converter target="gender" :source="person" container="el-tag" />
+    <re-converter
+      target="website"
+      :source="person"
+      container="el-link"
+      :container-props="{ type: 'success' }"
+    />
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      person: {
+        name: "小明",
+        gender: "男",
+        website: "http://www.xiaoming.com",
+      },
+    };
+  },
+  methods: {},
+};
+</script>
+```
+
+:::
+
+### 设置渲染容器
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <re-converter target="name" :source="person" container="span" />
+    <re-converter target="gender" :source="person" container="el-tag" />
+    <re-converter
+      target="website"
+      :source="person"
+      container="el-link"
+      :container-props="{ type: 'success' }"
+    />
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      person: {
+        name: "小明",
+        gender: "男",
+        website: "http://www.xiaoming.com",
+      },
+    };
+  },
+  methods: {},
+};
+</script>
+```
+
+:::
+
+### 绑定容器事件
+
+::: demo 为渲染值的容器绑定事件时，事件的第一个参数默认为渲染后的值
+
+```vue
+<template>
+  <div>
+    <re-converter
+      :target="links"
+      source="$targetValue"
+      default-value="/"
+      container="el-link"
+      :container-props="{ type: 'success' }"
+      :container-events="linkEvents"
+    />
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      links: ["baidu.com", "douban.com", "google.com"],
+      linkEvents: {
+        click: this.handleClick,
+      },
+    };
+  },
+  methods: {
+    handleClick(item) {
+      this.$message.success(`点击了${item}`);
+    },
+  },
+};
+</script>
+```
+
+:::
+
 ### 展示对象键值
 
 ::: demo
@@ -187,7 +297,7 @@ export default {
 
 :::
 
-### 使用默认值展示
+### 使用默认值
 
 ::: demo
 
@@ -212,43 +322,7 @@ export default {
 
 :::
 
-### 渲染容器绑定事件
 
-::: demo 为渲染值的容器绑定事件时，事件的第一个参数默认为渲染后的值
-
-```vue
-<template>
-  <div>
-    <re-converter
-      :target="links"
-      source="$targetValue"
-      default-value="/"
-      container="el-link"
-      :container-props="{ type: 'success' }"
-      :container-events="linkEvents"
-    />
-  </div>
-</template>
-<script>
-export default {
-  data() {
-    return {
-      links: ["baidu.com", "douban.com", "google.com"],
-      linkEvents: {
-        click: this.handleClick,
-      },
-    };
-  },
-  methods: {
-    handleClick(item) {
-      this.$message.success(`点击了${item}`);
-    },
-  },
-};
-</script>
-```
-
-:::
 
 ## Converter API
 

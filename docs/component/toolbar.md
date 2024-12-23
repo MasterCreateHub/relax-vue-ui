@@ -75,6 +75,8 @@ export default {
 
 :::
 
+### 自定义工具内容
+
 ## Toolbar API
 
 ### Attributes

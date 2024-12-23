@@ -19,13 +19,20 @@ module.exports = {
       { text: "指令", link: "/directive/" },
     ],
     sidebar: {
-      "/guide/": [""],
-      "/component/": [
+      "/guide/": [
         {
-          title: "组件概览",
+          title: "指南",
           collapsable: false,
           sidebarDepth: 2,
-          children: ['/component/']
+          children: ['/guide/', "/guide/installation","/guide/quickstart","/guide/example"]
+        },
+      ],
+      "/component/": [
+        {
+          title: "概览",
+          collapsable: false,
+          sidebarDepth: 2,
+          children: ['/component/', "/component/changelog"]
         },
         {
           title: "列表相关组件",
@@ -48,13 +55,13 @@ module.exports = {
       ],
       "/directive/": [
         {
-          title: "指令概览",
+          title: "概览",
           collapsable: false,
           sidebarDepth: 2,
-          children: ['/directive/']
+          children: ['/directive/', "/directive/changelog"]
         },
         {
-          title: "所有指令",
+          title: "指令",
           collapsable: false,
           sidebarDepth: 2,
           children: ["/directive/measure", "/directive/emerge", "/directive/readonly", "/directive/disabled"],
