@@ -10,6 +10,20 @@
 
 ### Attributes
 
+| 参数             | 说明                           | 类型              | 可选值 | 默认值  |
+| ---------------- | ------------------------------ | ----------------- | ------ | ------- |
+| formModel        | 表单数据对象                   | Object            | -      | `{}`    |
+| readonly         | 表单是否为只读                 | Boolean           | -      | `false` |
+| disabled         | 表单是否为禁用                 | Boolean           | -      | `false` |
+| formItems        | 表单项配置                     | Array\<FormItem\> | -      | `[]`    |
+| formSections     | 表单分组配置                   | Array\<Object\>   | -      | `[]`    |
+| formSteps        | 表单分步配置                   | Array\<Object\>   | -      | `[]`    |
+| autoScrollError  | 是否自动滚动到第一个错误表单项 | Boolean           | -      | `true`  |
+| hideRequiredMark | 是否隐藏必填记号               | Boolean           | -      | `false` |
+| rules            | 表单校验配置                   | Object            | -      | `{}`    |
+| changes          | 表单数据联动配置               | Array             | -      | `[]`    |
+| baseConfig       | 表单基础配置                   | Object            | -      | `{}`    |
+
 #### FormItem 对象结构
 
 | 属性         | 类型               | 描述                | 默认值       |
@@ -35,14 +49,22 @@
 
 #### Component 对象结构
 
-| 属性   | 类型   | 描述               | 默认值 |
-| ------ | ------ | ------------------ | ------ |
-| model  | String | 表单项绑定的`mode` | -      |
-| props  | Object | 表单项组件 props   | `{}`   |
-| events | Object | 表单项组件事件     | `{}`   |
+| 属性   | 类型   | 描述                | 默认值 |
+| ------ | ------ | ------------------- | ------ |
+| model  | String | 表单项绑定的`model` | -      |
+| props  | Object | 表单项组件 props    | `{}`   |
+| events | Object | 表单项组件事件      | `{}`   |
 
 ### Events
 
 ### Methods
 
+| 事件名   | 说明     | 参数   |
+| -------- | -------- | ------ |
+| validate | 表单校验 | result |
+
 ### Slots
+
+| 名称             | 说明       | 参数   |
+| ---------------- | ---------- | ------ |
+| ${formItem.name} | 表单项插槽 | {item} |
