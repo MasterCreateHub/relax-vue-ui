@@ -454,11 +454,13 @@ export default {
      */
     onResize(entry) {
       const width = entry.contentRect.width;
-      this.gridCols = Math.floor((width + this.factorSpacing) / (this.factorMinWidth + this.factorSpacing));
-      for (let i = 0; i < this.sizeArray.length; i++) {
-        if (width <= this.sizeArray[i].boundary) {
-          this.viewportSize = this.sizeArray[i].label;
-          break;
+      if(width !== 0){
+        this.gridCols = Math.floor((width + this.factorSpacing) / (this.factorMinWidth + this.factorSpacing));
+        for (let i = 0; i < this.sizeArray.length; i++) {
+          if (width <= this.sizeArray[i].boundary) {
+            this.viewportSize = this.sizeArray[i].label;
+            break;
+          }
         }
       }
     },
