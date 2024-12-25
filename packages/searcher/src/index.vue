@@ -106,15 +106,15 @@ export default {
   name: "ReSearcher",
   props: {
     /**
- * @description 搜索条件数组
- * @type {Array<Factor>}
- * @property {Object} factor 搜索条件对象
- * @property {String} factor.label  搜索条件标签名称
- * @property {String} factor.model  搜索条件双向绑定的属性名
- * @property {String} factor.component 搜索条件组件名称，默认为el-input
- * @property {Object} factor.componentProps 搜索条件组件的配置项，默认为{}
- * @property {'string'|'number'|'boolean'|'array'} factor.valueType 搜索条件组件绑定值的类型，默认为string
- */
+     * @description 搜索条件数组
+     * @type {Array<Factor>}
+     * @property {Object} factor 搜索条件对象
+     * @property {String} factor.label  搜索条件标签名称
+     * @property {String} factor.model  搜索条件双向绑定的属性名
+     * @property {String} factor.component 搜索条件组件名称，默认为el-input
+     * @property {Object} factor.componentProps 搜索条件组件的配置项，默认为{}
+     * @property {'string'|'number'|'boolean'|'array'} factor.valueType 搜索条件组件绑定值的类型，默认为string
+     */
     factors: {
       type: Array,
       default: () => {
@@ -145,7 +145,7 @@ export default {
     },
     /**
      * @description 搜索表单布局方式
-     * @type {String}
+     * @type {'flex'|'grid'|}
      * @default 'flex'
      */
     layout: {
@@ -155,6 +155,11 @@ export default {
         return ['flex', 'grid'].includes(value)
       }
     },
+    /**
+     * @description 搜索表单尺寸
+     * @type {'small'|'mini'}
+     * @default 'small'
+     */
     size: {
       type: String,
       default: "small",
@@ -162,10 +167,20 @@ export default {
         return ['small', 'mini'].includes(value)
       }
     },
+    /**
+     * @description 搜索表单项标签宽度
+     * @type {String}
+     * @default '60px'
+     */
     labelWidth: {
       type: String,
       default: "60px",
     },
+    /**
+     * @description 搜索表单标签位置
+     * @type {'left'|'right'|'justify'}
+     * @default 'justify'
+     */
     labelPosition: {
       type: String,
       default: "justify",
@@ -174,7 +189,7 @@ export default {
       }
     },
     /**
-     * @description 是否默认展开所有搜索条件
+     * @description 是否默认展开所有条件
      * @type {Boolean}
      * @default false
      */
@@ -183,7 +198,7 @@ export default {
       default: false,
     },
     /**
-     * @description 搜索条件间距
+     * @description 搜索条件左右间距
      * @type {Number}
      * @default 20
      */
@@ -236,7 +251,7 @@ export default {
       default: "收起",
     },
     /**
-     * @description 按钮位置
+     * @description 操作按钮位置
      */
     actionPosition: {
       type: String,
