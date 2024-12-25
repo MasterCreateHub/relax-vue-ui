@@ -433,8 +433,12 @@ export default {
      * @description 点击重置按钮事件
      */
     handleReset() {
-      Object.keys(this.form).forEach((key) => {
-        this.$set(this.form, key, null);
+      this.factors.forEach((factor) => {
+        if (factor.valueType === "array") {
+          this.$set(this.form, factor.prop, []);
+        } else {
+          this.$set(this.form, factor.prop, null);
+        }
       });
       this.$emit("reset", this.form);
     },
