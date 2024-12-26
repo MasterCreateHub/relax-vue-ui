@@ -1,87 +1,38 @@
 <template>
-    <el-select v-model="modelValue" :multiple="multiple"
-        :value-key="optionConfig.key ? optionConfig.key : optionConfig.value" filterable clearable default-first-option
-        :disabled="readonly || $attrs.disabled" :class="{ 'is-readonly': readonly }" v-bind="$attrs" v-on="$listeners">
-        <el-option v-for="item in options" :key="item[optionConfig.key ? optionConfig.key : optionConfig.value]"
-            :value="item[optionConfig.value]" :label="item[optionConfig.label]">
-        </el-option>
-    </el-select>
+  <el-select v-model="modelValue" v-bind="$attrs" v-on="$listeners">
+    <el-option
+      v-for="(option, index) in options"
+      :key="option.value + index"
+      :label="option.label"
+      :value="option.value"
+      ><slot :option="option"></slot
+    ></el-option>
+  </el-select>
 </template>
 
 <script>
 export default {
-    name: 'BaseSelect',
-    props: {
-        value: [String, Number, Array],
-        multiple: {
-            type: Boolean,
-            default: false
-        },
-        valueFormat: {
-            type: String,
-            default: 'Array',
-            validator(value) {
-                return ['Array', 'String'].includes(value)
-            }
-        },
-        valueSeparator: {
-            type: String,
-            default: ',',
-            validator(value) {
-                return value.length !== 0
-            }
-        },
-        readonly: {
-            type: Boolean,
-            default: false
-        },
-        optionConfig: {
-            type: Object,
-            default: () => {
-                return {
-                    key: null, // option 的key值对应的属性名
-                    value: 'value', // option 的value值对应的属性名
-                    label: 'label', // option 的label值对应的属性名
-                };
-            },
-        },
-        options: {
-            type: Array,
-            default: () => [],
-        },
+  name: "BaseSelect",
+  props: {
+    value: [String, Number, Array],
+    options: {
+      type: Array,
+      default: () => [],
     },
+  },
 
-    data() {
-        return {
-        }
+  data() {
+    return {};
+  },
+  computed: {
+    modelValue: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit("input", val);
+      },
     },
-    watch: {
-        value(newVal) {
-            // 如果是多选且期望字符串格式，确保值始终为字符串
-            if (this.multiple && this.valueFormat === 'String') {
-                this.$emit("input", Array.isArray(newVal) ? newVal.join(this.valueSeparator) : newVal);
-            }
-        },
-    },
-    computed: {
-        modelValue: {
-            get() {
-                if (this.multiple && this.valueFormat === 'String') {
-                    return (typeof this.value === 'string' && this.value) ? this.value.split(this.valueSeparator) : []
-                } else {
-                    return this.value
-                }
-            },
-            set(val) {
-                if (this.multiple && this.valueFormat === 'String') {
-                    this.$emit("input", val.join(this.valueSeparator))
-                } else {
-                    this.$emit("input", val)
-                }
-            }
-        }
-    },
-    methods: {
-    },
-}
+  },
+};
 </script>

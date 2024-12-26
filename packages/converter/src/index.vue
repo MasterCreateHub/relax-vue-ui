@@ -71,7 +71,7 @@ export default {
             },
         },
         /**
-         * @description 默认渲染的值
+         * @description 默认值，当转换失败或转换后值为`null`、`undefined`时使用
          * @type {String | Number}
          */
         defaultValue: {
