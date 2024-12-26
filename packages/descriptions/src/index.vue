@@ -13,8 +13,8 @@
       <template slot="label">
         <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component :is="item.labelComponent || null" v-bind="item.labelComponentProps || {}"
-              v-on="item.labelComponentEvents || {}">{{ item.label }}</component>
+            <component :is="item.labelComponent" v-bind="item.labelComponentProps"
+              v-on="item.labelComponentEvents">{{ item.label }}</component>
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
@@ -22,8 +22,8 @@
       <template slot="default">
         <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
-            <component :is="item.contentComponent || null" v-bind="item.contentComponentProps || {}"
-              v-on="item.contentComponentEvents || {}">{{ item.value }}
+            <component :is="item.contentComponent" v-bind="item.contentComponentProps"
+              v-on="item.contentComponentEvents">{{ item.value }}
             </component>
           </template>
           <template v-else>{{ item.value }}</template>

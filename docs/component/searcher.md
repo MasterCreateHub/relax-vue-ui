@@ -20,46 +20,46 @@ export default {
       seacherFactors: [
         {
           label: "姓名",
-          prop: "name",
-          type: "el-input",
+          model: "name",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "年龄",
-          prop: "age",
-          type: "el-input",
+          model: "age",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "电话",
-          prop: "tel",
-          type: "el-input",
+          model: "tel",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "邮箱",
-          prop: "email",
-          type: "el-input",
+          model: "email",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "爱好",
-          prop: "happy",
-          type: "el-input",
+          model: "happy",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "描述",
-          prop: "desc",
-          type: "el-input",
+          model: "desc",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "等级",
-          prop: "level",
-          type: "el-select",
+          model: "level",
+          component: "el-select",
           valueType: "string",
-          config: {
+          props: {
             placeholder: "",
             clearable: false,
           },
@@ -99,22 +99,22 @@ export default {
       seacherFactors: [
         {
           label: "姓名",
-          prop: "name",
-          type: "el-input",
+          model: "name",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "电话",
-          prop: "tel",
-          type: "el-input",
+          model: "tel",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "等级",
-          prop: "level",
-          type: "el-select",
+          model: "level",
+          component: "el-select",
           valueType: "string",
-          config: {
+          props: {
             placeholder: "",
             clearable: false,
           },
@@ -144,9 +144,14 @@ export default {
 
 ```vue
 <template>
-  <re-searcher :factors="seacherFactors" @search="handleSearch">
+  <re-searcher :model="form" :factors="seacherFactors" @search="handleSearch">
     <template #level>
-      <el-select v-model="form.level" placeholder="请选择" clearable style="width: 100%">
+      <el-select
+        v-model="form.level"
+        placeholder="请选择"
+        clearable
+        style="width: 100%"
+      >
         <el-option label="A" :value="0" />
         <el-option label="B" :value="1" />
         <el-option label="C" :value="2" />
@@ -167,20 +172,20 @@ export default {
       seacherFactors: [
         {
           label: "姓名",
-          prop: "name",
-          type: "el-input",
+          model: "name",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "电话",
-          prop: "tel",
-          type: "el-input",
+          model: "tel",
+          component: "el-input",
           valueType: "string",
         },
         {
           label: "等级",
-          prop: "level",
-          type: "el-select",
+          model: "level",
+          component: "el-select",
           valueType: "string",
         },
       ],
@@ -219,6 +224,17 @@ export default {
 | expandText     | 展开按钮文字         | String          | -                          | `展开`    |
 | collapseText   | 收起按钮文字         | String          | -                          | `收起`    |
 | actionPosition | 操作按钮位置         | String          | `left`, `right`            | `right`   |
+
+#### Factor 对象结构
+
+| 参数      | 说明                     | 类型   | 可选值                                          | 默认值     |
+| --------- | ------------------------ | ------ | ----------------------------------------------- | ---------- |
+| label     | 搜索条件标签名称         | String | -                                               | -          |
+| model     | 搜索条件双向绑定的属性名 | String | -                                               | -          |
+| component | 搜索条件组件名称         | String | -                                               | `el-input` |
+| props     | 搜索条件组件的配置项     | Object | -                                               | `{}`       |
+| events    | 搜索条件组件的事件绑定   | Object | -                                               | `{}`       |
+| valueType | 搜索条件组件绑定值的类型 | String | `string`, `number`, `boolean`, `array`,`object` | -          |
 
 ### Events
 

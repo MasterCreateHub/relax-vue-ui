@@ -7,21 +7,21 @@
       <template v-if="layout === 'flex'">
         <el-row class="re-searcher__body is-flex" :gutter="factorSpacing">
           <el-col :style="{ minWidth: factorMinWidth + 'px' }" class="re-searcher-factor__wrapper"
-            v-for="factor in showFactors" :key="factor.prop" :span="factorSpan">
-            <el-form-item :prop="factor.prop" :label="factor.label">
-              <slot :name="factor.prop" :form="form" :factor="factor">
-                <component :is="factor.type || 'el-input'" v-model="form[factor.prop]" clearable v-bind="factor.config"
-                  class="re-factor-item">
-                  <template v-if="factor.type === 'el-select'">
+            v-for="factor in showFactors" :key="factor.model" :span="factorSpan">
+            <el-form-item :prop="factor.model" :label="factor.label">
+              <slot :name="factor.model" :form="form" :factor="factor">
+                <component :is="factor.component || 'el-input'" v-model="form[factor.model]" clearable
+                  v-bind="factor.props || {}" v-on="factor.events || {}" class="re-factor-item">
+                  <template v-if="factor.component === 'el-select'">
                     <el-option v-for="item in factor.options" :key="item.value" :label="item.label"
                       :value="item.value"></el-option>
                   </template>
-                  <template v-if="factor.type === 'el-radio-group'">
+                  <template v-if="factor.component === 'el-radio-group'">
                     <el-radio v-for="item in factor.options" :key="item.value" :label="item.value">
                       {{ item.label }}
                     </el-radio>
                   </template>
-                  <template v-if="factor.type === 'el-checkbox-group'">
+                  <template v-if="factor.component === 'el-checkbox-group'">
                     <el-checkbox v-for="item in factor.options" :key="item.value" :label="item.value">
                       {{ item.label }}
                     </el-checkbox>
@@ -54,21 +54,21 @@
       <template v-if="layout === 'grid'">
         <div class="re-searcher__body is-grid"
           :style="{ gridTemplateColumns: `repeat(${gridCols}, 1fr)`, gap: `0px ${factorSpacing}px` }">
-          <div class="re-searcher-factor__wrapper" v-for="factor in showFactors" :key="factor.prop">
-            <el-form-item :prop="factor.prop" :label="factor.label">
-              <slot :name="factor.prop" :form="form" :factor="factor">
-                <component :is="factor.type || 'el-input'" v-model="form[factor.prop]" clearable v-bind="factor.config"
-                  class="re-factor-item">
-                  <template v-if="factor.type === 'el-select'">
+          <div class="re-searcher-factor__wrapper" v-for="factor in showFactors" :key="factor.model">
+            <el-form-item :prop="factor.model" :label="factor.label">
+              <slot :name="factor.model" :form="form" :factor="factor">
+                <component :is="factor.component || 'el-input'" v-model="form[factor.model]" clearable
+                  v-bind="factor.props || {}" v-on="factor.events || {}" class="re-factor-item">
+                  <template v-if="factor.component === 'el-select'">
                     <el-option v-for="item in factor.options" :key="item.value" :label="item.label"
                       :value="item.value"></el-option>
                   </template>
-                  <template v-if="factor.type === 'el-radio-group'">
+                  <template v-if="factor.component === 'el-radio-group'">
                     <el-radio v-for="item in factor.options" :key="item.value" :label="item.value">
                       {{ item.label }}
                     </el-radio>
                   </template>
-                  <template v-if="factor.type === 'el-checkbox-group'">
+                  <template v-if="factor.component === 'el-checkbox-group'">
                     <el-checkbox v-for="item in factor.options" :key="item.value" :label="item.value">
                       {{ item.label }}
                     </el-checkbox>
@@ -102,6 +102,7 @@
   </div>
 </template>
 <script>
+const DEFAULT_MODEL = Symbol("defaultModel")
 export default {
   name: "ReSearcher",
   props: {
@@ -112,8 +113,9 @@ export default {
      * @property {String} factor.label  搜索条件标签名称
      * @property {String} factor.model  搜索条件双向绑定的属性名
      * @property {String} factor.component 搜索条件组件名称，默认为el-input
-     * @property {Object} factor.componentProps 搜索条件组件的配置项，默认为{}
-     * @property {'string'|'number'|'boolean'|'array'} factor.valueType 搜索条件组件绑定值的类型，默认为string
+     * @property {Object} factor.props 搜索条件组件的配置项，默认为{}
+     * @property {Object} factor.events 搜索条件组件的事件绑定，默认为{}
+     * @property {'string'|'number'|'boolean'|'array'|'object'} factor.valueType 搜索条件组件绑定值的类型
      */
     factors: {
       type: Array,
@@ -125,9 +127,9 @@ export default {
           return (
             Object.prototype.toString.call(factor) === "[object Object]" &&
             factor.label &&
-            factor.prop &&
-            factor.type &&
-            factor.valueType
+            factor.model &&
+            factor.component &&
+            ['string', 'number', 'boolean', 'array', 'object'].includes(factor.valueType)
           );
         });
       },
@@ -140,7 +142,9 @@ export default {
     model: {
       type: Object,
       default: () => {
-        return {};
+        const defaultModel = {};
+        defaultModel[DEFAULT_MODEL] = true;
+        return defaultModel;
       },
     },
     /**
@@ -379,7 +383,7 @@ export default {
       handler(newVal, oldVal) {
         if (this.autoSearch) {
           const changeFields = this.factors.some((factor) => {
-            return newVal[factor.prop] !== oldVal[factor.prop];
+            return newVal[factor.model] !== oldVal[factor.model];
           })
           if (changeFields) {
             this.onDebounceSearch();
@@ -389,7 +393,7 @@ export default {
       deep: true
     },
   },
-  mounted() {
+  created() {
     this.onInit();
   },
   methods: {
@@ -397,13 +401,19 @@ export default {
      * @description 组件初始化
      */
     onInit() {
+      if (!this.model[DEFAULT_MODEL]) {
+        return;
+      }
       this.factors.forEach((factor) => {
-        if (!(factor.prop in this.form)) {
-          if (factor.valueType === "array") {
-            this.$set(this.form, factor.prop, []);
-          } else {
-            this.$set(this.form, factor.prop, null);
-          }
+        switch (factor.valueType) {
+          case 'array':
+            this.$set(this.form, factor.model, []);
+            break;
+          case 'object':
+            this.$set(this.form, factor.model, {});
+            break;
+          default:
+            this.$set(this.form, factor.model, null);
         }
       });
     },
@@ -434,10 +444,15 @@ export default {
      */
     handleReset() {
       this.factors.forEach((factor) => {
-        if (factor.valueType === "array") {
-          this.$set(this.form, factor.prop, []);
-        } else {
-          this.$set(this.form, factor.prop, null);
+        switch (factor.valueType) {
+          case 'array':
+            this.$set(this.form, factor.model, []);
+            break;
+          case 'object':
+            this.$set(this.form, factor.model, {});
+            break;
+          default:
+            this.$set(this.form, factor.model, null);
         }
       });
       this.$emit("reset", this.form);
@@ -454,7 +469,7 @@ export default {
      */
     onResize(entry) {
       const width = entry.contentRect.width;
-      if(width !== 0){
+      if (width !== 0) {
         this.gridCols = Math.floor((width + this.factorSpacing) / (this.factorMinWidth + this.factorSpacing));
         for (let i = 0; i < this.sizeArray.length; i++) {
           if (width <= this.sizeArray[i].boundary) {

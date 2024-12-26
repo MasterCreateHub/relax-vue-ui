@@ -96,8 +96,8 @@ export default {
 | tooltip   | 提示内容，默认为工具标签 | String  | -               | -           |
 | position  | 工具位置                 | String  | `left`, `right` | -           |
 | component | 工具组件                 | String  | -               | `el-button` |
-| props     | 工具组件配置             | Object  | -               | -           |
-| events    | 工具绑定的事件           | Object  | -               | -           |
+| props     | 工具组件配置             | Object  | -               | `{}`        |
+| events    | 工具绑定的事件           | Object  | -               | `{}`        |
 
 ### Events
 
@@ -107,6 +107,6 @@ export default {
 
 ### Slots
 
-| 名称         | 说明                   | 参数 |
-| ------------ | ---------------------- | ---- |
-| ${tool.name} | 单个工具区域自定义内容 | `tool`    |
+| 名称         | 说明                   | 参数   |
+| ------------ | ---------------------- | ------ |
+| ${tool.name} | 单个工具区域自定义内容 | `tool` |

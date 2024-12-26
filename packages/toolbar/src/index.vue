@@ -6,10 +6,10 @@
         <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
           <slot :name="tool.name" :tool="tool">
             <template v-if="tool.component">
-              <component :is="tool.component" v-bind.sync="tool.props" v-on="tool.events" />
+              <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
             </template>
             <template v-else>
-              <el-button v-bind.sync="tool.props" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
+              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
             </template>
           </slot>
         </el-tooltip>
@@ -21,10 +21,10 @@
         <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
           <slot :name="tool.name" :tool="tool">
             <template v-if="tool.component">
-              <component :is="tool.component" v-bind.sync="tool.props" v-on="tool.events" />
+              <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
             </template>
             <template v-else>
-              <el-button v-bind.sync="tool.props" size="mini" @click="$emit(tool.name)" />
+              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)" />
             </template>
           </slot>
         </el-tooltip>
