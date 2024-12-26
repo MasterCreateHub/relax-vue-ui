@@ -127,9 +127,7 @@ export default {
           return (
             Object.prototype.toString.call(factor) === "[object Object]" &&
             factor.label &&
-            factor.model &&
-            factor.component &&
-            ['string', 'number', 'boolean', 'array', 'object'].includes(factor.valueType)
+            factor.model 
           );
         });
       },

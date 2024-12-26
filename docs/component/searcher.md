@@ -1,12 +1,14 @@
 # Searcher
 
-搜索栏，用于列表搜索
+搜索栏，用于列表搜索。
 
 ## Searcher Usage
 
 ### 基础用法
 
-::: demo
+适用于大部分列表搜索场景。
+
+::: demo 如果不为搜索条件配置`component`，则默认渲染为`el-input`。
 
 ```vue
 <template>
@@ -21,44 +23,179 @@ export default {
         {
           label: "姓名",
           model: "name",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "年龄",
           model: "age",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "电话",
           model: "tel",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "邮箱",
           model: "email",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "爱好",
           model: "happy",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "描述",
           model: "desc",
-          component: "el-input",
-          valueType: "string",
         },
         {
           label: "等级",
           model: "level",
           component: "el-select",
-          valueType: "string",
+          props: {
+            placeholder: "",
+            clearable: false,
+          },
+          options: [
+            { label: "A", value: "A" },
+            { label: "B", value: "B" },
+            { label: "C", value: "C" },
+          ],
+        },
+      ],
+    };
+  },
+  methods: {
+    handleSearch(val) {
+      this.$message.success(`搜索条件参数为：${JSON.stringify(val)}`);
+    },
+  },
+};
+</script>
+```
+
+:::
+
+### 搜索条件布局
+
+支持`flex`布局和`grid`布局，默认使用`flex`布局。
+
+::: demo 1、`flex`布局采用`el-row`和`el-col`组合实现，`flex`布局只能实现 1 列，2 列、3 列、4 列、6 列、8 列布局。</br>2、`grid`布局没有布局列数的限制，其布局列数只取决于搜索栏宽度和搜索条件最小宽度。</br>3、`flex`和`grid`两种布局都是自适应的，如果目标浏览器支持`grid`布局，推荐使用`grid`布局。
+
+```vue
+<template>
+  <el-row style="margin-bottom: 10px;"><el-tag>flex 布局</el-tag></el-row>
+  <re-searcher :factors="seacherFactors" @search="handleSearch" />
+  <el-row style="margin: 10px 0px;"><el-tag>grid 布局</el-tag></el-row>
+  <re-searcher :factors="seacherFactors" layout="grid" @search="handleSearch" />
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      seacherFactors: [
+        {
+          label: "姓名",
+          model: "name",
+        },
+        {
+          label: "年龄",
+          model: "age",
+        },
+        {
+          label: "电话",
+          model: "tel",
+        },
+        {
+          label: "邮箱",
+          model: "email",
+        },
+        {
+          label: "爱好",
+          model: "happy",
+        },
+        {
+          label: "描述",
+          model: "desc",
+        },
+        {
+          label: "等级",
+          model: "level",
+          component: "el-select",
+          props: {
+            placeholder: "",
+            clearable: false,
+          },
+          options: [
+            { label: "A", value: "A" },
+            { label: "B", value: "B" },
+            { label: "C", value: "C" },
+          ],
+        },
+      ],
+    };
+  },
+  methods: {
+    handleSearch(val) {
+      this.$message.success(`搜索条件参数为：${JSON.stringify(val)}`);
+    },
+  },
+};
+</script>
+```
+
+:::
+
+### 标签对齐方式
+
+搜索条件标签默认对齐方式为两端对齐。
+
+::: demo 设置`labelPosition`属性可改变标签对齐方式，对齐方式支持`left`、`right`、`justify`三种，默认为两端对齐，即`justify`。
+
+```vue
+<template>
+  <div style="margin-bottom: 10px;">
+    对齐方式：
+     <el-radio-group v-model="align" size="mini">
+          <el-radio-button label="justify">两端对齐</el-radio-button>
+          <el-radio-button label="left">靠左对齐</el-radio-button>
+          <el-radio-button label="right">靠右对齐</el-radio-button>
+        </el-radio-group>
+    </div>
+  <re-searcher :factors="seacherFactors" :label-position="labelPosition" @search="handleSearch" />
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      labelPosition: "justify",
+      seacherFactors: [
+        {
+          label: "姓名",
+          model: "name",
+        },
+        {
+          label: "年龄",
+          model: "age",
+        },
+        {
+          label: "电话",
+          model: "tel",
+        },
+        {
+          label: "邮箱",
+          model: "email",
+        },
+        {
+          label: "爱好",
+          model: "happy",
+        },
+        {
+          label: "描述",
+          model: "desc",
+        },
+        {
+          label: "等级",
+          model: "level",
+          component: "el-select",
           props: {
             placeholder: "",
             clearable: false,
@@ -84,6 +221,8 @@ export default {
 :::
 
 ### 启用自动搜索
+
+每当搜索条件发生变化时，自动触发防抖搜素。
 
 ::: demo
 
@@ -139,6 +278,8 @@ export default {
 :::
 
 ### 自定义搜索条件
+
+每个搜索条件都可以自定义内容。
 
 ::: demo
 
@@ -201,8 +342,6 @@ export default {
 ```
 
 :::
-
-### 自动搜索
 
 ## Searcher API
 
