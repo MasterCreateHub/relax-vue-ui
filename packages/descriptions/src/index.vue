@@ -13,8 +13,8 @@
       <template slot="label">
         <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component :is="item.labelComponent" v-bind="item.labelComponentProps"
-              v-on="item.labelComponentEvents">{{ item.label }}</component>
+            <component :is="item.labelComponent" v-bind="item.labelComponentProps" v-on="item.labelComponentFormatEvents">{{
+              item.label }}</component>
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
@@ -23,7 +23,7 @@
         <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
             <component :is="item.contentComponent" v-bind="item.contentComponentProps"
-              v-on="item.contentComponentEvents">{{ item.value }}
+              v-on="item.contentComponentFormatEvents">{{ item.value }}
             </component>
           </template>
           <template v-else>{{ item.value }}</template>
@@ -97,9 +97,21 @@ export default {
         item.labelComponent = item.labelComponent || null;
         item.labelComponentProps = item.labelComponentProps || {};
         item.labelComponentEvents = item.labelComponentEvents || {};
+        item.labelComponentFormatEvents = Object.keys(item.labelComponentEvents).reduce((events, key) => {
+          events[key] = (...args) => {
+            item.labelComponentEvents[key](item, this.data, ...args);
+          };
+          return events;
+        }, {});
         item.contentComponent = item.contentComponent || null;
         item.contentComponentProps = item.contentComponentProps || {};
         item.contentComponentEvents = item.contentComponentEvents || {};
+        item.contentComponentFormatEvents = Object.keys(item.contentComponentEvents).reduce((events, key) => {
+          events[key] = (...args) => {
+            item.contentComponentEvents[key](item, this.data, ...args);
+          };
+          return events;
+        }, {});
         item.dataInProps = item.dataInProps || null;
         item.value = this.data[item.prop] || null;
         if (item.dataInProps && typeof item.dataInProps === "string") {

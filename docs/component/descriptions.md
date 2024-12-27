@@ -57,8 +57,9 @@ export default {
           contentComponent: "el-link",
           contentComponentProps: { type: "success" },
           contentComponentEvents: {
-            click: () => {
-              this.$message.success("想看王小明的个人网站？");
+            click: (item, data, event) => {
+              console.log("测试参数", item, data, event);
+              this.$message.success("想看王小明的个人网站？" + data[item.prop]);
             },
           },
         },
@@ -103,12 +104,14 @@ export default {
       :column="3"
       :border="true"
     >
-      <template #label="{ item, data }">
-        <span>{{ data[item.prop] + ":" }}</span>
+      <template #label="{ item }">
+        <span>{{ item.label + ":" }}</span>
       </template>
       <template #content="{ item, data }">
         <el-tag v-if="item.prop === 'sex'">{{ data[item.prop] }}</el-tag>
-        <el-link v-else-if="item.prop === 'website'" type="success">{{ data[item.prop] }}</el-link>
+        <el-link v-else-if="item.prop === 'website'" type="success">{{
+          data[item.prop]
+        }}</el-link>
       </template>
     </re-descriptions>
   </div>
@@ -121,12 +124,12 @@ export default {
         { label: "姓名", prop: "name", span: 1 },
         { label: "年龄", prop: "age", span: 1 },
         { label: "性别", prop: "sex", span: 1 },
-        { label: "生日",prop: "birthday",span: 1 },
+        { label: "生日", prop: "birthday", span: 1 },
         { label: "手机号", prop: "phone", span: 1 },
-        { label: "邮箱",prop: "email",span: 1 },
+        { label: "邮箱", prop: "email", span: 1 },
         { label: "公司", prop: "company", span: 1 },
         { label: "地址", prop: "address", span: 2 },
-        { label: "个人网站",prop: "website",span: 3 },
+        { label: "个人网站", prop: "website", span: 3 },
       ],
       personData: {
         name: "王小明",

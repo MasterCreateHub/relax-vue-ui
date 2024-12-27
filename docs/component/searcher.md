@@ -153,7 +153,7 @@ export default {
 <template>
   <div style="margin-bottom: 10px;">
     对齐方式：
-     <el-radio-group v-model="align" size="mini">
+     <el-radio-group v-model="labelPosition" size="mini">
           <el-radio-button label="justify">两端对齐</el-radio-button>
           <el-radio-button label="left">靠左对齐</el-radio-button>
           <el-radio-button label="right">靠右对齐</el-radio-button>

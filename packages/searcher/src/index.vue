@@ -381,7 +381,7 @@ export default {
       handler(newVal, oldVal) {
         if (this.autoSearch) {
           const changeFields = this.factors.some((factor) => {
-            return newVal[factor.model] !== oldVal[factor.model];
+            return JSON.stringify(newVal[factor.model]) !== JSON.stringify(oldVal[factor.model]);
           })
           if (changeFields) {
             this.onDebounceSearch();
