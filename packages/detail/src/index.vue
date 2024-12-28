@@ -4,30 +4,47 @@
       <slot name="header">{{ title }}</slot>
     </header>
     <main class="re-detail__body">
-      <section v-for="section in renderConfig" :key="section.name" :class="[
-        're-detail-section',
-        `is-${sectionShowType}`,
-        {
-          'is-collapse': collapsible
-        },
-        {
-          'is-active': collapsible && currentActiveSections.includes(section.name),
-        },
-      ]" @click="collapsible ? handleActive(section.name) : null">
+      <section
+        v-for="section in renderConfig"
+        :key="section.name"
+        :class="[
+          're-detail-section',
+          `is-${sectionShowType}`,
+          {
+            'is-collapse': collapsible,
+          },
+          {
+            'is-active':
+              collapsible && currentActiveSections.includes(section.name),
+          },
+        ]"
+        @click="collapsible ? handleActive(section.name) : null"
+      >
         <div class="re-detail-section__title">
           <slot :name="`${section.name}Title`" :section="section">
-            <i :class="[
-              { 'el-icon-menu': !collapsible },
-              { 'el-icon-caret-right': collapsible },
-              're-detail-section__icon',
-            ]" />
+            <i
+              :class="[
+                { 'el-icon-menu': !collapsible },
+                { 'el-icon-caret-right': collapsible },
+                're-detail-section__icon',
+              ]"
+            />
             {{ section.label }}
           </slot>
         </div>
         <div class="re-detail-section__content">
-          <slot :name="`${section.name}Content`" :section="section" :data="section.data">
-            <component v-for="(comp, index) in section.components" :key="section.name + comp.dataKey + index"
-              :is="comp.name" v-bind="comp.props" v-on="comp.events" />
+          <slot
+            :name="`${section.name}Content`"
+            :section="section"
+            :data="section.data"
+          >
+            <component
+              v-for="(comp, index) in section.components"
+              :key="section.name + comp.dataKey + index"
+              :is="comp.name"
+              v-bind="comp.props"
+              v-on="comp.events"
+            />
           </slot>
         </div>
       </section>
@@ -46,12 +63,8 @@ export default {
     /**
      * @description 标题
      * @type {string}
-     * @default ''
      */
-    title: {
-      type: String,
-      default: "",
-    },
+    title: String,
     /**
      * @description 章节数组
      * @type {Array<Section>}
@@ -61,9 +74,9 @@ export default {
      * @property {Array<Component>} section.components 章节所用的组件
      * @property {Object} component 组件对象
      * @property {String} component.name 组件的属性
-     * @property {String} component.dataKey 组件获取从data中获取数据的标识
      * @property {Object} component.props 组件的属性
      * @property {Object} component.events 组件的事件
+     * @property {String} component.dataKey 组件获取从data中获取数据的标识
      * @property {String} component.dataInProps 为组件注入数据使用的属性名
      * @default []
      */
@@ -71,6 +84,37 @@ export default {
       type: Array,
       default: () => {
         return [];
+      },
+      validator(value) {
+        return value.every((section) => {
+          if (!section.name || !section.label) {
+            console.error(
+              `Section must have 'name' and 'label' properties. Found:`,
+              section
+            );
+            return false;
+          }
+          if (section.components) {
+            if (!Array.isArray(section.components)) {
+              console.error(
+                `Section components must be an array. Found:`,
+                section.components
+              );
+              return false;
+            }
+            return section.components.every((component) => {
+              if (!component.dataKey) {
+                console.error(
+                  `Component in section '${section.name}' must have 'dataKey' property. Found:`,
+                  component
+                );
+                return false;
+              }
+              return true;
+            });
+          }
+          return true;
+        });
       },
     },
     /**
@@ -111,7 +155,8 @@ export default {
   },
   data() {
     return {
-      internalActiveSections: this.sections.map((section) => section.name) || [],
+      internalActiveSections:
+        this.sections.map((section) => section.name) || [],
     };
   },
   computed: {
@@ -119,7 +164,9 @@ export default {
      * @description 章节的展现形式
      */
     sectionShowType() {
-      return ["simple", "bar", "card"].includes(this.showType) ? this.showType : "simple";
+      return ["simple", "bar", "card"].includes(this.showType)
+        ? this.showType
+        : "simple";
     },
     /**
      * @description 当前展开的章节
@@ -142,18 +189,19 @@ export default {
     renderConfig() {
       const sectionsClone = cloneDeep(this.sections);
       return sectionsClone.map((section) => {
-        section.data = this.data[section.name] || {}
-        section.components = (section.components || []).map(component => {
-          component.props = component.props || {}
-          component.events = component.events || {}
+        section.data = this.data[section.name] || {};
+        section.components = (section.components || []).map((component) => {
+          component.props = component.props || {};
+          component.events = component.events || {};
           component.props = {
             ...component.props,
-            [component.dataInProps || 'data']: section.data[component.dataKey] || null
-          }
-          return component
-        })
+            [component.dataInProps || "data"]:
+              section.data[component.dataKey] || null,
+          };
+          return component;
+        });
         return section;
-      })
+      });
     },
   },
   methods: {

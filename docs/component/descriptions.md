@@ -174,26 +174,33 @@ export default {
     return {
       items: [
         { label: "姓名", prop: "name", span: 1 },
-        { label: "年龄", prop: "age", span: 1 },
-        { label: "性别", prop: "sex", span: 1 },
         {
-          label: "生日",
-          prop: "birthday",
+          label: "年龄",
+          prop: "age",
           span: 1,
-          contentComponent: "el-tag",
-        },
-        { label: "手机号", prop: "phone", span: 1 },
-        {
-          label: "邮箱",
-          prop: "email",
-          span: 1,
-          labelComponent: "el-link",
-          labelComponentProps: { type: "success" },
-          labelComponentEvents: {
-            click: this.handleEmailLabelClick,
+          contentComponent: "re-converter",
+          contentComponentProps: {
+            source: "$targetValue  + '岁'",
           },
-          contentComponent: "el-tag",
+          dataInProps: "target",
         },
+        {
+          label: "性别",
+          prop: "sex",
+          span: 1,
+          contentComponent: "re-converter",
+          contentComponentProps: {
+            source: [
+              { label: "男", value: "1" },
+              { label: "女", value: "2" },
+            ],
+            container: "el-tag",
+          },
+          dataInProps: "target",
+        },
+        { label: "生日", prop: "birthday", span: 1 },
+        { label: "手机号", prop: "phone", span: 1 },
+        { label: "邮箱", prop: "email", span: 1 },
         { label: "公司", prop: "company", span: 1 },
         { label: "地址", prop: "address", span: 2 },
         {
@@ -212,7 +219,7 @@ export default {
       personData: {
         name: "王小明",
         age: 18,
-        sex: "男",
+        sex: "1",
         birthday: "1999-01-01",
         phone: "12345678901",
         email: "12345678901@qq.com",
@@ -221,11 +228,6 @@ export default {
         website: "https://www.wxm.com",
       },
     };
-  },
-  methods: {
-    handleEmailLabelClick() {
-      this.$message.success("邮箱都不知道是啥嘛？啊喂");
-    },
   },
 };
 </script>
@@ -266,12 +268,12 @@ export default {
 | labelStyle             | 标签样式                     | Object | -      | -      |
 | contentStyle           | 内容样式                     | Object | -      | -      |
 | labelComponent         | 标签组件                     | String | -      | -      |
-| labelComponentProps    | 标签组件的 props             | Object | -      | -      |
-| labelComponentEvents   | 标签组件的 events            | Object | -      | -      |
+| labelComponentProps    | 标签组件的`props `           | Object | -      | -      |
+| labelComponentEvents   | 标签组件的`events`           | Object | -      | -      |
 | contentComponent       | 内容组件                     | Object | -      | -      |
-| contentComponentProps  | 内容组件的 props             | Object | -      | -      |
-| contentComponentEvents | 内容组件的 events            | Object | -      | -      |
-| dataInProps            | 内容组件所需数据的 prop 名称 | String | -      | -      |
+| contentComponentProps  | 内容组件的`props`            | Object | -      | -      |
+| contentComponentEvents | 内容组件的`events`           | Object | -      | -      |
+| dataInProps            | 内容组件所需数据的`prop`名称 | String | -      | -      |
 
 ### Slots
 

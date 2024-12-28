@@ -6,10 +6,12 @@ import RelaxUI from "/src"
 
 import ConfigSelect from './components/config-select/ConfigSelect.vue'
 import ConfigRadioGroup from './components/config-radio-group/ConfigRadioGroup.vue'
+import ConfigTable from './components/config-table/ConfigTable.vue'
 
 
 Vue.component('ConfigSelect', ConfigSelect)
 Vue.component('ConfigRadioGroup', ConfigRadioGroup)
+Vue.component('ConfigTable', ConfigTable)
 
 
 export default async ({ Vue }) => {
