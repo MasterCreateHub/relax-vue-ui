@@ -45,7 +45,7 @@ export default {
           model: "desc",
         },
         {
-          label: "等级",
+          label: "评级",
           model: "level",
           component: "config-select",
           props: {
@@ -116,7 +116,7 @@ export default {
           model: "desc",
         },
         {
-          label: "等级",
+          label: "评级",
           model: "level",
           component: "el-select",
           props: {
@@ -197,7 +197,7 @@ export default {
           model: "desc",
         },
         {
-          label: "等级",
+          label: "评级",
           model: "level",
           component: "el-select",
           props: {
@@ -253,7 +253,7 @@ export default {
           valueType: "string",
         },
         {
-          label: "等级",
+          label: "评级",
           model: "level",
           component: "el-select",
           valueType: "string",

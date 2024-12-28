@@ -1,30 +1,35 @@
-.theme-default-content:not(.custom){
-    max-width: 100%;
-}
+.theme-default-content:not(.custom)
+  max-width 100%
 
-.page-nav {
-    max-width: 100% !important;
-}
+.page-nav
+  max-width 100% !important
 
-table {
-    display: table;
-}
+.el-table
+  table
+    border-collapse unset
+    margin unset
+    display inherit
+    overflow-x unset
+  tr
+    border-top unset
+    &:nth-child(2n)
+      background-color unset
+  th, td
+    border unset
+    padding unset
 
-::-webkit-scrollbar {
-    width: 12px; /* 滚动条宽度 */
-}
+.el-table table, .el-descriptions table
+  display table
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1; /* 轨道背景颜色 */
-}
+::-webkit-scrollbar
+  width 12px /* 滚动条宽度 */
 
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1; /* 滑块颜色 */
-    border-radius: 6px; /* 圆角 */
-}
+::-webkit-scrollbar-track
+  background #f1f1f1 /* 轨道背景颜色 */
 
-::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8; /* 悬停时滑块颜色 */
-}
+::-webkit-scrollbar-thumb
+  background #c1c1c1 /* 滑块颜色 */
+  border-radius 6px /* 圆角 */
 
-
+::-webkit-scrollbar-thumb:hover
+  background #a8a8a8 /* 悬停时滑块颜色 */

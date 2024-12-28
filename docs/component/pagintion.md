@@ -40,7 +40,7 @@ export default {
 ### 处理分页事件
 
 `re-pagination`将页码改变事件和页大小改变事件合并为`pagination`事件。
-::: demo `re-pagination`可以通过设置`align`属性来设置分页组件的对齐方式。
+::: demo `pagination`事件的参数是一个对象，其中 currentPage 为当前页码，pageSize 为每页显示条数，from 为触发该事件来源，值为`currentPage`或`pageSize`。
 
 ```vue
 <template>
@@ -89,7 +89,7 @@ export default {
 | ---------- | -------------------------- | ------------------------------- |
 | pagination | 分页跳转、分页大小改变事件 | `{currentPage, pageSize, from}` |
 
-::: tip
+::: tip pagination事件参数详细说明：
 `pagination`事件的参数是一个对象，其中 currentPage 为当前页码，pageSize 为每页显示条数，from 为触发该事件来源，值为`currentPage`或`pageSize`。
 :::
 

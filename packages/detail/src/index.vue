@@ -103,6 +103,13 @@ export default {
               return false;
             }
             return section.components.every((component) => {
+              if (!component.name) {
+                console.error(
+                  `Component in section '${section.name}' must have 'name' property. Found:`,
+                  component
+                );
+                return false;
+              }
               if (!component.dataKey) {
                 console.error(
                   `Component in section '${section.name}' must have 'dataKey' property. Found:`,

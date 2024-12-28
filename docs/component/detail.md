@@ -167,6 +167,7 @@ export default {
 
         this.detailData.otherInfo.other = {
           summary: "热爱生活，喜欢阅读和旅行，对未来充满期待。",
+          remark: "希望在技术上能够成长为专家。",
         };
       }, 1300);
     },
@@ -356,6 +357,7 @@ export default {
 
         this.detailData.otherInfo.other = {
           summary: "热爱生活，喜欢阅读和旅行，对未来充满期待。",
+          remark: "希望在技术上能够成长为专家。",
         };
       }, 1300);
     },
@@ -540,6 +542,7 @@ export default {
 
         this.detailData.otherInfo.other = {
           summary: "热爱生活，喜欢阅读和旅行，对未来充满期待。",
+          remark: "希望在技术上能够成长为专家。",
         };
       }, 1300);
     },
@@ -560,9 +563,49 @@ export default {
 <template>
   <div>
     <re-detail :data="detailData" :sections="detailSections" :title="title">
-      <template #baseInfoContent="{ section, data}">
-      <el-tag><span>{{ section.label }}</span></el-tag>
-       </template>
+      <!-- 自定义基本信息内容 -->
+      <template #baseInfoContent="{ section, data }">
+        <el-descriptions :column="2" border :data="data.base">
+          <el-descriptions-item label="姓名">{{
+            data.base.name
+          }}</el-descriptions-item>
+          <el-descriptions-item label="年龄">{{
+            data.base.age
+          }}</el-descriptions-item>
+          <el-descriptions-item label="性别">{{
+            data.base.gender
+          }}</el-descriptions-item>
+          <el-descriptions-item label="生日">{{
+            data.base.birthday
+          }}</el-descriptions-item>
+          <el-descriptions-item label="邮箱">{{
+            data.base.email
+          }}</el-descriptions-item>
+          <el-descriptions-item label="QQ">{{
+            data.base.qq
+          }}</el-descriptions-item>
+          <el-descriptions-item label="微信">{{
+            data.base.weChat
+          }}</el-descriptions-item>
+          <el-descriptions-item label="电话">{{
+            data.base.phone
+          }}</el-descriptions-item>
+          <el-descriptions-item label="地址">{{
+            data.base.address
+          }}</el-descriptions-item>
+          <el-descriptions-item label="爱好">{{
+            data.base.hobby
+          }}</el-descriptions-item>
+          <el-descriptions-item label="学历">{{
+            data.base.education
+          }}</el-descriptions-item>
+          <el-descriptions-item label="毕业院校">{{
+            data.base.school
+          }}</el-descriptions-item>
+        </el-descriptions>
+      </template>
+
+      <!-- 自定义工作经历内容 -->
       <template #jobInfoContent="{ section, data }">
         <el-table :data="data.jobList" border stripe>
           <el-table-column prop="company" label="公司名称"></el-table-column>
@@ -575,10 +618,27 @@ export default {
           <el-table-column prop="endTime" label="结束时间"></el-table-column>
           <el-table-column prop="workGrade" label="工作成绩"></el-table-column>
         </el-table>
+        <el-descriptions :column="1" border :data="data.jobSummary">
+          <el-descriptions-item label="工作总结">{{
+            data.jobSummary.workSummary
+          }}</el-descriptions-item>
+          <el-descriptions-item label="工作规划">{{
+            data.jobSummary.workPlan
+          }}</el-descriptions-item>
+        </el-descriptions>
       </template>
+
+      <!-- 自定义其他信息内容 -->
       <template #otherInfoContent="{ section, data }">
-      <el-tag><span>{{ section.label }}</span></el-tag>
-       </template>
+        <el-descriptions :column="1" border :data="data.other">
+          <el-descriptions-item label="个人总结">{{
+            data.other.summary
+          }}</el-descriptions-item>
+          <el-descriptions-item label="备注">{{
+            data.other.remark
+          }}</el-descriptions-item>
+        </el-descriptions>
+      </template>
     </re-detail>
   </div>
 </template>
@@ -603,62 +663,71 @@ export default {
         },
       ],
       detailData: {
-        baseInfo: {},
+        baseInfo: {
+          base: {},
+        },
         jobInfo: {
           jobList: [],
+          jobSummary: {},
         },
-        otherInfo: {},
+        otherInfo: {
+          other: {},
+        },
       },
     };
   },
   mounted() {
-    // this.handleGetdata();
+    this.handleGetdata();
   },
   methods: {
-    // handleGetdata() {
-    //   setTimeout(() => {
-    //     this.detailData.baseInfo.base = {
-    //       name: "张三",
-    //       age: 18,
-    //       gender: "男",
-    //       birthday: "1990-01-01",
-    //       email: "zhangsan@example.com",
-    //       qq: "123456789",
-    //       weChat: "zhangsan_wechat",
-    //       phone: "13800138000",
-    //       address: "北京市海淀区",
-    //       hobby: "阅读, 旅行, 运动",
-    //       education: "本科",
-    //       school: "清华大学",
-    //     };
-    //     this.detailData.jobInfo.jobList = [
-    //       {
-    //         company: "阿里巴巴集团",
-    //         post: "软件工程师",
-    //         workContent: "负责前端开发",
-    //         startTime: "2018-01-01",
-    //         endTime: "2020-12-31",
-    //         workGrade: "优秀",
-    //       },
-    //       {
-    //         company: "腾讯公司",
-    //         post: "高级软件工程师",
-    //         workContent: "负责前端架构设计",
-    //         startTime: "2021-01-01",
-    //         endTime: "2023-12-31",
-    //         workGrade: "优秀",
-    //       },
-    //     ];
-    //     this.detailData.jobInfo.jobSummary = {
-    //       workSummary:
-    //         "在阿里巴巴和腾讯积累了丰富的前端开发经验，熟悉Vue和React框架。",
-    //       workPlan: "计划进一步提升自己的技术能力，参与更多的项目。",
-    //     };
-    //     this.detailData.otherInfo.other = {
-    //       summary: "热爱生活，喜欢阅读和旅行，对未来充满期待。",
-    //     };
-    //   }, 1300);
-    // },
+    handleGetdata() {
+      setTimeout(() => {
+        this.detailData.baseInfo.base = {
+          name: "张三",
+          age: 18,
+          gender: "男",
+          birthday: "1990-01-01",
+          email: "zhangsan@example.com",
+          qq: "123456789",
+          weChat: "zhangsan_wechat",
+          phone: "13800138000",
+          address: "北京市海淀区",
+          hobby: "阅读, 旅行, 运动",
+          education: "本科",
+          school: "清华大学",
+        };
+
+        this.detailData.jobInfo.jobList = [
+          {
+            company: "阿里巴巴集团",
+            post: "软件工程师",
+            workContent: "负责前端开发",
+            startTime: "2018-01-01",
+            endTime: "2020-12-31",
+            workGrade: "优秀",
+          },
+          {
+            company: "腾讯公司",
+            post: "高级软件工程师",
+            workContent: "负责前端架构设计",
+            startTime: "2021-01-01",
+            endTime: "2023-12-31",
+            workGrade: "优秀",
+          },
+        ];
+
+        this.detailData.jobInfo.jobSummary = {
+          workSummary:
+            "在阿里巴巴和腾讯积累了丰富的前端开发经验，熟悉Vue和React框架。",
+          workPlan: "计划进一步提升自己的技术能力，参与更多的项目。",
+        };
+
+        this.detailData.otherInfo.other = {
+          summary: "热爱生活，喜欢阅读和旅行，对未来充满期待。",
+          remark: "希望在技术上能够成长为专家。",
+        };
+      }, 1300);
+    },
   },
 };
 </script>
@@ -683,15 +752,15 @@ export default {
 
 | 属性       | 说明               | 类型               | 可选值 | 默认值 |
 | ---------- | ------------------ | ------------------ | ------ | ------ |
-| name       | 章节名称           | String             | -      | -      |
-| label      | 章节标签           | String             | -      | -      |
+| name       | 章节名称 ，`必需`  | String             | -      | -      |
+| label      | 章节标签，`必需`   | String             | -      | -      |
 | components | 章节所用的组件数组 | Array\<Component\> | -      | -      |
 
 #### Component 对象结构
 
 | 属性        | 说明                                 | 类型   | 可选值 | 默认值 |
 | ----------- | ------------------------------------ | ------ | ------ | ------ |
-| name        | 组件的名称                           | String | -      | -      |
+| name        | 组件的名称，`必需`                   | String | -      | -      |
 | props       | 组件的属性                           | Object | -      | -      |
 | events      | 组件的事件                           | Object | -      | -      |
 | dataKey     | 组件从`data`中获取数据的标识，`必需` | String | -      | -      |
