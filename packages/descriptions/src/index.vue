@@ -52,7 +52,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
-import { formatEvents } from "@utils/formatEvents";
+import { formatEvents } from "/src/utils/index";
 export default {
   name: "ReDescriptions",
   props: {

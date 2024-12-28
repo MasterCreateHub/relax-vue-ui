@@ -1,5 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
-const path = require("path");
+
 module.exports = defineConfig({
   pages: {
     index: {
@@ -17,11 +17,6 @@ module.exports = defineConfig({
   runtimeCompiler: true,
 
   css: { extract: false },
-
-  // 配置路径别名
-  chainWebpack: config => {
-    config.resolve.alias.set("@examples", path.join(__dirname, "./examples"))
-    config.resolve.alias.set("@utils", path.join(__dirname, "./utils"))
-  }
+  
 });
 

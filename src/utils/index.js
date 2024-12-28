@@ -1,5 +1,5 @@
 import { formatEvents } from './formatEvents';
 
-export default {
+export {
     formatEvents
 };
