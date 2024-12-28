@@ -5,14 +5,15 @@
       :key="option.value + index"
       :label="option.label"
       :value="option.value"
-      ><slot :option="option"></slot
-    ></el-option>
+      >
+      <slot :option="option"/>
+  </el-option>
   </el-select>
 </template>
 
 <script>
 export default {
-  name: "BaseSelect",
+  name: "ConfigSelect",
   props: {
     value: [String, Number, Array],
     options: {

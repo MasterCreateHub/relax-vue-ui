@@ -4,8 +4,9 @@ import router from "./router";
 import store from "./store";
 import ElementUI from 'element-ui';
 
-import '@/assets/style/main.scss'
-import 'element-ui/lib/theme-chalk/index.css'; // 引入 Element UI 的样式
+import '@examples/assets/style/main.scss'
+import 'element-ui/lib/theme-chalk/index.css'; 
+
 
 import  RelaxUI from '../src/index'
 

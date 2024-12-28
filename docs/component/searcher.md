@@ -47,16 +47,16 @@ export default {
         {
           label: "等级",
           model: "level",
-          component: "el-select",
+          component: "config-select",
           props: {
             placeholder: "",
             clearable: false,
+            options: [
+              { label: "A", value: "A" },
+              { label: "B", value: "B" },
+              { label: "C", value: "C" },
+            ],
           },
-          options: [
-            { label: "A", value: "A" },
-            { label: "B", value: "B" },
-            { label: "C", value: "C" },
-          ],
         },
       ],
     };
@@ -153,13 +153,17 @@ export default {
 <template>
   <div style="margin-bottom: 10px;">
     对齐方式：
-     <el-radio-group v-model="labelPosition" size="mini">
-          <el-radio-button label="justify">两端对齐</el-radio-button>
-          <el-radio-button label="left">靠左对齐</el-radio-button>
-          <el-radio-button label="right">靠右对齐</el-radio-button>
-        </el-radio-group>
-    </div>
-  <re-searcher :factors="seacherFactors" :label-position="labelPosition" @search="handleSearch" />
+    <el-radio-group v-model="labelPosition" size="mini">
+      <el-radio-button label="justify">两端对齐</el-radio-button>
+      <el-radio-button label="left">靠左对齐</el-radio-button>
+      <el-radio-button label="right">靠右对齐</el-radio-button>
+    </el-radio-group>
+  </div>
+  <re-searcher
+    :factors="seacherFactors"
+    :label-position="labelPosition"
+    @search="handleSearch"
+  />
 </template>
 
 <script>
@@ -286,16 +290,35 @@ export default {
 ```vue
 <template>
   <re-searcher :model="form" :factors="seacherFactors" @search="handleSearch">
-    <template #level>
+    <template #name>
+      <el-input
+        v-model="form.name"
+        placeholder="请输入名称"
+        clearable
+        style="width: 100%"
+      />
+    </template>
+    <template #category>
       <el-select
-        v-model="form.level"
-        placeholder="请选择"
+        v-model="form.category"
+        placeholder="请选择分类"
         clearable
         style="width: 100%"
       >
-        <el-option label="A" :value="0" />
-        <el-option label="B" :value="1" />
-        <el-option label="C" :value="2" />
+        <el-option label="科幻" :value="0" />
+        <el-option label="玄幻" :value="1" />
+        <el-option label="奇幻" :value="2" />
+      </el-select>
+    </template>
+    <template #status>
+      <el-select
+        v-model="form.status"
+        placeholder="请选择状态"
+        clearable
+        style="width: 100%"
+      >
+        <el-option label="已借出" :value="0" />
+        <el-option label="在书架" :value="1" />
       </el-select>
     </template>
   </re-searcher>
@@ -307,27 +330,21 @@ export default {
     return {
       form: {
         name: null,
-        tel: null,
-        level: null,
+        category: null,
+        status: null,
       },
       seacherFactors: [
         {
-          label: "姓名",
+          label: "名称",
           model: "name",
-          component: "el-input",
-          valueType: "string",
         },
         {
-          label: "电话",
-          model: "tel",
-          component: "el-input",
-          valueType: "string",
+          label: "分类",
+          model: "category",
         },
         {
-          label: "等级",
-          model: "level",
-          component: "el-select",
-          valueType: "string",
+          label: "状态",
+          model: "status",
         },
       ],
     };

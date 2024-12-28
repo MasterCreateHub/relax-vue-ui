@@ -18,7 +18,8 @@ module.exports = defineConfig({
 
   // 配置路径别名
   chainWebpack: config => {
-    config.resolve.alias.set("@", path.join(__dirname, "./examples"))
+    config.resolve.alias.set("@examples", path.join(__dirname, "./examples"))
+    config.resolve.alias.set("@utils", path.join(__dirname, "./utils"))
   }
 });
 

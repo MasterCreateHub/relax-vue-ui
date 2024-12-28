@@ -11,15 +11,14 @@
 ```vue
 <template>
   <div>
-    <el-row style="margin-bottom: 10px;">
-      <el-col :span="24">
+    <div style="margin-bottom: 10px;">
+        对齐方式：
         <el-radio-group v-model="align" size="mini">
           <el-radio-button label="left">靠左</el-radio-button>
           <el-radio-button label="center">居中</el-radio-button>
           <el-radio-button label="right">靠右</el-radio-button>
         </el-radio-group>
-      </el-col>
-    </el-row>
+    </div>
     <re-pagination :total="total" :align="align" />
   </div>
 </template>
