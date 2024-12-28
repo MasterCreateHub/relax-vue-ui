@@ -38,7 +38,7 @@ export default {
   name: "ReToolbar",
   props: {
     /**
-     * @description 是否显示阴影
+     * @description 是否阴影环绕
      * @type {Boolean}
      * @default false
      */
@@ -109,7 +109,7 @@ export default {
     justify-content: flex-end;
 
     .re-toolbar-tool {
-      margin-left: 5px;
+      margin-left: 10px;
     }
   }
 
@@ -117,7 +117,7 @@ export default {
     justify-content: flex-start;
 
     .re-toolbar-tool {
-      margin-right: 5px;
+      margin-right: 10px;
     }
   }
 }

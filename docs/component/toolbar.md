@@ -6,6 +6,8 @@
 
 ### 基础用法
 
+支持仅通过配置渲染工具栏。
+
 ::: demo
 
 ```vue
@@ -45,6 +47,23 @@ export default {
           },
         },
         {
+          name: "searcher",
+          label: "搜索栏",
+          useTip: false,
+          position: "right",
+          component: "el-switch",
+          props: {
+            value: true,
+            inactiveText: "搜索栏",
+          },
+          events: {
+            input: (val) => {
+              this.tools.find((item) => item.name === "searcher").props.value =
+                val;
+            },
+          },
+        },
+        {
           name: "refresh",
           label: "刷新",
           useTip: true,
@@ -77,13 +96,109 @@ export default {
 
 ### 自定义工具内容
 
+每个工具都可以自定义内容。
+
+::: demo
+
+```vue
+<template>
+  <re-toolbar :tools="tools" :shadow="true">
+    <template #add="{ tool }">
+      <el-button
+        type="primary"
+        icon="el-icon-plus"
+        plain
+        size="mini"
+        @click="handleAdd"
+        >{{ tool.label }}</el-button
+      >
+    </template>
+    <template #delete>
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        plain
+        size="mini"
+        @click="handleDelete"
+        >删除</el-button
+      >
+    </template>
+    <template #density>
+      <el-dropdown placement="bottom">
+        <el-button icon="el-icon-s-operation" circle plain size="mini" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>紧凑</el-dropdown-item>
+          <el-dropdown-item>适中</el-dropdown-item>
+          <el-dropdown-item>宽松</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </template>
+    <template #refresh>
+      <el-button
+        icon="el-icon-refresh"
+        plain
+        circle
+        size="mini"
+        @click="handleRefresh"
+      />
+    </template>
+  </re-toolbar>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      tools: [
+        {
+          name: "add",
+          label: "新增",
+          position: "left",
+        },
+        {
+          name: "delete",
+          label: "删除",
+          position: "left",
+        },
+        {
+          name: "density",
+          label: "密度",
+          useTip: true,
+          position: "right",
+        },
+        {
+          name: "refresh",
+          label: "刷新",
+          useTip: true,
+          position: "right",
+        },
+      ],
+    };
+  },
+  methods: {
+    handleAdd() {
+      this.$message.success("点击了添加");
+    },
+    handleDelete() {
+      this.$message.success("点击了删除");
+    },
+    handleRefresh() {
+      this.$message.success("点击了刷新");
+    },
+  },
+};
+</script>
+```
+
+:::
+
 ## Toolbar API
 
 ### Attributes
 
 | 参数   | 说明         | 类型            | 可选值 | 默认值  |
 | ------ | ------------ | --------------- | ------ | ------- |
-| shadow | 是否显示阴影 | Boolean         | -      | `false` |
+| shadow | 是否阴影环绕 | Boolean         | -      | `false` |
 | tools  | 工具数组     | Array\<Column\> | -      | `[]`    |
 
 #### Tool 对象结构
