@@ -5,10 +5,18 @@ import store from "./store";
 import ElementUI from 'element-ui';
 
 import './assets/style/main.scss'
-import 'element-ui/lib/theme-chalk/index.css'; 
+import 'element-ui/lib/theme-chalk/index.css';
+
+import RelaxUI from '../src/index'
+
+import ConfigSelect from './components/config-select/ConfigSelect.vue'
+import ConfigRadioGroup from './components/config-radio-group/ConfigRadioGroup.vue'
+import ConfigTable from './components/config-table/ConfigTable.vue'
 
 
-import  RelaxUI from '../src/index'
+Vue.component('ConfigSelect', ConfigSelect)
+Vue.component('ConfigRadioGroup', ConfigRadioGroup)
+Vue.component('ConfigTable', ConfigTable)
 
 Vue.config.productionTip = false;
 

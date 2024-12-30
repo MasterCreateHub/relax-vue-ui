@@ -1,56 +1,18 @@
 <template>
-  <el-form
-    class="re-form"
-    :model="formData"
-    ref="form"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
-    <el-row :gutter="20" class="re-form__body">
-      <el-col
-        class="re-form-item__wrapper"
-        v-for="(item, index) in formFinalItems"
-        :span="item.span"
-        :key="item.model + index"
-      >
+  <el-form class="re-form" :model="formModel" ref="form" :inline="false" v-bind="$attrs" v-on="$listeners">
+    <el-row :gutter="gutter" class="re-form__body">
+      <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
+        :key="item.model + index">
         <el-form-item :label="item.label" class="re-form-item">
-          <template v-if="!item.children">
-            <slot :name="item.model" :item="item">
-              <component
-                class="re-form-item-component"
-                :is="item.component"
-                v-bind="item.props"
-                v-model="formData[item.model]"
-              ></component>
-            </slot>
-          </template>
-          <template v-else>
-            <div
-              v-for="(childForm, childFormIndx) in formData[item.model]"
-              :key="formData[item.model] + childFormIndx"
-            >
-              <el-row :gutter="10" class="re-form-item__child">
-                <el-col
-                  v-for="(child, index) in item.children"
-                  :key="child.model + index"
-                  :span="child.span"
-                >
-                  <el-form-item>
-                    <component
-                      class="re-form-item-component"
-                      :is="child.component"
-                      v-bind="child.props"
-                      v-model="childForm[child.model]"
-                    ></component>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-          </template>
+          <slot :name="item.model" :item="item">
+            <component class="re-form-item-component" :is="item.component" v-model="formModel[item.model]"
+              v-bind="item.props || {}" v-on="item.events || {}"></component>
+          </slot>
         </el-form-item>
       </el-col>
     </el-row>
   </el-form>
+
 </template>
 <script>
 import { deepParse } from "./templateParse.js";
@@ -61,7 +23,7 @@ export default {
      * @description 表单数据对象
      * @type {Object}
      */
-    formModel: {
+    model: {
       type: Object,
       default: () => ({}),
     },
@@ -88,48 +50,26 @@ export default {
      * @type {Array<FormItem>}
      * @property {Object} FormItem-表单项配置数组
      * @property {String} FormItem.label 表单项标签
-     * @property {String} FormItem.model 表单项数据路径，也是表单项唯一标识
      * @property {String} FormItem.required 表单项是否必填，默认为false
      * @property {String} FormItem.readonly 表单项是否只读，默认为false
      * @property {Boolean} FormItem.disabled 表单项是否禁用，默认为false
      * @property {Boolean} FormItem.hidden 表单项是否隐藏，默认为false
-     * @property {String} FormItem.component 表单项组件类型，表明用什么组件渲染，默认为el-input
-     * @property {Object} FormItem.props 表单项组件配置，会透传给组件，默认为{}
-     * @property {String} FormItem.initialValue 表单项初始值，默认为null
+     * @property {String} FormItem.initialValue 表单项初始值，默认为null || []
+     * @property {String} FormItem.component 表单项使用的组件，必需
+     * @property {String} FormItem.model 表单项数据绑定的属性名，也是表单项标识
+     * @property {String} FormItem.props 表单项使用的组件配置，默认为{}
+     * @property {String} FormItem.events 表单项使用的组件绑定事件，默认为{}
      * @property {String} FormItem.rule 表单校验规则，默认为[]
-     * @property {Array} FormItem.children 表单项子项，默认为[]
      * @property {String} FormItem.change 表单项值联动配置，默认为[]
      * @default []
      */
-    formItems: {
+    items: {
       type: Array,
       default: () => [],
     },
-    /**
-     * @description 表单分组配置
-     * @type {Array<Object>}
-     * @default []
-     * @property {Object[]} formSections-表单分组配置数组
-     * @property {String} formSections[].label 表单分组标签
-     * @property {String} formSections[].name 表单分组唯一标识
-     * @property {Array<String>} formSections[].fields 表单分组成员
-     */
-    formSections: {
-      type: Array,
-      default: () => [],
-    },
-    /**
-     * @description 表单分步配置
-     * @type {Array<Object>}
-     * @default []
-     * @property {Object[]} formSteps-表单步骤配置数组
-     * @property {String} formSteps[].label 表单步骤标签
-     * @property {String} formSteps[].name 表单步骤唯一标识
-     * @property {Array<String>} formSteps[].fields 表单步骤成员
-     */
-    formSteps: {
-      type: Array,
-      default: () => [],
+    gutter: {
+      type: Number,
+      default: 20,
     },
     /**
      * @description 是否自动滚动到第一个错误表单项
@@ -155,7 +95,7 @@ export default {
      */
     rules: {
       type: Object,
-      default: () => {},
+      default: () => { return {} },
     },
     /**
      * @description 表单数据联动配置
@@ -163,20 +103,15 @@ export default {
      */
     changes: {
       type: Array,
-      default: () => [],
+      default: () => { return [] },
     },
     /**
-     * @description 表单基础配置
+     * @description 额外的数据
      * @type {Object}
-     * @property {Number} baseConfig.gutter 表单栅格间隔，默认为20
-     * @property {Number} baseConfig.span 表单项宽度，默认为8
-     * @property {Number} baseConfig.labelWidth 表单项标签宽度，默认为100
-     * @property {String} baseConfig.labelPosition 表单项标签位置，默认为left
-     * @property {String} baseConfig.size 表单项尺寸，默认为medium
      */
-    baseConfig: {
+    extra: {
       type: Object,
-      default: () => {},
+      default: () => { return {} },
     },
   },
   data() {
@@ -187,9 +122,9 @@ export default {
      * @description 表单数据
      * @type {Object}
      */
-    formData: {
+    formModel: {
       get() {
-        return this.formModel;
+        return this.model;
       },
       set(val) {
         this.$emit("input", val);
@@ -200,18 +135,18 @@ export default {
      * @type {Object}
      */
     formInitialValues() {
-      return this.formItems.reduce((acc, cur) => {
+      return this.items.reduce((acc, cur) => {
         acc[cur.model] = cur.initialValue;
         return acc;
       }, {});
     },
     /**
-     * @description 表单项选项集
+     * @description 表单项选项集对象
      * @type {Object}
      */
     formSelectOptions() {
-      return this.formItems.reduce((acc, cur) => {
-        acc[cur.model] = cur.config?.options || null;
+      return this.items.reduce((acc, cur) => {
+        acc[cur.model] = cur.props?.options || null;
         return acc;
       }, {});
     },
@@ -220,7 +155,7 @@ export default {
      * @type {Array}
      */
     formValueChanges() {
-      const changeObj = this.formItems.reduce((acc, cur) => {
+      const changeObj = this.items.reduce((acc, cur) => {
         acc[cur.model] = cur?.change || [];
         return acc;
       }, {});
@@ -241,35 +176,36 @@ export default {
     formContext() {
       return {
         // 表单数据
-        $values: this.formData,
-        // 表单各项初始值formFinalItems
+        $values: this.formModel,
+        // 表单各项初始值
         $initialValues: this.formInitialValues,
         // 表单选项数据
         $selectOptions: this.formSelectOptions,
+        // 额外注入的数据
+        $extra: this.extra,
       };
     },
     /**
      * @description 表单项配置数组解析后的最终配置
      * @type {Array}
      */
-    formFinalItems() {
-      return deepParse(this.formItems, this.formContext).filter(
+    formatFormItems() {
+      return deepParse(this.items, this.formContext).filter(
         (item) => !item.hidden
       );
     },
   },
   watch: {
-    formModel: {
+    model: {
       immediate: true,
       handler() {
         this.formValueChanges.forEach((changeConfigItem) => {
-          this.formData[changeConfigItem.target] = changeConfigItem.value;
+          this.formModel[changeConfigItem.target] = changeConfigItem.value;
         });
       },
       deep: true,
     },
   },
-  mounted() {},
   methods: {
     /**
      * @description 表单校验
@@ -289,19 +225,19 @@ export default {
     /**
      * @description 校验表单项
      */
-    validateField() {},
+    validateField() { },
     /**
      * @description 清空表单项校验
      */
-    clearValidate() {},
+    clearValidate() { },
     /**
      * @description 表单重置
      */
-    reset() {},
+    reset() { },
     /**
      * @description 表单提交
      */
-    submit() {},
+    submit() { },
   },
 };
 </script>
@@ -310,6 +246,7 @@ export default {
   .re-form__body {
     display: flex;
     flex-wrap: wrap;
+
     .re-form-item__wrapper {
       .re-form-item {
         .re-form-item-component {
