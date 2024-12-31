@@ -1,5 +1,8 @@
 <template>
-  <el-form class="re-form" :model="formCurrentValues" ref="form" :inline="false" v-bind="$attrs" v-on="$listeners">
+  <el-form
+    :class="['re-form', { 'is-readonly': readonly }, { 'is-disabled': disabled }, { 'is-justify': labelPosition === 'justify' }]"
+    :model="formCurrentValues" ref="form" :inline="false" :disabled="readonly || disabled" v-bind="$attrs"
+    v-on="$listeners">
     <el-row :gutter="gutter" class="re-form__body">
       <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
         :key="item.model + index">
@@ -34,6 +37,18 @@ export default {
     readonly: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * @description 搜索表单标签位置
+     * @type {'top'|'left'|'right'|'justify'}
+     * @default 'justify'
+     */
+    labelPosition: {
+      type: String,
+      default: "justify",
+      validator(value) {
+        return ['top', 'left', 'right', 'justify'].includes(value)
+      }
     },
     /**
      * @description 表单是否为禁用
@@ -71,38 +86,13 @@ export default {
       default: 20,
     },
     /**
-     * @description 是否自动滚动到第一个错误表单项
+     * @description 检验时滚动到第一个错误表单项
      * @type {Boolean}
      * @default true
      */
-    autoScrollError: {
+    scrollToError: {
       type: Boolean,
       default: true,
-    },
-    /**
-     * @description 是否隐藏必填记号
-     * @type {Boolean}
-     * @default false
-     */
-    hideRequiredMark: {
-      type: Boolean,
-      default: false,
-    },
-    /**
-     * @description 表单校验配置
-     * @type {Object}
-     */
-    rules: {
-      type: Object,
-      default: () => { return {} },
-    },
-    /**
-     * @description 表单数据联动配置
-     * @type {Object}
-     */
-    changes: {
-      type: Array,
-      default: () => { return [] },
     },
     /**
      * @description 额外的数据
@@ -238,7 +228,7 @@ export default {
     /**
      * @description 表单重置
      */
-    reset() { 
+    reset() {
       this.formCurrentValues = this.formInitialValues
     },
     /**
