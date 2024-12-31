@@ -33,6 +33,7 @@ function parse(str, context) {
  */
 
 function deepParse(source, context){
+  const $currentValues = context.$currentValues;
 
     if (isString(source)) {
       return parse(source, context)
@@ -40,7 +41,14 @@ function deepParse(source, context){
   
     if (isPlainObject(source)) {
       return Object.keys(source).reduce((all, key) => {
-        return { ...all, [key]: deepParse(source[key], context) }
+               
+        const itemContext = { ...context }
+  
+        if (source.model && $currentValues) {
+          itemContext.$value = $currentValues[source.model]
+          itemContext.$select = context.$selectedOptions[source.model]
+        }
+        return { ...all, [key]: deepParse(source[key], itemContext) }
       }, {})
     }
   
@@ -53,4 +61,4 @@ function deepParse(source, context){
     return source
   }
 
-  export { deepParse}
+  export { deepParse }

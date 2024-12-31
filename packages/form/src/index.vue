@@ -1,18 +1,17 @@
 <template>
-  <el-form class="re-form" :model="formModel" ref="form" :inline="false" v-bind="$attrs" v-on="$listeners">
+  <el-form class="re-form" :model="formCurrentValues" ref="form" :inline="false" v-bind="$attrs" v-on="$listeners">
     <el-row :gutter="gutter" class="re-form__body">
       <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
         :key="item.model + index">
         <el-form-item :label="item.label" class="re-form-item">
           <slot :name="item.model" :item="item">
-            <component class="re-form-item-component" :is="item.component" v-model="formModel[item.model]"
+            <component class="re-form-item-component" :is="item.component" v-model="formCurrentValues[item.model]"
               v-bind="item.props || {}" v-on="item.events || {}"></component>
           </slot>
         </el-form-item>
       </el-col>
     </el-row>
   </el-form>
-
 </template>
 <script>
 import { deepParse } from "./templateParse.js";
@@ -109,7 +108,7 @@ export default {
      * @description 额外的数据
      * @type {Object}
      */
-    extra: {
+    contexts: {
       type: Object,
       default: () => { return {} },
     },
@@ -119,10 +118,10 @@ export default {
   },
   computed: {
     /**
-     * @description 表单数据
+     * @description 表单当前数据对象
      * @type {Object}
      */
-    formModel: {
+    formCurrentValues: {
       get() {
         return this.model;
       },
@@ -136,38 +135,30 @@ export default {
      */
     formInitialValues() {
       return this.items.reduce((acc, cur) => {
-        acc[cur.model] = cur.initialValue;
+        acc[cur.model] = deepParse(cur.initialValue, {
+          $currentValues: this.formCurrentValues,
+          $extraContexts: this.contexts,
+        });
         return acc;
       }, {});
     },
     /**
-     * @description 表单项选项集对象
+     * @description 表单项选中项集合对象
      * @type {Object}
      */
-    formSelectOptions() {
+    formSelectedOptions() {
       return this.items.reduce((acc, cur) => {
-        acc[cur.model] = cur.props?.options || null;
+        const options = deepParse(cur?.props?.options, {
+          $currentValues: this.formCurrentValues,
+          $extraContexts: this.contexts,
+        }) || [];
+        if (Array.isArray(this.formCurrentValues[cur.model])) {
+          acc[cur.model] = options.filter(option => this.formCurrentValues[cur.model].includes(option.value)) || this.formCurrentValues[cur.model]
+        } else {
+          acc[cur.model] = options.find(option => this.formCurrentValues[cur.model] === option.value) || this.formCurrentValues[cur.model]
+        }
         return acc;
       }, {});
-    },
-    /**
-     * @description 表单项联动配置数组
-     * @type {Array}
-     */
-    formValueChanges() {
-      const changeObj = this.items.reduce((acc, cur) => {
-        acc[cur.model] = cur?.change || [];
-        return acc;
-      }, {});
-      const changeArr = Object.keys(changeObj).reduce((acc, key) => {
-        const itemChangeArr = changeObj[key].map((item) => {
-          item.source = key;
-          return item;
-        });
-        acc.push(...itemChangeArr);
-        return acc;
-      }, []);
-      return deepParse(changeArr, this.formContext);
     },
     /**
      * @description 表单上下文
@@ -175,14 +166,10 @@ export default {
      */
     formContext() {
       return {
-        // 表单数据
-        $values: this.formModel,
-        // 表单各项初始值
+        $currentValues: this.formCurrentValues,
         $initialValues: this.formInitialValues,
-        // 表单选项数据
-        $selectOptions: this.formSelectOptions,
-        // 额外注入的数据
-        $extra: this.extra,
+        $selectedOptions: this.formSelectedOptions,
+        $extraContexts: this.contexts,
       };
     },
     /**
@@ -194,13 +181,31 @@ export default {
         (item) => !item.hidden
       );
     },
+    /**
+     * @description 表单项联动配置数组
+     * @type {Array}
+     */
+    formValueChanges() {
+      const changeObj = this.formatFormItems.reduce((acc, cur) => {
+        acc[cur.model] = cur?.change || [];
+        return acc;
+      }, {});
+      const changeArr = Object.keys(changeObj).reduce((acc, key) => {
+        const itemChangeArr = changeObj[key].map((item) => {
+          item.source = key;
+          return item;
+        });
+        acc.push(...itemChangeArr);
+        return acc;
+      }, []);
+      return changeArr;
+    },
   },
   watch: {
     model: {
-      immediate: true,
       handler() {
         this.formValueChanges.forEach((changeConfigItem) => {
-          this.formModel[changeConfigItem.target] = changeConfigItem.value;
+          this.formCurrentValues[changeConfigItem.target] = changeConfigItem.value;
         });
       },
       deep: true,
@@ -233,7 +238,9 @@ export default {
     /**
      * @description 表单重置
      */
-    reset() { },
+    reset() { 
+      this.formCurrentValues = this.formInitialValues
+    },
     /**
      * @description 表单提交
      */
