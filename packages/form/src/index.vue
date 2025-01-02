@@ -7,6 +7,9 @@
       <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
         :key="item.model + index">
         <el-form-item class="re-form-item" :label="item.label" :prop="item.model">
+          <template slot="label">
+            <slot name="label" :item="item">{{ item.label }}</slot>
+          </template>
           <slot :name="item.model" :item="item">
             <component class="re-form-item-component" :is="item.component" v-model="formCurrentValues[item.model]"
               v-bind="item.props || {}" v-on="item.events || {}"></component>
@@ -214,7 +217,7 @@ export default {
               // 获取第一个校验错误的元素
               const element = document.querySelectorAll(".el-form-item__error")[0];
               // 滚动到错误元素对应位置
-              element.scrollIntoView({
+              element?.scrollIntoView({
                 behavior: "smooth",
                 block: "center",
               });
@@ -264,7 +267,7 @@ export default {
         Object.keys(this.formInitialValues).forEach((key) => {
           this.formCurrentValues[key] = this.formInitialValues[key];
         });
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
           this.$refs['form'].clearValidate();
         })
       } else {

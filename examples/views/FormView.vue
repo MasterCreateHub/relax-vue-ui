@@ -1,6 +1,6 @@
 <template>
   <div class="form-view">
-    <re-form ref="form" :items="items" :model="model" :rules="rules" :contexts="contexts" />
+    <re-form ref="form" :items="items" :model="model" :rules="rules" :contexts="contexts"/>
     <div class="form-view-footer">
       <el-button type="primary" @click="handleSubmit" size="small">提交</el-button>
       <el-button type="primary" @click="handleReset" size="small">重置</el-button>
@@ -53,7 +53,7 @@ export default {
           initialValue: null,
           span: 8,
           props: {
-            placeholder: "请选择产品大类",
+            // placeholder: "请选择产品大类",
             clearable: true,
             options: "{{ $extraContexts.productCategoryOptions }}"
           }
