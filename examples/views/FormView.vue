@@ -1,6 +1,11 @@
 <template>
   <div class="form-view">
     <re-form ref="form" :items="items" :model="model" :rules="rules" :contexts="contexts" />
+    <div class="form-view-footer">
+      <el-button type="primary" @click="handleSubmit" size="small">提交</el-button>
+      <el-button type="primary" @click="handleReset" size="small">重置</el-button>
+      <el-button type="primary" @click="handleClear" size="small">清除</el-button>
+    </div>
   </div>
 </template>
 
@@ -73,7 +78,7 @@ export default {
           initialValue: null,
           span: 8,
           props: {
-            placeholder: "请选择产品大类后选择产品名称",
+            placeholder: "请选择产品类型后选择产品名称",
             clearable: true,
             disabled: "{{ !$currentValues.productType }}",
             options: "{{ $extraContexts.productNameOptions.filter(item => item.productType === $currentValues.productType) }}"
@@ -89,7 +94,7 @@ export default {
           label: "价格",
           model: "price",
           component: "el-input-number",
-          initialValue: null,
+          initialValue: undefined,
           span: 8,
           props: {
             placeholder: "根据产品名称自动填充",
@@ -101,7 +106,7 @@ export default {
           label: "数量",
           model: "quantity",
           component: "el-input-number",
-          initialValue: null,
+          initialValue: undefined,
           span: 8,
           props: {
             placeholder: "请选择产品名称后填写数量",
@@ -119,10 +124,10 @@ export default {
           label: "总价",
           model: "totalPrice",
           component: "el-input-number",
-          initialValue: null,
+          initialValue: undefined,
           span: 8,
           props: {
-            placeholder: "请选择价格和数量自动计算",
+            placeholder: "根据价格和数量自动计算",
             controls: false,
             disabled: true,
           }
@@ -149,15 +154,37 @@ export default {
         totalPrice: undefined,
         remark: null
       },
-      rules: {},
+      rules: {
+        productCategory: [
+          { required: true, message: "请选择产品大类", trigger: "change" }
+        ],
+        productType: [
+          { required: true, message: "请选择产品类型", trigger: "change" }
+        ],
+        productName: [
+          { required: true, message: "请选择产品名称", trigger: "change" }
+        ],
+        quantity: [
+          { required: true, message: "请填写数量", trigger: "blur" }
+        ],
+      },
     };
   },
   computed: {
 
   },
   methods: {
-    handleChange() {
-      this.productNameOptions = this.supplements.productNameOptions.slice(0, Math.floor(Math.random() * 10))
+    handleSubmit() {
+      this.$refs['form'].validate((valid)=>{
+        this.$message.info(valid ? '校验成功' : '校验失败')
+      })
+    },
+    handleReset(){
+      this.$refs['form'].reset()
+      // this.$refs['form'].clearValidate()
+    },
+    handleClear(){
+      this.$refs['form'].clearValidate()
     }
 
   }

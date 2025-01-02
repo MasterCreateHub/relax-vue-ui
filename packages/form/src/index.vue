@@ -3,10 +3,10 @@
     :class="['re-form', { 'is-readonly': readonly }, { 'is-disabled': disabled }, { 'is-justify': labelPosition === 'justify' }]"
     :model="formCurrentValues" ref="form" :inline="false" :disabled="readonly || disabled" v-bind="$attrs"
     v-on="$listeners">
-    <el-row :gutter="gutter" class="re-form__body">
+    <el-row class="re-form__body" :gutter="gutter">
       <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
         :key="item.model + index">
-        <el-form-item :label="item.label" class="re-form-item">
+        <el-form-item class="re-form-item" :label="item.label" :prop="item.model">
           <slot :name="item.model" :item="item">
             <component class="re-form-item-component" :is="item.component" v-model="formCurrentValues[item.model]"
               v-bind="item.props || {}" v-on="item.events || {}"></component>
@@ -207,12 +207,21 @@ export default {
      * @param {Function} callback 回调函数
      */
     validate(callback) {
-      if (this.$refs.form) {
+      if (this.$refs['form']) {
         this.$refs.form.validate((valid) => {
-          callback && callback(valid);
+          if (!valid && this.scrollToError) {
+            this.$nextTick(() => {
+              // 获取第一个校验错误的元素
+              const element = document.querySelectorAll(".el-form-item__error")[0];
+              // 滚动到错误元素对应位置
+              element.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            })
+          }
+          callback?.(valid);
         });
-
-        // this.$refs.form.validate(callback)
       } else {
         console.error("form ref is undefined");
       }
@@ -220,21 +229,58 @@ export default {
     /**
      * @description 校验表单项
      */
-    validateField() { },
+    validateField(prop, callback) {
+      if (this.$refs['form']) {
+        this.$refs.form.validateField(prop, callback);
+      } else {
+        console.error("form ref is undefined");
+      }
+    },
+    /**
+     * @description 移除表单项的校验结果
+     */
+    resetFields() {
+      if (this.$refs['form']) {
+        this.$refs.form.resetFields();
+      } else {
+        console.error("form ref is undefined");
+      }
+    },
     /**
      * @description 清空表单项校验
      */
-    clearValidate() { },
+    clearValidate(prop) {
+      if (this.$refs['form']) {
+        this.$refs.form.clearValidate(prop);
+      } else {
+        console.error("form ref is undefined");
+      }
+    },
     /**
      * @description 表单重置
      */
     reset() {
-      this.formCurrentValues = this.formInitialValues
+      if (this.$refs['form']) {
+        Object.keys(this.formInitialValues).forEach((key) => {
+          this.formCurrentValues[key] = this.formInitialValues[key];
+        });
+        this.$nextTick(()=>{
+          this.$refs['form'].clearValidate();
+        })
+      } else {
+        console.error("form ref is undefined");
+      }
     },
     /**
      * @description 表单提交
      */
-    submit() { },
+    submit() {
+      this.validate((valid) => {
+        if (valid) {
+          this.$emit("submit", this.formCurrentValues);
+        }
+      })
+    }
   },
 };
 </script>
