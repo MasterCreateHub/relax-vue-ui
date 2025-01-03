@@ -206,13 +206,13 @@ export default {
      * @description 左侧工具
      */
     leftTools() {
-      return this.tools.filter((item) => item.position === "left");
+      return this.toolbarConfig.filter((item) => item.position === "left");
     },
     /**
      * @description 右侧工具
      */
     rightTools() {
-      return this.tools.filter((item) => item.position === "right");
+      return this.toolbarConfig.filter((item) => item.position === "right");
     },
 
     /**
