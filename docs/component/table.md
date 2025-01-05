@@ -52,48 +52,6 @@ export default {
           email: "qianqiu@163.com",
           phone: "12345678905",
         },
-        {
-          id: 6,
-          name: "孙八",
-          age: 23,
-          email: "sunba@163.com",
-          phone: "12345678906",
-        },
-        {
-          id: 7,
-          name: "周八",
-          age: 24,
-          email: "zhouba@163.com",
-          phone: "12345678907",
-        },
-        {
-          id: 8,
-          name: "吴九",
-          age: 25,
-          email: "wujiu@163.com",
-          phone: "12345678908",
-        },
-        {
-          id: 9,
-          name: "郑十",
-          age: 26,
-          email: "zhengshi@163.com",
-          phone: "12345678909",
-        },
-        {
-          id: 10,
-          name: "王十",
-          age: 27,
-          email: "wangshi@163.com",
-          phone: "12345678910",
-        },
-        {
-          id: 11,
-          name: "钱十一",
-          age: 28,
-          email: "qianyi@163.com",
-          phone: "12345678911",
-        },
       ],
       columns: [
         { label: "会员ID", prop: "id" },
@@ -112,11 +70,43 @@ export default {
 
 ### 自定义列
 
-::: demo
+支持使用插槽自定义列。
+
+::: demo 1、可以使用`${column.prop}Label`和`${column.prop}Content`插槽单独自定义某一列，也可以使用`header`和`body`插槽自定义多列；</br>2、如果同时使用四种插槽的话，`${column.prop}Label`和`${column.prop}Content`插槽比`header`和`body`插槽性能优先级更高；</br>3、在`header`和`body`插槽中根据条件自定义不同列时请使用连续的`v-if`和`v-else-if`。
 
 ```vue
 <template>
-  <re-table :data="data" :columns="columns" />
+  <div>
+    <p>使用 label 和 content 插槽</p>
+    <re-table :data="data" :columns="columns">
+      <template #nameLabel="{ column }">
+        <div>
+          <i class="el-icon-info" />
+          {{ column.label }}
+        </div>
+      </template>
+      <template #emailContent="{ row, column }">
+        <el-link type="success">{{ row.email }}</el-link>
+      </template>
+    </re-table>
+    <p>使用 header 和 body 插槽</p>
+    <re-table :data="data" :columns="columns">
+      <template #header="{ column }">
+        <div>
+          <i class="el-icon-info" />
+          {{ column.label }}
+        </div>
+      </template>
+      <template #body="{ row, column }">
+        <template v-if="column.property === 'email'">
+          <el-link type="success">{{ row.email }}</el-link>
+        </template>
+        <template v-else-if="column.property === 'phone'">
+          <el-tag>{{ row.phone }}</el-tag>
+        </template>
+      </template>
+    </re-table>
+  </div>
 </template>
 <script>
 export default {
@@ -157,48 +147,6 @@ export default {
           age: 22,
           email: "qianqiu@163.com",
           phone: "12345678905",
-        },
-        {
-          id: 6,
-          name: "孙八",
-          age: 23,
-          email: "sunba@163.com",
-          phone: "12345678906",
-        },
-        {
-          id: 7,
-          name: "周八",
-          age: 24,
-          email: "zhouba@163.com",
-          phone: "12345678907",
-        },
-        {
-          id: 8,
-          name: "吴九",
-          age: 25,
-          email: "wujiu@163.com",
-          phone: "12345678908",
-        },
-        {
-          id: 9,
-          name: "郑十",
-          age: 26,
-          email: "zhengshi@163.com",
-          phone: "12345678909",
-        },
-        {
-          id: 10,
-          name: "王十",
-          age: 27,
-          email: "wangshi@163.com",
-          phone: "12345678910",
-        },
-        {
-          id: 11,
-          name: "钱十一",
-          age: 28,
-          email: "qianyi@163.com",
-          phone: "12345678911",
         },
       ],
       columns: [
@@ -222,19 +170,18 @@ export default {
 
 ::: demo
 
-@path ../.vuepress/components/table/demo/UseToolbar.vue
-
-:::
-
-### 自定义工具栏
-
-通过`toolbar`属性开启工具栏，设置`toolbarConfig`属性可配置工具栏按钮。
-
-::: demo
-
 ```vue
 <template>
-  <re-table :data="data" :columns="columns" />
+  <re-table
+    :data="data"
+    :columns="columns"
+    toolbar
+    :toolbar-config="toolbarConfig"
+    @add="handleAdd"
+    @delete="handleDelete"
+    @refresh="handleRefresh"
+    @export="handleExport"
+  />
 </template>
 <script>
 export default {
@@ -276,47 +223,133 @@ export default {
           email: "qianqiu@163.com",
           phone: "12345678905",
         },
+      ],
+      columns: [
+        { label: "会员ID", prop: "id" },
+        { label: "姓名", prop: "name" },
+        { label: "年龄", prop: "age" },
+        { label: "邮箱", prop: "email" },
+        { label: "电话", prop: "phone" },
+      ],
+      toolbarConfig: [
         {
-          id: 6,
-          name: "孙八",
-          age: 23,
-          email: "sunba@163.com",
-          phone: "12345678906",
+          name: "add",
+          label: "新增",
+          position: "left",
+          props: {
+            type: "primary",
+            icon: "el-icon-plus",
+            plain: true,
+          },
         },
         {
-          id: 7,
-          name: "周八",
-          age: 24,
-          email: "zhouba@163.com",
-          phone: "12345678907",
+          name: "delete",
+          label: "删除",
+          position: "left",
+          props: {
+            type: "danger",
+            icon: "el-icon-delete",
+            plain: true,
+          },
         },
         {
-          id: 8,
-          name: "吴九",
-          age: 25,
-          email: "wujiu@163.com",
-          phone: "12345678908",
+          name: "export",
+          label: "导出",
+          useTip: true,
+          position: "right",
+          props: {
+            icon: "el-icon-download",
+            circle: true,
+            plain: true,
+          },
         },
         {
-          id: 9,
-          name: "郑十",
-          age: 26,
-          email: "zhengshi@163.com",
-          phone: "12345678909",
+          name: "refresh",
+          label: "刷新",
+          useTip: true,
+          position: "right",
+          props: {
+            icon: "el-icon-refresh",
+            circle: true,
+            plain: true,
+          },
+        },
+      ],
+    };
+  },
+  methods: {
+    handleAdd() {
+      this.$message.success("点击了添加");
+    },
+    handleDelete() {
+      this.$message.success("点击了删除");
+    },
+    handleExport() {
+      this.$message.success("点击了导出");
+    },
+    handleRefresh() {
+      this.$message.success("点击了刷新");
+    },
+  },
+};
+</script>
+```
+
+:::
+
+### 自定义工具栏
+
+支持完全自定义整个工具栏。
+::: demo
+
+```vue
+<template>
+  <re-table :data="data" :columns="columns" toolbar>
+    <template #toolbar>
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="danger" icon="el-icon-delete" size="mini"  @click="handleDelete">删除</el-button>
+    </template>
+  </re-table>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      data: [
+        {
+          id: 1,
+          name: "张三",
+          age: 18,
+          email: "zhangsan@163.com",
+          phone: "12345678901",
         },
         {
-          id: 10,
-          name: "王十",
-          age: 27,
-          email: "wangshi@163.com",
-          phone: "12345678910",
+          id: 2,
+          name: "李四",
+          age: 19,
+          email: "lisi@163.com",
+          phone: "12345678902",
         },
         {
-          id: 11,
-          name: "钱十一",
-          age: 28,
-          email: "qianyi@163.com",
-          phone: "12345678911",
+          id: 3,
+          name: "王五",
+          age: 20,
+          email: "wangwu@163.com",
+          phone: "12345678903",
+        },
+        {
+          id: 4,
+          name: "赵六",
+          age: 21,
+          email: "zhaoliu@163.com",
+          phone: "12345678904",
+        },
+        {
+          id: 5,
+          name: "钱七",
+          age: 22,
+          email: "qianqiu@163.com",
+          phone: "12345678905",
         },
       ],
       columns: [
@@ -326,7 +359,59 @@ export default {
         { label: "邮箱", prop: "email" },
         { label: "电话", prop: "phone" },
       ],
+      toolbarConfig: [
+        {
+          name: "add",
+          label: "新增",
+          position: "left",
+          props: {
+            type: "primary",
+            icon: "el-icon-plus",
+            plain: true,
+          },
+        },
+        {
+          name: "delete",
+          label: "删除",
+          position: "left",
+          props: {
+            type: "danger",
+            icon: "el-icon-delete",
+            plain: true,
+          },
+        },
+        {
+          name: "export",
+          label: "导出",
+          useTip: true,
+          position: "right",
+          props: {
+            icon: "el-icon-download",
+            circle: true,
+            plain: true,
+          },
+        },
+        {
+          name: "refresh",
+          label: "刷新",
+          useTip: true,
+          position: "right",
+          props: {
+            icon: "el-icon-refresh",
+            circle: true,
+            plain: true,
+          },
+        },
+      ],
     };
+  },
+  methods: {
+    handleAdd() {
+      this.$message.success("点击了添加");
+    },
+    handleDelete() {
+      this.$message.success("点击了删除");
+    },
   },
 };
 </script>
@@ -336,7 +421,7 @@ export default {
 
 ### 使用默认分页器
 
-通过设置`pagination`属性开启分页器，设置`paginationConfig`属性可配置分页器。
+通过设置`pagination`属性开启分页器。
 
 ::: demo 默认分页器会自动分页，适合数据量不大的场景。
 
@@ -446,7 +531,7 @@ export default {
 
 开启默认分页器后，设置`paginationConfig`属性可配置分页器。
 
-::: demo
+::: demo 如果表格的数据来自于分页接口，请设置分页器`total`属性，否则分页器的`total`属性值会默认为表格数据的长度。
 
 ```vue
 <template>
@@ -555,6 +640,7 @@ export default {
         currentPage: 1,
         pageSize: 5,
         pagerCount: 7,
+        total: null,
       },
     };
   },
