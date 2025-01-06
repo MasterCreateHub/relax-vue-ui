@@ -68,7 +68,78 @@ export default {
 
 :::
 
-### 自定义列
+### 配置列渲染组件
+
+支持直接指定表格列渲染组件。
+
+::: demo
+
+```vue
+<template>
+  <re-table :data="data" :columns="columns" />
+</template>
+<script>
+export default {
+  data() {
+    return {
+      data: [
+        {
+          id: 1,
+          name: "张三",
+          age: 18,
+          email: "zhangsan@163.com",
+          phone: "12345678901",
+        },
+        {
+          id: 2,
+          name: "李四",
+          age: 19,
+          email: "lisi@163.com",
+          phone: "12345678902",
+        },
+        {
+          id: 3,
+          name: "王五",
+          age: 20,
+          email: "wangwu@163.com",
+          phone: "12345678903",
+        },
+        {
+          id: 4,
+          name: "赵六",
+          age: 21,
+          email: "zhaoliu@163.com",
+          phone: "12345678904",
+        },
+        {
+          id: 5,
+          name: "钱七",
+          age: 22,
+          email: "qianqiu@163.com",
+          phone: "12345678905",
+        },
+      ],
+      columns: [
+        { label: "会员ID", prop: "id" },
+        { label: "姓名", prop: "name" },
+        { label: "年龄", prop: "age" },
+        { label: "邮箱", prop: "email" },
+        {
+          label: "电话",
+          prop: "phone",
+          contentComponent: "el-tag",
+          dataInProps: null,
+        },
+      ],
+    };
+  },
+};
+</script>
+```
+
+:::
+
+### 自定义列内容
 
 支持使用插槽自定义列。
 

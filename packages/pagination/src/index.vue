@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       localCurrentPage: 1,
-      localPageSize: 10,
+      localPageSize: this.pageSize,
     };
   },
   computed: {
@@ -112,6 +112,7 @@ export default {
         return this.currentPage;
       },
       set(val) {
+        this.localCurrentPage = val;
         this.$emit("update:currentPage", val);
       },
     },
@@ -123,6 +124,7 @@ export default {
         return this.pageSize;
       },
       set(val) {
+        this.localPageSize = val;
         this.$emit("update:pageSize", val);
       },
     },
@@ -139,7 +141,6 @@ export default {
      * @param {Number} val 当前页码
      */
     handleCurrentChange(val) {
-      this.localCurrentPage = val;
       this.$emit("pagination", {
         currentPage: val,
         pageSize: this.localPageSize,
@@ -151,8 +152,7 @@ export default {
      * @param {Number} val 每页条数
      */
     handleSizeChange(val) {
-      this.localPageSize = val;
-      if (this.currentPageModel * val > this.total) {
+      if (this.currentPageModel * val >= this.total) {
         this.currentPageModel = 1;
       }
       this.$emit("pagination", {
