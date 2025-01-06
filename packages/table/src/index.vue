@@ -11,7 +11,8 @@
                   <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
                 </template>
                 <template v-else>
-                  <el-button v-bind="tool.props || {}" size="mini" @click="$emit(`tool-${tool.name}`)">{{ tool.label }}</el-button>
+                  <el-button v-bind="tool.props || {}" size="mini" @click="$emit(`tool-${tool.name}`)">{{ tool.label
+                  }}</el-button>
                 </template>
               </el-tooltip>
             </span>
@@ -220,6 +221,9 @@ export default {
      * @description 表格数据总数
      */
     tableDataTotal() {
+      if (this.$scopedSlots['pagination']) {
+        return this.data.length;
+      }
       if (this.paginationConfig[DEFAULT_PAGINATION]) {
         return this.data.length;
       } else {
@@ -232,6 +236,9 @@ export default {
      * @description 表格分页后展示的数据
      */
     tableShowData() {
+      if (this.$scopedSlots['pagination']) {
+        return this.data;
+      }
       // 如果采用默认的分页器配置或者手动配置分页器但不配置total属性就自动分页
       const auotoPaging = this.paginationConfig[DEFAULT_PAGINATION] || !(typeof this.paginationConfig.total === 'number' && this.paginationConfig.total >= 0);
       if (auotoPaging) {

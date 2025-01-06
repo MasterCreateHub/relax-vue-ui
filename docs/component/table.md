@@ -622,91 +622,23 @@ export default {
 
 ```vue
 <template>
-  <re-table :data="data" :columns="columns" :pagination="true" />
+  <re-table :data="data" :columns="columns" pagination>
+    <template #pagination>
+      <re-pagination
+        :current-page.sync="currentPage"
+        :page-size.sync="pageSize"
+        :total="total"
+        @pagination="handlePagination"
+      />
+    </template>
+  </re-table>
 </template>
 <script>
 export default {
   data() {
     return {
-      data: [
-        {
-          id: 1,
-          name: "张三",
-          age: 18,
-          email: "zhangsan@163.com",
-          phone: "12345678901",
-        },
-        {
-          id: 2,
-          name: "李四",
-          age: 19,
-          email: "lisi@163.com",
-          phone: "12345678902",
-        },
-        {
-          id: 3,
-          name: "王五",
-          age: 20,
-          email: "wangwu@163.com",
-          phone: "12345678903",
-        },
-        {
-          id: 4,
-          name: "赵六",
-          age: 21,
-          email: "zhaoliu@163.com",
-          phone: "12345678904",
-        },
-        {
-          id: 5,
-          name: "钱七",
-          age: 22,
-          email: "qianqiu@163.com",
-          phone: "12345678905",
-        },
-        {
-          id: 6,
-          name: "孙八",
-          age: 23,
-          email: "sunba@163.com",
-          phone: "12345678906",
-        },
-        {
-          id: 7,
-          name: "周八",
-          age: 24,
-          email: "zhouba@163.com",
-          phone: "12345678907",
-        },
-        {
-          id: 8,
-          name: "吴九",
-          age: 25,
-          email: "wujiu@163.com",
-          phone: "12345678908",
-        },
-        {
-          id: 9,
-          name: "郑十",
-          age: 26,
-          email: "zhengshi@163.com",
-          phone: "12345678909",
-        },
-        {
-          id: 10,
-          name: "王十",
-          age: 27,
-          email: "wangshi@163.com",
-          phone: "12345678910",
-        },
-        {
-          id: 11,
-          name: "钱十一",
-          age: 28,
-          email: "qianyi@163.com",
-          phone: "12345678911",
-        },
-      ],
+      allData: [],
+      data: [],
       columns: [
         { label: "会员ID", prop: "id" },
         { label: "姓名", prop: "name" },
@@ -714,7 +646,36 @@ export default {
         { label: "邮箱", prop: "email" },
         { label: "电话", prop: "phone" },
       ],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
     };
+  },
+  mounted() {
+    for (let i = 0; i < 100; i++) {
+      this.allData.push({
+        id: i,
+        name: "name" + i,
+        age: i,
+        email: "email" + i + "@qq.com",
+        phone: Math.floor(Math.random() * 100000000),
+      });
+    }
+    this.getData(this.currentPage, this.pageSize);
+  },
+  methods: {
+    getData(currentPage, pageSize) {
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      this.data = this.allData.slice(startIndex, endIndex);
+      this.total = this.allData.length;
+    },
+    handlePagination({ currentPage, pageSize, from }) {
+      this.$message.success(
+        `当前页码：${currentPage}，每页条数：${pageSize}，改变参数为：${from}`
+      );
+      this.getData(currentPage, pageSize);
+    },
   },
 };
 </script>
@@ -726,15 +687,15 @@ export default {
 
 ### Attributes
 
-| 参数             | 说明                             | 类型            | 可选值 | 默认值  |
-| ---------------- | -------------------------------- | --------------- | ------ | ------- |
-| data             | 表格数据                         | Array           | -      | `[]`    |
-| columns          | 表格列配置                       | Array\<Column\> | -      | `[]`    |
-| toolbar          | 是否显示工具栏                   | Boolean         | -      | `false` |
-| toolbarConfig    | 工具栏配置                       | Array\<Tool\>   | -      | `[]`    |
-| pagination       | 是否显示分页器                   | Boolean         | -      | `false` |
-| paginationConfig | 分页器配置                       | Object          | -      | `{...}` |
-| 其他属性         | 表格其他属性，请参考`element-ui` | Any             | -      | -       |
+| 参数             | 说明                             | 类型                 | 可选值 | 默认值  |
+| ---------------- | -------------------------------- | -------------------- | ------ | ------- |
+| data             | 表格数据                         | Array                | -      | `[]`    |
+| columns          | 表格列配置                       | Array\<Column\>      | -      | `[]`    |
+| toolbar          | 是否显示工具栏                   | Boolean              | -      | `false` |
+| toolbarConfig    | 工具栏配置                       | Array\<Tool\>        | -      | `[]`    |
+| pagination       | 是否显示分页器                   | Boolean              | -      | `false` |
+| paginationConfig | 分页器配置                       | Object\<Pagination\> | -      | `{...}` |
+| 其他属性         | 表格其他属性，请参考`element-ui` | Any                  | -      | -       |
 
 ::: tip 表格分页器默认配置
 
@@ -746,46 +707,66 @@ export default {
     pageSizes: [10, 20, 30, 50],
     currentPage: 1,
     pageSize: 10,
-    pagerCount: 7
+    pagerCount: 7,
+    total: null
 }
 ```
 
+`total`实际取值为`data.length`
 :::
 
 #### Column 对象结构
 
-| 属性                | 说明                                   | 类型   | 可选值                         | 默认值 |
-| ------------------- | -------------------------------------- | ------ | ------------------------------ | ------ |
-| type                | 表格列类型                             | String | `selection`, `index`, `expand` | -      |
-| prop                | 表格列属性                             | String | -                              | -      |
-| label               | 表格列标签                             | String | -                              | -      |
-| width               | 表格列宽度                             | String | -                              | -      |
-| minWidth            | 表格列最小宽度                         | String | -                              | -      |
-| align               | 表格列对齐方式                         | String | -                              | -      |
-| fixed               | 表格列固定方式                         | String | -                              | -      |
-| showOverflowTooltip | 表格列是否显示 tooltip                 | String | -                              | -      |
-| className           | 表格列样式类名                         | String | -                              | -      |
-| 其他属性            | 表格列其他属性，请参考`element-ui`文档 | Any    | -                              | -      |
+| 属性                | 说明                                   | 类型   | 可选值                             | 默认值 |
+| ------------------- | -------------------------------------- | ------ | ---------------------------------- | ------ |
+| type                | 表格列类型                             | String | `'selection'`,`'index'`,`'expand'` | -      |
+| prop                | 表格列属性                             | String | -                                  | -      |
+| label               | 表格列标签                             | String | -                                  | -      |
+| width               | 表格列宽度                             | String | -                                  | -      |
+| minWidth            | 表格列最小宽度                         | String | -                                  | -      |
+| align               | 表格列对齐方式                         | String | -                                  | -      |
+| fixed               | 表格列固定方式                         | String | -                                  | -      |
+| showOverflowTooltip | 表格列是否显示 tooltip                 | String | -                                  | -      |
+| className           | 表格列样式类名                         | String | -                                  | -      |
+| 其他属性            | 表格列其他属性，请参考`element-ui`文档 | Any    | -                                  | -      |
 
 #### Tool 对象结构
 
-| 属性      | 说明                     | 类型    | 可选值          | 默认值      |
-| --------- | ------------------------ | ------- | --------------- | ----------- |
-| name      | 工具名称，工具的标识     | String  | -               | -           |
-| label     | 工具标签名称             | String  | -               | -           |
-| useTip    | 是否使用提示             | Boolean | -               | -           |
-| tooltip   | 提示内容，默认为工具标签 | String  | -               | -           |
-| position  | 工具位置                 | String  | `left`, `right` | -           |
-| component | 工具组件                 | String  | -               | `el-button` |
-| props     | 工具组件配置             | Object  | -               | -           |
-| events    | 工具绑定的事件           | Object  | -               | -           |
+| 属性      | 说明                     | 类型    | 可选值              | 默认值        |
+| --------- | ------------------------ | ------- | ------------------- | ------------- |
+| name      | 工具名称，工具的标识     | String  | -                   | -             |
+| label     | 工具标签名称             | String  | -                   | -             |
+| useTip    | 是否使用提示             | Boolean | -                   | -             |
+| tooltip   | 提示内容，默认为工具标签 | String  | -                   | -             |
+| position  | 工具位置                 | String  | `'left'`, `'right'` | -             |
+| component | 工具组件                 | String  | -                   | `'el-button'` |
+| props     | 工具组件配置             | Object  | -                   | -             |
+| events    | 工具绑定的事件           | Object  | -                   | -             |
+
+### Pagination 对象结构
+
+| 属性        | 说明         | 类型    | 可选值                    | 默认值                                 |
+| ----------- | ------------ | ------- | ------------------------- | -------------------------------------- |
+| align       | 对齐方式     | String  | `left`, `center`, `right` | `'center'`                             |
+| background  | 使用背景色   | Boolean | -                         | `true`                                 |
+| layout      | 组件布局     | String  | -                         | `'total,sizes,prev,pager,next,jumper'` |
+| pageSizes   | 每页条数选项 | Array   | -                         | `[10, 20, 30, 50]`                     |
+| currentPage | 当前页码     | Number  | -                         | `1`                                    |
+| pageSize    | 每页条数     | Number  | -                         | `20`                                   |
+| pagerCount  | 页码按钮     | Number  | -                         | `7`                                    |
+| total       | 总条数       | Number  | -                         | -                                      |
 
 ### Events
 
-| 事件名        | 说明                                                        | 参数 |
-| ------------- | ----------------------------------------------------------- | ---- |
-| el-table 事件 | `el-table`原本的事件，请参考`element-ui`文档                | -    |
-| ${tool.name}  | 当工具栏的工具使用默认的`el-button`时，点击按钮会触发该事件 | -    |
+| 事件名            | 说明                                                        | 参数                            |
+| ----------------- | ----------------------------------------------------------- | ------------------------------- |
+| el-table 事件     | `el-table`原本的事件，请参考`element-ui`文档                | -                               |
+| tool-${tool.name} | 当工具栏的工具使用默认的`el-button`时，点击按钮会触发该事件 | -                               |
+| pagination        | 分页跳转、分页大小改变事件                                  | `{currentPage, pageSize, from}` |
+
+::: tip pagination 事件参数详细说明：
+`pagination`事件的参数是一个对象，其中 currentPage 为当前页码，pageSize 为每页显示条数，from 为触发该事件来源，值为`currentPage`或`pageSize`。
+:::
 
 ### Methods
 
@@ -795,14 +776,13 @@ export default {
 
 ### Slots
 
-| 名称                  | 说明                         | 参数 |
-| --------------------- | ---------------------------- | ---- |
-| toolbar               | 工具栏完全自定义内容         | -    |
-| ${tool.name}          | 单个工具自定义内容           | -    |
-| header                | 表头自定义内容               | -    |
-| body                  | 表格主体自定义内容           | -    |
-| ${column.prop}Label   | 表格列表头自定义内容         | -    |
-| ${column.prop}Content | 表格列内容自定义内容         | -    |
-| default               | 表格默认插槽                 | -    |
-| append                | 插入至表格最后一行之后的内容 | -    |
-| pagination            | 分页器完全自定义内容         | -    |
+| 名称                  | 说明                         | 参数                      |
+| --------------------- | ---------------------------- | ------------------------- |
+| toolbar               | 工具栏完全自定义内容         | -                         |
+| header                | 表头自定义内容               | `{ column, $index }`      |
+| body                  | 表格主体自定义内容           | `{ row, column, $index }` |
+| ${column.prop}Label   | 表格列表头自定义内容         | `{ column, $index }`      |
+| ${column.prop}Content | 表格列内容自定义内容         | `{ row, column, $index }` |
+| default               | 表格默认插槽                 | -                         |
+| append                | 插入至表格最后一行之后的内容 | -                         |
+| pagination            | 分页器完全自定义内容         | -                         |
