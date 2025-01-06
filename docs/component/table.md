@@ -177,10 +177,10 @@ export default {
     :columns="columns"
     toolbar
     :toolbar-config="toolbarConfig"
-    @add="handleAdd"
-    @delete="handleDelete"
-    @refresh="handleRefresh"
-    @export="handleExport"
+    @tool-add="handleAdd"
+    @tool-delete="handleDelete"
+    @tool-refresh="handleRefresh"
+    @tool-export="handleExport"
   />
 </template>
 <script>
@@ -306,8 +306,20 @@ export default {
 <template>
   <re-table :data="data" :columns="columns" toolbar>
     <template #toolbar>
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
-        <el-button type="danger" icon="el-icon-delete" size="mini"  @click="handleDelete">删除</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-plus"
+        size="mini"
+        @click="handleAdd"
+        >新增</el-button
+      >
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        size="mini"
+        @click="handleDelete"
+        >删除</el-button
+      >
     </template>
   </re-table>
 </template>
@@ -531,7 +543,7 @@ export default {
 
 开启默认分页器后，设置`paginationConfig`属性可配置分页器。
 
-::: demo 如果表格的数据来自于分页接口，请设置分页器`total`属性，否则分页器的`total`属性值会默认为表格数据的长度。
+::: demo 1、如果不配置分页器的`total`属性或者配置的`total`属性值不合法（类型为`number`且`total >= 0`视为合法），那么分页器依旧会自动地将表格数据分页。</br>2、如果表格的数据来自于分页接口，请设置分页器`total`属性，否则分页器的`total`属性值会默认为表格数据的长度并会开启自动分页。
 
 ```vue
 <template>
@@ -539,92 +551,16 @@ export default {
     :data="data"
     :columns="columns"
     :pagination="true"
-    :paginationConfig="paginationConfig"
+    :paginationConfig.sync="paginationConfig"
+    @pagination="handlePagination"
   />
 </template>
 <script>
 export default {
   data() {
     return {
-      data: [
-        {
-          id: 1,
-          name: "张三",
-          age: 18,
-          email: "zhangsan@163.com",
-          phone: "12345678901",
-        },
-        {
-          id: 2,
-          name: "李四",
-          age: 19,
-          email: "lisi@163.com",
-          phone: "12345678902",
-        },
-        {
-          id: 3,
-          name: "王五",
-          age: 20,
-          email: "wangwu@163.com",
-          phone: "12345678903",
-        },
-        {
-          id: 4,
-          name: "赵六",
-          age: 21,
-          email: "zhaoliu@163.com",
-          phone: "12345678904",
-        },
-        {
-          id: 5,
-          name: "钱七",
-          age: 22,
-          email: "qianqiu@163.com",
-          phone: "12345678905",
-        },
-        {
-          id: 6,
-          name: "孙八",
-          age: 23,
-          email: "sunba@163.com",
-          phone: "12345678906",
-        },
-        {
-          id: 7,
-          name: "周八",
-          age: 24,
-          email: "zhouba@163.com",
-          phone: "12345678907",
-        },
-        {
-          id: 8,
-          name: "吴九",
-          age: 25,
-          email: "wujiu@163.com",
-          phone: "12345678908",
-        },
-        {
-          id: 9,
-          name: "郑十",
-          age: 26,
-          email: "zhengshi@163.com",
-          phone: "12345678909",
-        },
-        {
-          id: 10,
-          name: "王十",
-          age: 27,
-          email: "wangshi@163.com",
-          phone: "12345678910",
-        },
-        {
-          id: 11,
-          name: "钱十一",
-          age: 28,
-          email: "qianyi@163.com",
-          phone: "12345678911",
-        },
-      ],
+      allData: [],
+      data: [],
       columns: [
         { label: "会员ID", prop: "id" },
         { label: "姓名", prop: "name" },
@@ -633,7 +569,7 @@ export default {
         { label: "电话", prop: "phone" },
       ],
       paginationConfig: {
-        align: "center",
+        align: "right",
         background: true,
         layout: "total, sizes, prev, pager, next, jumper",
         pageSizes: [5, 10],
@@ -643,6 +579,34 @@ export default {
         total: null,
       },
     };
+  },
+  mounted() {
+    for (let i = 0; i < 100; i++) {
+      this.allData.push({
+        id: i,
+        name: "name" + i,
+        age: i,
+        email: "email" + i + "@qq.com",
+        phone: Math.floor(Math.random() * 100000000),
+      });
+    }
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const startIndex =
+        (this.paginationConfig.currentPage - 1) *
+        this.paginationConfig.pageSize;
+      const endIndex = startIndex + this.paginationConfig.pageSize;
+      this.data = this.allData.slice(startIndex, endIndex);
+      this.paginationConfig.total = this.allData.length;
+    },
+    handlePagination({ currentPage, pageSize, from }) {
+      this.$message.success(
+        `当前页码：${currentPage}，每页条数：${pageSize}，改变参数为：${from}`
+      );
+      this.getData();
+    },
   },
 };
 </script>

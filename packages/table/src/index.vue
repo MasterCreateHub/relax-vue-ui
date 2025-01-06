@@ -4,60 +4,27 @@
       <slot name="toolbar">
         <div class="re-table-toolbar">
           <div class="re-table-toolbar__left">
-            <span
-              class="re-table-toolbar-tool is-left"
-              :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in leftTools"
-              :key="tool.name + index"
-            >
-              <el-tooltip
-                :disabled="!tool.useTip"
-                :content="tool.tooltip || tool.label"
-                placement="top"
-              >
+            <span class="re-table-toolbar-tool is-left" :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in leftTools" :key="tool.name + index">
+              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
                 <template v-if="tool.component">
-                  <component
-                    :is="tool.component"
-                    v-bind="tool.props || {}"
-                    v-on="tool.events || {}"
-                  />
+                  <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
                 </template>
                 <template v-else>
-                  <el-button
-                    v-bind="tool.props || {}"
-                    size="mini"
-                    @click="$emit(tool.name)"
-                    >{{ tool.label }}</el-button
-                  >
+                  <el-button v-bind="tool.props || {}" size="mini" @click="$emit(`tool-${tool.name}`)">{{ tool.label }}</el-button>
                 </template>
               </el-tooltip>
             </span>
           </div>
           <div class="re-table-toolbar__right">
-            <span
-              class="re-table-toolbar-tool is-right"
-              :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in rightTools"
-              :key="tool.name + index"
-            >
-              <el-tooltip
-                :disabled="!tool.useTip"
-                :content="tool.tooltip || tool.label"
-                placement="top"
-              >
+            <span class="re-table-toolbar-tool is-right" :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in rightTools" :key="tool.name + index">
+              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
                 <template v-if="tool.component">
-                  <component
-                    :is="tool.component"
-                    v-bind="tool.props || {}"
-                    v-on="tool.events || {}"
-                  />
+                  <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
                 </template>
                 <template v-else>
-                  <el-button
-                    v-bind="tool.props || {}"
-                    size="mini"
-                    @click="$emit(tool.name)"
-                  />
+                  <el-button v-bind="tool.props || {}" size="mini" @click="$emit(`tool-${tool.name}`)" />
                 </template>
               </el-tooltip>
             </span>
@@ -65,69 +32,29 @@
         </div>
       </slot>
     </div>
-    <el-table
-      ref="tableRef"
-      class="re-table__body"
-      :data="tableShowData"
-      v-bind="$attrs"
-      v-on="$listeners"
-    >
-      <el-table-column
-        v-for="(column, index) in columns"
-        :key="column.prop + index"
-        v-bind="column"
-      >
+    <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
+      <el-table-column v-for="(column, index) in columns" :key="column.prop + index" v-bind="column">
         <template slot="header" slot-scope="scope">
-          <slot
-            v-if="$scopedSlots[`${column.prop}Label`]"
-            :name="`${column.prop}Label`"
-            :column="scope.column"
-            :index="scope.$index"
-            >{{ column.label }}</slot
-          >
-          <slot
-            v-else
-            name="header"
-            :column="scope.column"
-            :index="scope.$index"
-            >{{ column.label }}</slot
-          >
+          <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :column="scope.column"
+            :index="scope.$index">{{ column.label }}</slot>
+          <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
         </template>
         <template slot-scope="scope">
-          <slot
-            v-if="$scopedSlots[`${column.prop}Content`]"
-            :name="`${column.prop}Content`"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-          >
+          <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
+            :column="scope.column" :index="scope.$index">
             {{ scope.row[column.prop] }}
             <template v-if="column.contentComponent">
-              <component
-                :is="column.contentComponent || null"
-                v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}"
-                :[column.dataInProps]="scope.row[column.prop]"
-              >
+              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
                 {{ scope.row[column.prop] }}
               </component>
             </template>
             <template v-else>{{ scope.row[column.prop] }}</template>
           </slot>
-          <slot
-            v-else
-            name="body"
-            :row="scope.row"
-            :column="scope.column"
-            :index="scope.$index"
-          >
+          <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
             <template v-if="column.contentComponent">
-              <component
-                :is="column.contentComponent || null"
-                v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}"
-                :[column.dataInProps]="scope.row[column.prop]"
-              >
+              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
                 {{ scope.row[column.prop] }}
               </component>
             </template>
@@ -140,11 +67,8 @@
     </el-table>
     <div v-if="pagination" class="re-table-pagination__wrapper">
       <slot name="pagination">
-        <el-pagination
-          :class="['re-table-pagination', `is-${paginationConfigModel.align}`]"
-          :total="tableDataTotal"
-          v-bind.sync="paginationConfigModel"
-        />
+        <el-pagination :class="['re-table-pagination', `is-${paginationConfigModel.align}`]" :total="tableDataTotal"
+          v-bind.sync="paginationConfigModel" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </slot>
     </div>
   </div>
@@ -299,7 +223,7 @@ export default {
       if (this.paginationConfig[DEFAULT_PAGINATION]) {
         return this.data.length;
       } else {
-        return this.paginationConfig.total >= 0
+        return (typeof this.paginationConfig.total === 'number' && this.paginationConfig.total >= 0)
           ? this.paginationConfig.total
           : this.data.length;
       }
@@ -308,18 +232,16 @@ export default {
      * @description 表格分页后展示的数据
      */
     tableShowData() {
-      if (
-        this.pagination &&
-        this.paginationConfig.currentPage &&
-        this.paginationConfig.pageSize
-      ) {
+      // 如果采用默认的分页器配置或者手动配置分页器但不配置total属性就自动分页
+      const auotoPaging = this.paginationConfig[DEFAULT_PAGINATION] || !(typeof this.paginationConfig.total === 'number' && this.paginationConfig.total >= 0);
+      if (auotoPaging) {
         const startIndex =
           (this.paginationConfig.currentPage - 1) *
           this.paginationConfig.pageSize;
         const endIndex = startIndex + this.paginationConfig.pageSize;
         return this.data.slice(startIndex, endIndex);
       } else {
-        return this.data;
+        return this.data
       }
     },
     /**
@@ -367,6 +289,31 @@ export default {
         console.error(`Error calling method ${name}:`, error);
       }
     },
+    /**
+     * @description 每页条数改变事件
+     * @param {Number} val 每页条数
+     */
+    handleSizeChange(val) {
+      if (this.paginationConfigModel.currentPage * val > this.total) {
+        this.paginationConfigModel.currentPage = 1;
+      }
+      this.$emit("pagination", {
+        currentPage: this.paginationConfigModel.currentPage,
+        pageSize: val,
+        from: "pageSize"
+      });
+    },
+    /**
+     * @description 当前页码改变事件
+     * @param {Number} val 当前页码
+     */
+    handleCurrentChange(val) {
+      this.$emit("pagination", {
+        currentPage: val,
+        pageSize: this.paginationConfigModel.pageSize,
+        from: "currentPage"
+      })
+    },
   },
 };
 </script>
@@ -407,6 +354,7 @@ export default {
   }
 
   .re-table__body {
+
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
