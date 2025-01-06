@@ -363,10 +363,10 @@ export default {
      * @description grid布局下，搜索条件占几行
      */
     gridRows() {
-      if (this.showFactors.length !== this.factors.length) {
+      if(!this.expanded){
         return 1
-      } else {
-        return Math.ceil(this.factors.length / this.gridCols)
+      }else{
+        return Math.ceil((this.showFactors.length + 1)  / this.gridCols)
       }
     },
     /**
