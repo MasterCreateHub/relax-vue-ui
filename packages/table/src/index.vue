@@ -4,61 +4,130 @@
       <slot name="toolbar">
         <div class="re-table-toolbar">
           <div class="re-table-toolbar__left">
-            <span class="re-table-toolbar-tool is-left" :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in leftTools" :key="tool.name + index">
-              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
-                <slot :name="`${tool.name}Tool`" :tool="tool">
-                  <template v-if="tool.component">
-                    <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
-                  </template>
-                  <template v-else>
-                    <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
-                  </template>
-                </slot>
+            <span
+              class="re-table-toolbar-tool is-left"
+              :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in leftTools"
+              :key="tool.name + index"
+            >
+              <el-tooltip
+                :disabled="!tool.useTip"
+                :content="tool.tooltip || tool.label"
+                placement="top"
+              >
+                <template v-if="tool.component">
+                  <component
+                    :is="tool.component"
+                    v-bind="tool.props || {}"
+                    v-on="tool.events || {}"
+                  />
+                </template>
+                <template v-else>
+                  <el-button
+                    v-bind="tool.props || {}"
+                    size="mini"
+                    @click="$emit(tool.name)"
+                    >{{ tool.label }}</el-button
+                  >
+                </template>
               </el-tooltip>
             </span>
           </div>
           <div class="re-table-toolbar__right">
-            <span class="re-table-toolbar-tool is-right" :class="[`re-table-toolbar-${tool.name}`]"
-              v-for="(tool, index) in rightTools" :key="tool.name + index">
-              <el-tooltip :disabled="!tool.useTip" :content="tool.tooltip || tool.label" placement="top">
-                <slot :name="`${tool.name}Tool`" :tool="tool">
-                  <template v-if="tool.component">
-                    <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
-                  </template>
-                  <template v-else>
-                    <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)" />
-                  </template>
-                </slot>
+            <span
+              class="re-table-toolbar-tool is-right"
+              :class="[`re-table-toolbar-${tool.name}`]"
+              v-for="(tool, index) in rightTools"
+              :key="tool.name + index"
+            >
+              <el-tooltip
+                :disabled="!tool.useTip"
+                :content="tool.tooltip || tool.label"
+                placement="top"
+              >
+                <template v-if="tool.component">
+                  <component
+                    :is="tool.component"
+                    v-bind="tool.props || {}"
+                    v-on="tool.events || {}"
+                  />
+                </template>
+                <template v-else>
+                  <el-button
+                    v-bind="tool.props || {}"
+                    size="mini"
+                    @click="$emit(tool.name)"
+                  />
+                </template>
               </el-tooltip>
             </span>
           </div>
         </div>
       </slot>
     </div>
-    <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
-      <el-table-column v-for="(column, index) in columns" :key="column.prop + index" v-bind="column">
+    <el-table
+      ref="tableRef"
+      class="re-table__body"
+      :data="tableShowData"
+      v-bind="$attrs"
+      v-on="$listeners"
+    >
+      <el-table-column
+        v-for="(column, index) in columns"
+        :key="column.prop + index"
+        v-bind="column"
+      >
         <template slot="header" slot-scope="scope">
-          <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :row="scope.row"
-            :index="scope.$index">{{ column.label }}</slot>
-          <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+          <slot
+            v-if="$scopedSlots[`${column.prop}Label`]"
+            :name="`${column.prop}Label`"
+            :column="scope.column"
+            :index="scope.$index"
+            >{{ column.label }}</slot
+          >
+          <slot
+            v-else
+            name="header"
+            :column="scope.column"
+            :index="scope.$index"
+            >{{ column.label }}</slot
+          >
         </template>
         <template slot-scope="scope">
-          <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
-            :column="scope.column" :index="scope.$index">
+          <slot
+            v-if="$scopedSlots[`${column.prop}Content`]"
+            :name="`${column.prop}Content`"
+            :row="scope.row"
+            :column="scope.column"
+            :index="scope.$index"
+          >
             {{ scope.row[column.prop] }}
             <template v-if="column.contentComponent">
-              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+              <component
+                :is="column.contentComponent || null"
+                v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}"
+                :[column.dataInProps]="scope.row[column.prop]"
+              >
                 {{ scope.row[column.prop] }}
               </component>
             </template>
             <template v-else>{{ scope.row[column.prop] }}</template>
           </slot>
-          <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+          <slot
+            v-else
+            name="body"
+            :row="scope.row"
+            :column="scope.column"
+            :index="scope.$index"
+          >
             <template v-if="column.contentComponent">
-              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+              <component
+                :is="column.contentComponent || null"
+                v-bind="column.contentComponentProps || {}"
+                v-on="column.contentComponentEvents || {}"
+                :[column.dataInProps]="scope.row[column.prop]"
+              >
                 {{ scope.row[column.prop] }}
               </component>
             </template>
@@ -71,13 +140,17 @@
     </el-table>
     <div v-if="pagination" class="re-table-pagination__wrapper">
       <slot name="pagination">
-        <el-pagination :class="['re-table-pagination', `is-${paginationConfigModel.align}`]" :total="data.length"
-          v-bind.sync="paginationConfigModel" />
+        <el-pagination
+          :class="['re-table-pagination', `is-${paginationConfigModel.align}`]"
+          :total="tableDataTotal"
+          v-bind.sync="paginationConfigModel"
+        />
       </slot>
     </div>
   </div>
 </template>
 <script>
+const DEFAULT_PAGINATION = Symbol("defaultPagination");
 export default {
   name: "ReTable",
   props: {
@@ -130,7 +203,7 @@ export default {
      * @property {String} tool.name 工具名称，工具的标识，用于触发事件
      * @property {String} tool.label 工具标签名称，用于显示在工具栏上
      * @property {Boolean} tool.useTip 是否使用提示
-     * @property {String} tool.tooltip  提示内容，默认为工具标签 
+     * @property {String} tool.tooltip  提示内容，默认为工具标签
      * @property {String} tool.position 工具位置，left表示左侧，right表示右侧
      * @property {String} tool.component 工具组件，默认为el-button
      * @property {Object} tool.props 工具组件配置
@@ -162,6 +235,7 @@ export default {
      * @property {Number} currentPage - 当前页
      * @property {Number} pageSize - 每页显示条目个数
      * @property {Number} pagerCount - 分页导航的按钮数
+     * @property {Number} total - 数据总数
      * @default {
      *   align: 'center',
      *   background: true,
@@ -169,13 +243,14 @@ export default {
      *   pageSizes: [10, 20, 30, 50],
      *   currentPage: 1,
      *   pageSize: 10,
-     *   pagerCount: 7
+     *   pagerCount: 7,
+     *   total: null
      * }
      */
     paginationConfig: {
       type: Object,
       default: () => {
-        return {
+        const defaultPagination = {
           align: "center",
           background: true,
           layout: "total, sizes, prev, pager, next, jumper",
@@ -183,7 +258,10 @@ export default {
           currentPage: 1,
           pageSize: 10,
           pagerCount: 7,
+          total: null,
         };
+        defaultPagination[DEFAULT_PAGINATION] = true;
+        return defaultPagination;
       },
       validator(value) {
         return [
@@ -214,7 +292,18 @@ export default {
     rightTools() {
       return this.toolbarConfig.filter((item) => item.position === "right");
     },
-
+    /**
+     * @description 表格数据总数
+     */
+    tableDataTotal() {
+      if (this.paginationConfig[DEFAULT_PAGINATION]) {
+        return this.data.length;
+      } else {
+        return this.paginationConfig.total >= 0
+          ? this.paginationConfig.total
+          : this.data.length;
+      }
+    },
     /**
      * @description 表格分页后展示的数据
      */
@@ -303,7 +392,7 @@ export default {
         justify-content: flex-end;
 
         .re-table-toolbar-tool {
-          margin-left: 5px;
+          margin-left: 10px;
         }
       }
 
@@ -311,14 +400,13 @@ export default {
         justify-content: flex-start;
 
         .re-table-toolbar-tool {
-          margin-right: 5px;
+          margin-right: 10px;
         }
       }
     }
   }
 
   .re-table__body {
-
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
