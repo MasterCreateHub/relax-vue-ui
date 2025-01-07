@@ -6,10 +6,20 @@
 
 支持仅通过配置就渲染表单
 
-::: demo 
+::: demo
+
 ```vue
-<template>
+<template></template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+};
+</script>
 ```
+
 :::
 
 ### 自定义表单项
