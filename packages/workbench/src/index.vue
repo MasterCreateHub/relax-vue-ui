@@ -123,37 +123,44 @@ export default {
 </script>
 <style lang="scss" scoped>
 .re-workbench {
+    width: 100%;
+    height: 100%;
     border-radius: 4px;
-    border: 1px solid #EBEEF5;
+    border: 2px solid #EBEEF5;
     background-color: #FFF;
-    overflow: hidden;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     color: #303133;
     transition: .3s;
+    display: flex;
+    flex-direction: column;
 
     .re-workbench__header {
         width: 100%;
         padding: 15px 20px;
         box-sizing: border-box;
-        border-bottom: 1px #EBEEF5 solid;
+        border-bottom: 2px #EBEEF5 solid;
         display: flex;
         align-items: center;
 
         .re-workbench-title {
             color: #72767b;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 18px;
         }
     }
 
     .re-workbench__body {
+        width: 100%;
         padding: 20px;
-        height: auto;
+        flex: 1;
+        overflow-y: scroll;
     }
 
     .re-workbench__footer {
         width: 100%;
         padding: 15px 20px;
         box-sizing: border-box;
-        border-top: 1px #EBEEF5 solid;
+        border-top: 2px #EBEEF5 solid;
         display: flex;
         justify-content: center;
         align-items: center;
