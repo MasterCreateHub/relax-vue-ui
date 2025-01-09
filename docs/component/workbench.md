@@ -1,6 +1,6 @@
 # Workbench
 
-将多个表单聚合到一起并根据使用场景进行切换
+将多个不同的业务操作组件（如表单）聚合到一起并根据使用场景进行切换
 
 ## Workbench Usage
 
@@ -13,33 +13,26 @@
 ```vue
 <template>
   <div>
+    <div style="margin-bottom: 10px;">
+      当前任务：
+      <el-radio-group v-model="currentWork" size="mini">
+        <el-radio-button label="add">新增商品</el-radio-button>
+        <el-radio-button label="send">发货</el-radio-button>
+      </el-radio-group>
+    </div>
     <re-workbench
       :currentWork="currentWork"
       :works="works"
-      :actions="actions"
-      @submit="handleSubmit"
+      @add-submit="handleAddSubmit"
+      @send-confirm="handleSendConfirm"
     >
       <template #add>
-        <div style="width: 80%">
+        <div style="width: 80%; margin: 0 auto;">
           <el-form
             :model="productForm"
             label-width="80px"
             label-position="left"
           >
-            <el-form-item label="商品品牌">
-              <el-select
-                class="form-item"
-                v-model="productForm.brand"
-                placeholder="请选择商品品牌"
-              >
-                <el-option
-                  v-for="item in brandOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
             <el-form-item label="商品分类">
               <el-select
                 class="form-item"
@@ -48,6 +41,20 @@
               >
                 <el-option
                   v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="productForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -68,12 +75,73 @@
                 placeholder="请输入商品价格"
               />
             </el-form-item>
-
             <el-form-item label="商品库存">
               <el-input-number
                 class="form-item"
                 v-model="productForm.stock"
                 placeholder="请输入商品库存"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+      <template #send>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form :model="sendForm" label-width="80px" label-position="left">
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="sendForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="sendForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="sendForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="发货数量">
+              <el-input-number
+                class="form-item"
+                v-model="sendForm.sendQuantity"
+                placeholder="请输入发货数量"
+              />
+            </el-form-item>
+            <el-form-item label="发货地址">
+              <el-input
+                type="textarea"
+                v-model="sendForm.address"
+                placeholder="请输入发货地址"
+              />
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input
+                type="textarea"
+                v-model="sendForm.remark"
+                placeholder="请输入备注"
               />
             </el-form-item>
           </el-form>
@@ -87,22 +155,44 @@ export default {
   data() {
     return {
       currentWork: "add",
-      works: [{ label: "添加商品", key: "add", actions: ["submit"] }],
-      actions: [
+      works: [
         {
-          label: "提交",
-          name: "submit",
-          props: { type: "primary" },
+          label: "新增商品",
+          key: "add",
+          actions: [
+            {
+              label: "提交",
+              name: "add-submit",
+              props: { type: "primary" },
+            },
+          ],
+        },
+        {
+          label: "发货",
+          key: "send",
+          actions: [
+            {
+              label: "确认发货",
+              name: "send-confirm",
+              props: { type: "primary" },
+            },
+          ],
         },
       ],
       productForm: {
         brand: null,
         name: null,
-        price: null,
         category: null,
+        price: null,
         stock: null,
-        status: null,
-        description: null,
+      },
+      sendForm: {
+        brand: null,
+        name: null,
+        category: null,
+        sendQuantity: null,
+        address: null,
+        remark: null,
       },
       categoryOptions: [
         { label: "图书", value: "book" },
@@ -118,9 +208,11 @@ export default {
     };
   },
   methods: {
-    handleSubmit(currentWork) {
-      console.log(currentWork);
-      this.$message.success(`当前任务为：${currentWork}`);
+    handleAddSubmit(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了提交按钮`);
+    },
+    handleSendConfirm(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了确认发货按钮`);
     },
   },
 };
@@ -133,6 +225,8 @@ export default {
 ```
 
 :::
+
+### 布局方式
 
 ### 自定义标题
 

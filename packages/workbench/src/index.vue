@@ -143,8 +143,9 @@ export default {
     .re-workbench__body {
         width: 100%;
         padding: 20px;
+        box-sizing: border-box;
         flex: 1;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     .re-workbench__footer {
