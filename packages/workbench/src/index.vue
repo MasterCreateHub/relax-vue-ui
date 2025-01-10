@@ -1,11 +1,13 @@
 <template>
     <div class="re-workbench" :class="[`is-${layout}`]">
         <header class="re-workbench__header">
-            <slot name="title" :currentWork="currentWork">
-                <span class="re-workbench-title">{{ currentWorkLabel }}</span>
-            </slot>
+            <div class="re-workbench-title">
+                <slot name="title" :currentWork="currentWork" :config="currentWorkConfig">
+                    {{ currentWorkLabel }}
+                </slot>
+            </div>
             <div v-if="layout === 'two'" class="re-workbench-action__wrapper">
-                <slot name="action" :currentWork="currentWork">
+                <slot name="action" :currentWork="currentWork" :config="currentWorkConfig">
                     <component v-for="action in currentWorkActions" :is="action.component || 'el-button'" :key="action.name"
                         class="re-workbench-action" v-bind="action.props || {}" v-on="action.events || {}"
                         @click="$emit(action.name, currentWork)">
@@ -23,7 +25,7 @@
         </main>
         <footer v-if="layout === 'three'" class="re-workbench__footer">
             <div class="re-workbench-action__wrapper">
-                <slot name="action" :currentWork="currentWork">
+                <slot name="action" :currentWork="currentWork" :config="currentWorkConfig">
                     <component v-for="action in currentWorkActions" :is="action.component || 'el-button' "
                         :key="action.name" class="re-workbench-action" v-bind="action.props || {}"
                         v-on="action.events || {}" @click="$emit(action.name, currentWork)">

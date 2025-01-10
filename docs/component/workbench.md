@@ -228,9 +228,685 @@ export default {
 
 ### 布局方式
 
+提供`two`和`three`两种布局方式。
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <div style="margin-bottom: 10px;">
+      布局方式：
+      <el-radio-group v-model="layout" size="mini">
+        <el-radio-button label="two">两栏布局</el-radio-button>
+        <el-radio-button label="three">三栏布局</el-radio-button>
+      </el-radio-group>
+      <el-divider direction="vertical"></el-divider>
+      当前任务：
+      <el-radio-group v-model="currentWork" size="mini">
+        <el-radio-button label="add">新增商品</el-radio-button>
+        <el-radio-button label="send">发货</el-radio-button>
+      </el-radio-group>
+    </div>
+    <re-workbench
+      :currentWork="currentWork"
+      :works="works"
+      :layout="layout"
+      @add-submit="handleAddSubmit"
+      @send-confirm="handleSendConfirm"
+    >
+      <template #add>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form
+            :model="productForm"
+            label-width="80px"
+            label-position="left"
+          >
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="productForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="productForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="productForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="商品价格">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.price"
+                placeholder="请输入商品价格"
+              />
+            </el-form-item>
+            <el-form-item label="商品库存">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.stock"
+                placeholder="请输入商品库存"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+      <template #send>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form :model="sendForm" label-width="80px" label-position="left">
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="sendForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="sendForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="sendForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="发货数量">
+              <el-input-number
+                class="form-item"
+                v-model="sendForm.sendQuantity"
+                placeholder="请输入发货数量"
+              />
+            </el-form-item>
+            <el-form-item label="发货地址">
+              <el-input
+                type="textarea"
+                v-model="sendForm.address"
+                placeholder="请输入发货地址"
+              />
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input
+                type="textarea"
+                v-model="sendForm.remark"
+                placeholder="请输入备注"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+    </re-workbench>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      layout: "two",
+      currentWork: "add",
+      works: [
+        {
+          label: "新增商品",
+          key: "add",
+          actions: [
+            {
+              label: "提交",
+              name: "add-submit",
+              props: { type: "primary" },
+            },
+          ],
+        },
+        {
+          label: "发货",
+          key: "send",
+          actions: [
+            {
+              label: "确认发货",
+              name: "send-confirm",
+              props: { type: "primary" },
+            },
+          ],
+        },
+      ],
+      productForm: {
+        brand: null,
+        name: null,
+        category: null,
+        price: null,
+        stock: null,
+      },
+      sendForm: {
+        brand: null,
+        name: null,
+        category: null,
+        sendQuantity: null,
+        address: null,
+        remark: null,
+      },
+      categoryOptions: [
+        { label: "图书", value: "book" },
+        { label: "数码", value: "digital" },
+        { label: "家电", value: "appliance" },
+        { label: "食品", value: "food" },
+      ],
+      brandOptions: [
+        { label: "苹果", value: "apple" },
+        { label: "华为", value: "huawei" },
+        { label: "小米", value: "xiaomi" },
+      ],
+    };
+  },
+  methods: {
+    handleAddSubmit(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了提交按钮`);
+    },
+    handleSendConfirm(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了确认发货按钮`);
+    },
+  },
+};
+</script>
+<style>
+.form-item {
+  width: 100%;
+}
+</style>
+```
+
+:::
+
 ### 自定义标题
 
+可以为每个任务自定义标题。
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <div style="margin-bottom: 10px;">
+      当前任务：
+      <el-radio-group v-model="currentWork" size="mini">
+        <el-radio-button label="add">新增商品</el-radio-button>
+        <el-radio-button label="send">发货</el-radio-button>
+      </el-radio-group>
+    </div>
+    <re-workbench
+      :currentWork="currentWork"
+      :works="works"
+      @add-submit="handleAddSubmit"
+      @send-confirm="handleSendConfirm"
+    >
+      <template #title="{ config }">
+        <span>
+          <i class="el-icon-info" />
+          {{ config.label }}
+        </span>
+      </template>
+      <template #add>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form
+            :model="productForm"
+            label-width="80px"
+            label-position="left"
+          >
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="productForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="productForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="productForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="商品价格">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.price"
+                placeholder="请输入商品价格"
+              />
+            </el-form-item>
+            <el-form-item label="商品库存">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.stock"
+                placeholder="请输入商品库存"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+      <template #send>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form :model="sendForm" label-width="80px" label-position="left">
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="sendForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="sendForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="sendForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="发货数量">
+              <el-input-number
+                class="form-item"
+                v-model="sendForm.sendQuantity"
+                placeholder="请输入发货数量"
+              />
+            </el-form-item>
+            <el-form-item label="发货地址">
+              <el-input
+                type="textarea"
+                v-model="sendForm.address"
+                placeholder="请输入发货地址"
+              />
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input
+                type="textarea"
+                v-model="sendForm.remark"
+                placeholder="请输入备注"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+    </re-workbench>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      currentWork: "add",
+      works: [
+        {
+          label: "新增商品",
+          key: "add",
+          actions: [
+            {
+              label: "提交",
+              name: "add-submit",
+              props: { type: "primary" },
+            },
+          ],
+        },
+        {
+          label: "发货",
+          key: "send",
+          actions: [
+            {
+              label: "确认发货",
+              name: "send-confirm",
+              props: { type: "primary" },
+            },
+          ],
+        },
+      ],
+      productForm: {
+        brand: null,
+        name: null,
+        category: null,
+        price: null,
+        stock: null,
+      },
+      sendForm: {
+        brand: null,
+        name: null,
+        category: null,
+        sendQuantity: null,
+        address: null,
+        remark: null,
+      },
+      categoryOptions: [
+        { label: "图书", value: "book" },
+        { label: "数码", value: "digital" },
+        { label: "家电", value: "appliance" },
+        { label: "食品", value: "food" },
+      ],
+      brandOptions: [
+        { label: "苹果", value: "apple" },
+        { label: "华为", value: "huawei" },
+        { label: "小米", value: "xiaomi" },
+      ],
+    };
+  },
+  methods: {
+    handleAddSubmit(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了提交按钮`);
+    },
+    handleSendConfirm(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了确认发货按钮`);
+    },
+  },
+};
+</script>
+<style>
+.form-item {
+  width: 100%;
+}
+</style>
+```
+
+:::
+
 ### 自定义操作区
+
+可以为每个任务自定义操作区。
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <div style="margin-bottom: 10px;">
+      当前任务：
+      <el-radio-group v-model="currentWork" size="mini">
+        <el-radio-button label="add">新增商品</el-radio-button>
+        <el-radio-button label="send">发货</el-radio-button>
+      </el-radio-group>
+    </div>
+    <re-workbench
+      :currentWork="currentWork"
+      :works="works"
+    >
+      <template #action="{ currentWork, config }">
+        <el-button type="primary" @click="handleSubmit(currentWork, config)">提交</el-button>
+        <el-button type="primary" @click="handleCancel(currentWork, config)">取消</el-button>
+      </template>
+      <template #add>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form
+            :model="productForm"
+            label-width="80px"
+            label-position="left"
+          >
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="productForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="productForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="productForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="商品价格">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.price"
+                placeholder="请输入商品价格"
+              />
+            </el-form-item>
+            <el-form-item label="商品库存">
+              <el-input-number
+                class="form-item"
+                v-model="productForm.stock"
+                placeholder="请输入商品库存"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+      <template #send>
+        <div style="width: 80%; margin: 0 auto;">
+          <el-form :model="sendForm" label-width="80px" label-position="left">
+            <el-form-item label="商品分类">
+              <el-select
+                class="form-item"
+                v-model="sendForm.category"
+                placeholder="请选择商品分类"
+              >
+                <el-option
+                  v-for="item in categoryOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品品牌">
+              <el-select
+                class="form-item"
+                v-model="sendForm.brand"
+                placeholder="请选择商品品牌"
+              >
+                <el-option
+                  v-for="item in brandOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品名称">
+              <el-input
+                class="form-item"
+                v-model="sendForm.name"
+                placeholder="请输入商品名称"
+              />
+            </el-form-item>
+            <el-form-item label="发货数量">
+              <el-input-number
+                class="form-item"
+                v-model="sendForm.sendQuantity"
+                placeholder="请输入发货数量"
+              />
+            </el-form-item>
+            <el-form-item label="发货地址">
+              <el-input
+                type="textarea"
+                v-model="sendForm.address"
+                placeholder="请输入发货地址"
+              />
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input
+                type="textarea"
+                v-model="sendForm.remark"
+                placeholder="请输入备注"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+    </re-workbench>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      currentWork: "add",
+      works: [
+        {
+          label: "新增商品",
+          key: "add",
+          actions: [
+            {
+              label: "提交",
+              name: "add-submit",
+              props: { type: "primary" },
+            },
+          ],
+        },
+        {
+          label: "发货",
+          key: "send",
+          actions: [
+            {
+              label: "确认发货",
+              name: "send-confirm",
+              props: { type: "primary" },
+            },
+          ],
+        },
+      ],
+      productForm: {
+        brand: null,
+        name: null,
+        category: null,
+        price: null,
+        stock: null,
+      },
+      sendForm: {
+        brand: null,
+        name: null,
+        category: null,
+        sendQuantity: null,
+        address: null,
+        remark: null,
+      },
+      categoryOptions: [
+        { label: "图书", value: "book" },
+        { label: "数码", value: "digital" },
+        { label: "家电", value: "appliance" },
+        { label: "食品", value: "food" },
+      ],
+      brandOptions: [
+        { label: "苹果", value: "apple" },
+        { label: "华为", value: "huawei" },
+        { label: "小米", value: "xiaomi" },
+      ],
+    };
+  },
+  methods: {
+    handleSubmit(currentWork, config) {
+      this.$message.success(`当前任务为：${currentWork}，任务配置为：${config}，您点击了提交按钮`);
+    },
+    handleCancel(currentWork, config) {
+      this.$message.success(`当前任务为：${currentWork}，任务配置为：${config}，点击了确认发货按钮`);
+    },
+  },
+};
+</script>
+<style>
+.form-item {
+  width: 100%;
+}
+</style>
+```
+
+:::
 
 ## Workbench API
 
