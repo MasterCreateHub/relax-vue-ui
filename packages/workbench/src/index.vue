@@ -10,14 +10,14 @@
                 <slot name="action" :currentWork="currentWork" :config="currentWorkConfig">
                     <component v-for="action in currentWorkActions" :is="action.component || 'el-button'" :key="action.name"
                         class="re-workbench-action" v-bind="action.props || {}" v-on="action.events || {}"
-                        @click="$emit(action.name, currentWork)">
+                        @click="$emit(action.name, currentWork, $event)">
                         {{ action.label }}
                     </component>
                 </slot>
             </div>
         </header>
         <main class="re-workbench__body">
-            <slot :name="currentWork">
+            <slot :name="currentWork" :currentWork="currentWork" :config="currentWorkConfig">
                 <component :is="currentWorkConfig.component || null" v-model="currentWorkConfig.model"
                     v-bind="currentWorkConfig.props || {}">
                 </component>
@@ -28,7 +28,7 @@
                 <slot name="action" :currentWork="currentWork" :config="currentWorkConfig">
                     <component v-for="action in currentWorkActions" :is="action.component || 'el-button' "
                         :key="action.name" class="re-workbench-action" v-bind="action.props || {}"
-                        v-on="action.events || {}" @click="$emit(action.name, currentWork)">
+                        v-on="action.events || {}" @click="$emit(action.name, currentWork, $event)">
                         {{ action.label }}
                     </component>
                 </slot>

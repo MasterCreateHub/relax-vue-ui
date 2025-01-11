@@ -700,13 +700,14 @@ export default {
         <el-radio-button label="send">发货</el-radio-button>
       </el-radio-group>
     </div>
-    <re-workbench
-      :currentWork="currentWork"
-      :works="works"
-    >
+    <re-workbench :currentWork="currentWork" :works="works">
       <template #action="{ currentWork, config }">
-        <el-button type="primary" @click="handleSubmit(currentWork, config)">提交</el-button>
-        <el-button type="primary" @click="handleCancel(currentWork, config)">取消</el-button>
+        <el-button type="primary" @click="handleSubmit(currentWork, config)"
+          >提交</el-button
+        >
+        <el-button type="primary" @click="handleCancel(currentWork, config)"
+          >取消</el-button
+        >
       </template>
       <template #add>
         <div style="width: 80%; margin: 0 auto;">
@@ -891,10 +892,14 @@ export default {
   },
   methods: {
     handleSubmit(currentWork, config) {
-      this.$message.success(`当前任务为：${currentWork}，任务配置为：${config}，您点击了提交按钮`);
+      this.$message.success(
+        `当前任务为：${currentWork}，任务配置为：${config}，您点击了提交按钮`
+      );
     },
     handleCancel(currentWork, config) {
-      this.$message.success(`当前任务为：${currentWork}，任务配置为：${config}，点击了确认发货按钮`);
+      this.$message.success(
+        `当前任务为：${currentWork}，任务配置为：${config}，点击了确认发货按钮`
+      );
     },
   },
 };
@@ -912,12 +917,11 @@ export default {
 
 ### Attributes
 
-| 参数        | 说明                                               | 类型            | 可选值        | 默认值 |
-| ----------- | -------------------------------------------------- | --------------- | ------------- | ------ |
-| layout      | 布局方式                                           | String          | `two`,`three` | `two`  |
-| currentWork | 当前工作台的任务，值为工作任务的`key`              | String          | -             | -      |
-| works       | 工作台配置，可配置多个任务，不同任务可对应不同操作 | Array\<Work\>   | -             | -      |
-| actions     | 工作台所有可执行操作                               | Array\<Action\> | -             | `[]`   |
+| 参数        | 说明           | 类型          | 可选值        | 默认值 |
+| ----------- | -------------- | ------------- | ------------- | ------ |
+| layout      | 布局方式       | String        | `two`,`three` | `two`  |
+| currentWork | 当前任务       | String        | `${work.key}` |        |
+| works       | 工作台任务列表 | Array\<Work\> | -             | `[]`   |
 
 #### Work 对象结构
 
@@ -925,28 +929,28 @@ export default {
 | ------- | -------------------- | --------------- | ------ | ------ |
 | label   | 工作任务名称         | String          | -      | -      |
 | key     | 工作任务标识         | String          | -      | -      |
-| actions | 工作任务可执行的操作 | Array\<String\> | -      | -      |
+| actions | 工作任务可执行的操作 | Array\<Action\> | -      | `[]`   |
 
 #### Action 对象结构
 
-| 属性      | 说明                                    | 类型   | 可选值 | 默认值      |
-| --------- | --------------------------------------- | ------ | ------ | ----------- |
-| label     | 操作名称                                | String | -      | -           |
-| name      | 操作标识，也是`el-button`默认触发的事件 | String | -      | -           |
-| component | 操作使用的组件                          | String | -      | `el-button` |
-| props     | 工作台操作组件的属性配置                | Object | -      | -           |
-| events    | 工作台操作组件的事件配置                | Object | -      | -           |
+| 属性      | 说明                              | 类型   | 可选值 | 默认值      |
+| --------- | --------------------------------- | ------ | ------ | ----------- |
+| label     | 操作标签                          | String | -      | -           |
+| name      | 操作名称，`el-button`触发的事件名 | String | -      | -           |
+| component | 操作使用的组件                    | String | -      | `el-button` |
+| props     | 工作台操作组件的属性配置          | Object | -      | -           |
+| events    | 工作台操作组件的事件配置          | Object | -      | -           |
 
 ### Events
 
-| 事件名称       | 说明               | 回调参数      |
-| -------------- | ------------------ | ------------- |
-| ${action.name} | 点击操作按钮时触发 | `currentWork` |
+| 事件名称       | 说明               | 回调参数                |
+| -------------- | ------------------ | ----------------------- |
+| ${action.name} | 点击操作按钮时触发 | `{currentWork, $event}` |
 
 ### Slots
 
-| 名称    | 说明                   | 参数          |
-| ------- | ---------------------- | ------------- |
-| title   | 工作台标题自定义内容   | `currentWork` |
-| action  | 工作台操作区自定义内容 | `currentWork` |
-| default | 工作区自定义内容       | `currentWork` |
+| 名称           | 说明                   | 参数                    |
+| -------------- | ---------------------- | ----------------------- |
+| title          | 工作台标题自定义内容   | `{currentWork, config}` |
+| action         | 工作台操作区自定义内容 | `{currentWork, config}` |
+| ${currentWork} | 工作任务自定义内容     | `{currentWork, config}` |
