@@ -1,18 +1,41 @@
 <template>
   <el-form
-    :class="['re-form', { 'is-readonly': readonly }, { 'is-disabled': disabled }, { 'is-justify': labelPosition === 'justify' }]"
-    :model="formCurrentValues" ref="form" :inline="false" :disabled="readonly || disabled" v-bind="$attrs"
-    v-on="$listeners">
+    :class="[
+      're-form',
+      { 'is-readonly': readonly },
+      { 'is-disabled': disabled },
+      { 'is-justify': labelPosition === 'justify' },
+    ]"
+    :model="formCurrentValues"
+    ref="form"
+    :inline="false"
+    :disabled="readonly || disabled"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
     <el-row class="re-form__body" :gutter="gutter">
-      <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
-        :key="item.model + index">
-        <el-form-item class="re-form-item" :label="item.label" :prop="item.model">
+      <el-col
+        class="re-form-item__wrapper"
+        v-for="(item, index) in formatFormItems"
+        :span="item.span"
+        :key="item.model + index"
+      >
+        <el-form-item
+          class="re-form-item"
+          :label="item.label"
+          :prop="item.model"
+        >
           <template slot="label">
             <slot name="label" :item="item">{{ item.label }}</slot>
           </template>
           <slot :name="item.model" :item="item">
-            <component class="re-form-item-component" :is="item.component" v-model="formCurrentValues[item.model]"
-              v-bind="item.props || {}" v-on="item.events || {}"></component>
+            <component
+              class="re-form-item-component"
+              :is="item.component"
+              v-model="formCurrentValues[item.model]"
+              v-bind="item.props || {}"
+              v-on="item.events || {}"
+            ></component>
           </slot>
         </el-form-item>
       </el-col>
@@ -50,8 +73,8 @@ export default {
       type: String,
       default: "justify",
       validator(value) {
-        return ['top', 'left', 'right', 'justify'].includes(value)
-      }
+        return ["top", "left", "right", "justify"].includes(value);
+      },
     },
     /**
      * @description 表单是否为禁用
@@ -103,7 +126,9 @@ export default {
      */
     contexts: {
       type: Object,
-      default: () => { return {} },
+      default: () => {
+        return {};
+      },
     },
   },
   data() {
@@ -141,14 +166,21 @@ export default {
      */
     formSelectedOptions() {
       return this.items.reduce((acc, cur) => {
-        const options = deepParse(cur?.props?.options, {
-          $currentValues: this.formCurrentValues,
-          $extraContexts: this.contexts,
-        }) || [];
+        const options =
+          deepParse(cur?.props?.options, {
+            $currentValues: this.formCurrentValues,
+            $extraContexts: this.contexts,
+          }) || [];
         if (Array.isArray(this.formCurrentValues[cur.model])) {
-          acc[cur.model] = options.filter(option => this.formCurrentValues[cur.model].includes(option.value)) || this.formCurrentValues[cur.model]
+          acc[cur.model] =
+            options.filter((option) =>
+              this.formCurrentValues[cur.model].includes(option.value)
+            ) || this.formCurrentValues[cur.model];
         } else {
-          acc[cur.model] = options.find(option => this.formCurrentValues[cur.model] === option.value) || this.formCurrentValues[cur.model]
+          acc[cur.model] =
+            options.find(
+              (option) => this.formCurrentValues[cur.model] === option.value
+            ) || this.formCurrentValues[cur.model];
         }
         return acc;
       }, {});
@@ -186,6 +218,7 @@ export default {
       const changeArr = Object.keys(changeObj).reduce((acc, key) => {
         const itemChangeArr = changeObj[key].map((item) => {
           item.source = key;
+          item.condition = Boolean(item.condition)
           return item;
         });
         acc.push(...itemChangeArr);
@@ -198,7 +231,10 @@ export default {
     model: {
       handler() {
         this.formValueChanges.forEach((changeConfigItem) => {
-          this.formCurrentValues[changeConfigItem.target] = changeConfigItem.value;
+          if (changeConfigItem.condition) {
+            this.formCurrentValues[changeConfigItem.target] =
+              changeConfigItem.value;
+          }
         });
       },
       deep: true,
@@ -210,18 +246,20 @@ export default {
      * @param {Function} callback 回调函数
      */
     validate(callback) {
-      if (this.$refs['form']) {
+      if (this.$refs["form"]) {
         this.$refs.form.validate((valid) => {
           if (!valid && this.scrollToError) {
             this.$nextTick(() => {
               // 获取第一个校验错误的元素
-              const element = document.querySelectorAll(".el-form-item__error")[0];
+              const element = document.querySelectorAll(
+                ".el-form-item__error"
+              )[0];
               // 滚动到错误元素对应位置
               element?.scrollIntoView({
                 behavior: "smooth",
                 block: "center",
               });
-            })
+            });
           }
           callback?.(valid);
         });
@@ -233,7 +271,7 @@ export default {
      * @description 校验表单项
      */
     validateField(prop, callback) {
-      if (this.$refs['form']) {
+      if (this.$refs["form"]) {
         this.$refs.form.validateField(prop, callback);
       } else {
         console.error("form ref is undefined");
@@ -243,7 +281,7 @@ export default {
      * @description 移除表单项的校验结果
      */
     resetFields() {
-      if (this.$refs['form']) {
+      if (this.$refs["form"]) {
         this.$refs.form.resetFields();
       } else {
         console.error("form ref is undefined");
@@ -253,7 +291,7 @@ export default {
      * @description 清空表单项校验
      */
     clearValidate(prop) {
-      if (this.$refs['form']) {
+      if (this.$refs["form"]) {
         this.$refs.form.clearValidate(prop);
       } else {
         console.error("form ref is undefined");
@@ -263,13 +301,13 @@ export default {
      * @description 表单重置
      */
     reset() {
-      if (this.$refs['form']) {
+      if (this.$refs["form"]) {
         Object.keys(this.formInitialValues).forEach((key) => {
           this.formCurrentValues[key] = this.formInitialValues[key];
         });
         this.$nextTick(() => {
-          this.$refs['form'].clearValidate();
-        })
+          this.$refs["form"].clearValidate();
+        });
       } else {
         console.error("form ref is undefined");
       }
@@ -282,8 +320,8 @@ export default {
         if (valid) {
           this.$emit("submit", this.formCurrentValues);
         }
-      })
-    }
+      });
+    },
   },
 };
 </script>

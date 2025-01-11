@@ -373,6 +373,13 @@ export default {
           component: "el-input",
           initialValue: null,
           span: 24,
+          change: [
+            {
+              target: "comment",
+              value: "{{ null }}",
+              condition: "{{!$value}}",
+            }
+          ]
         },
         {
           label: "评语",
@@ -389,7 +396,7 @@ export default {
       ],
       model: {
         grades: null,
-        component: null,
+        comment: null,
       },
     };
   },
