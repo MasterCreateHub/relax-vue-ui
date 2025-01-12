@@ -6,10 +6,11 @@
       { 'is-disabled': disabled },
       { 'is-justify': labelPosition === 'justify' },
     ]"
-    :model="formCurrentValues"
     ref="form"
+    :model="formCurrentValues"
     :inline="false"
     :disabled="readonly || disabled"
+    :rules="formRules"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -133,11 +134,38 @@ export default {
         return {};
       },
     },
+    /**
+     * @description 表单校验规则
+     * @type {Object}
+     */
+    rules: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    /**
+     * @description 表单值联动规则
+     * @type {Object}
+     */
+    changes: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {};
   },
   computed: {
+    /**
+     * @description 表单数据对象备份，用于确认表单项变化
+     * @type {Object}
+     */
+    formModel() {
+      return JSON.parse(JSON.stringify(this.model));
+    },
     /**
      * @description 表单当前数据对象
      * @type {Object}
@@ -147,7 +175,7 @@ export default {
         return this.model;
       },
       set(val) {
-        this.$emit("input", val);
+        this.$emit("update:model", val);
       },
     },
     /**
@@ -212,38 +240,92 @@ export default {
       );
     },
     /**
-     * @description 表单项联动配置数组
+     * @description 表单项值联动配置数组
      * @type {Array}
      */
-    formValueChanges() {
+    formChanges() {
       const changeObj = this.formatFormItems.reduce((acc, cur) => {
-        acc[cur.model] = cur?.changes || [];
+        if (
+          cur.changes &&
+          Array.isArray(cur.changes) &&
+          cur.changes.length > 0
+        ) {
+          acc[cur.model] = cur.changes.map((change) => {
+            change.source = cur.model;
+            change.condition = Object.prototype.hasOwnProperty.call(
+              change,
+              "condition"
+            )
+              ? Boolean(change.condition)
+              : true;
+            return change;
+          });
+        } else {
+          acc[cur.model] = [];
+        }
         return acc;
       }, {});
-      const changeArr = Object.keys(changeObj).reduce((acc, key) => {
-        const itemChangeArr = changeObj[key].map((item) => {
-          item.source = key;
-          item.condition = Object.prototype.hasOwnProperty.call(
-            item,
-            "condition"
-          )
-            ? Boolean(item.condition)
-            : true;
-          return item;
-        });
-        acc.push(...itemChangeArr);
+      const formatChanges = deepParse(this.changes, this.formContext);
+      Object.keys(formatChanges).forEach((key) => {
+        if (
+          Array.isArray(formatChanges[key]) &&
+          formatChanges[key].length > 0
+        ) {
+          formatChanges[key] = formatChanges[key].map((change) => {
+            change.source = key;
+            change.condition = Object.prototype.hasOwnProperty.call(
+              change,
+              "condition"
+            )
+              ? Boolean(change.condition)
+              : true;
+            return change;
+          });
+          changeObj[key] = [...formatChanges[key], ...changeObj[key]];
+        } else {
+          changeObj[key] = [...changeObj[key]];
+        }
+      });
+      return changeObj;
+    },
+    /**
+     * @description 表单项校验配置数组
+     * @type {Object}
+     */
+    formRules() {
+      const ruleObj = this.formatFormItems.reduce((acc, cur) => {
+        if (cur.rules && Array.isArray(cur.rules) && cur.rules.length > 0) {
+          acc[cur.model] = cur.rules;
+        } else {
+          acc[cur.model] = [];
+        }
         return acc;
-      }, []);
-      return changeArr;
+      }, {});
+      Object.keys(this.rules).forEach((key) => {
+        if (Array.isArray(this.rules[key]) && this.rules[key].length > 0) {
+          ruleObj[key] = [...this.rules[key], ...ruleObj[key]];
+        } else {
+          ruleObj[key] = [...ruleObj[key]];
+        }
+      });
+      return ruleObj;
     },
   },
   watch: {
-    model: {
-      handler() {
-        this.formValueChanges.forEach((changeConfigItem) => {
-          if (changeConfigItem.condition) {
-            this.formCurrentValues[changeConfigItem.target] =
-              changeConfigItem.value;
+    formModel: {
+      handler(newVal, oldVal) {
+        if (newVal === oldVal) return;
+        const keys = Object.keys(newVal);
+        keys.forEach((key) => {
+          if (JSON.stringify(newVal[key]) !== JSON.stringify(oldVal[key])) {
+            const changes = this.formChanges[key];
+            if (changes && changes.length > 0) {
+              changes.forEach((change) => {
+                if (change.condition) {
+                  this.formCurrentValues[change.target] = change.value;
+                }
+              });
+            }
           }
         });
       },

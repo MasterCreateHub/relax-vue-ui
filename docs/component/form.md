@@ -365,7 +365,7 @@ export default {
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" label-width="80px" :items="items" :model="model" />
+    <re-form ref="form" label-width="80px" :items="items" :model="model"/>
   </div>
 </template>
 <script>
