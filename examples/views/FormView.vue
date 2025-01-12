@@ -1,5 +1,6 @@
 <template>
   <div class="form-view">
+    <config-select v-model="test" :options="contexts.productCategoryOptions" clearable></config-select>
     <re-form ref="form" :items="items" :model="model" :rules="rules" :contexts="contexts"/>
     <div class="form-view-footer">
       <el-button type="primary" @click="handleSubmit" size="small">提交</el-button>

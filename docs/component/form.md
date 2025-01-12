@@ -11,7 +11,13 @@
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" :items="items" :model="model" :rules="rules" />
+    <re-form
+      ref="form"
+      label-width="80px"
+      :items="items"
+      :model="model"
+      :rules="rules"
+    />
     <div class="form-view-footer">
       <el-button type="primary" @click="handleSubmit" size="small"
         >提交</el-button
@@ -166,14 +172,14 @@ export default {
 
 支持通过配置实现表单项之间的配置联动。举例如下：
 
-- 表单项 A 等于某值时，表单项 B 才显示
+- 表单项`A`等于某值时，表单项`B`才显示
 
 ::: demo
 
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" :items="items" :model="model" />
+    <re-form ref="form" label-width="100px" :items="items" :model="model" />
   </div>
 </template>
 <script>
@@ -221,14 +227,14 @@ export default {
 
 :::
 
-- 表单项 A 不为 null 时，表单项 B 才可填写
+- 表单项`A`的值`>0`时，表单项`B`才可填写
 
 ::: demo
 
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" :items="items" :model="model" />
+    <re-form ref="form" label-width="80px" :items="items" :model="model" />
   </div>
 </template>
 <script>
@@ -237,7 +243,7 @@ export default {
     return {
       items: [
         {
-          label: "最终分数",
+          label: "分数",
           model: "grades",
           component: "el-input-number",
           initialValue: null,
@@ -246,7 +252,7 @@ export default {
             clearable: true,
             min: 0,
             max: 100,
-          }
+          },
         },
         {
           label: "评语",
@@ -255,7 +261,7 @@ export default {
           initialValue: null,
           span: 24,
           props: {
-            disabled: "{{!$currentValues.grades}}",
+            disabled: "{{!($currentValues.grades > 0)}}",
             clearable: true,
             type: "textarea",
           },
@@ -277,14 +283,14 @@ export default {
 
 支持通过配置实现表单项的值联动。举例如下：
 
-- 表单项 A 值等于某值时，其余表单项自动填入相关数据
+- 表单项`A`的值填入时，其余表单项自动填入相关数据
 
 ::: demo
 
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" :items="items" :model="model" />
+    <re-form ref="form" label-width="80px" :items="items" :model="model" />
   </div>
 </template>
 <script>
@@ -305,15 +311,15 @@ export default {
               { label: "苹果1888", value: "2", price: 9999, brand: "苹果" },
             ],
           },
-          change: [
+          changes: [
             {
               target: "price",
-              value: "{{$select.price}}",
+              value: "{{$select.price ? $select.price : $initialValues.price}}",
             },
             {
               target: "brand",
-              value: "{{$select.brand}}",
-            }
+              value: "{{$select.brand ? $select.brand : $initialValues.brand}}",
+            },
           ],
         },
         {
@@ -336,13 +342,13 @@ export default {
           props: {
             readonly: true,
             placeholder: "根据商品自动填充品牌",
-          }
-        }
+          },
+        },
       ],
       model: {
         goods: null,
         price: null,
-        brand: null
+        brand: null,
       },
     };
   },
@@ -352,14 +358,14 @@ export default {
 
 :::
 
-- 表单项 A 值重置时，其余相关表单项自动重置
+- 表单项`A`值重置时，其余相关表单项自动重置
 
 ::: demo
 
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" :items="items" :model="model" />
+    <re-form ref="form" label-width="80px" :items="items" :model="model" />
   </div>
 </template>
 <script>
@@ -368,35 +374,38 @@ export default {
     return {
       items: [
         {
-          label: "最终分数",
-          model: "grades",
-          component: "el-input",
-          initialValue: null,
-          span: 24,
-          change: [
-            {
-              target: "comment",
-              value: "{{ null }}",
-              condition: "{{!$value}}",
-            }
-          ]
-        },
-        {
-          label: "评语",
-          model: "comment",
+          label: "病症名称",
+          model: "issue",
           component: "el-input",
           initialValue: null,
           span: 24,
           props: {
-            disabled: "{{!$currentValues.grades}}",
+            clearable: true,
+          },
+          changes: [
+            {
+              target: "description",
+              value: "{{ null }}",
+              condition: "{{!$value}}",
+            },
+          ],
+        },
+        {
+          label: "病情描述",
+          model: "description",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            disabled: "{{!$currentValues.issue}}",
             clearable: true,
             type: "textarea",
           },
         },
       ],
       model: {
-        grades: null,
-        comment: null,
+        issue: "上班特别难受证",
+        description: "一上班就不能感觉呼吸，症状严重，工作无法完成。",
       },
     };
   },
@@ -426,34 +435,31 @@ export default {
 
 #### FormItem 对象结构
 
-| 属性         | 类型               | 描述                | 默认值       |
-| ------------ | ------------------ | ------------------- | ------------ |
-| label        | String             | 表单项标签          | -            |
-| model        | String             | 表单项绑定的`model` | -            |
-| required     | Boolean            | 表单项是否必填      | `false`      |
-| readonly     | Boolean            | 表单项是否只读      | `false`      |
-| disabled     | Boolean            | 表单项是否禁用      | `false`      |
-| hidden       | Boolean            | 表单项是否隐藏      | `false`      |
-| initialValue | String             | 表单项初始值        | `null`或`[]` |
-| dynamic      | Boolean            | 是否为动态项        | `false`      |
-| rules        | Array\<Rule\>      | 表单想校验规则      | `[]`         |
-| changes      | Array\<change\>    | 表单项值联动配置    | `[]`         |
-| components   | Array\<Component\> | 表单项组件配置数组  | `[]`         |
+| 属性         | 类型            | 描述                | 可选值              | 默认值     |
+| ------------ | --------------- | ------------------- | ------------------- | ---------- |
+| label        | String          | 表单项标签          | -                   | -          |
+| description  | String          | 表单项详细描述      | -                   | -          |
+| required     | Boolean         | 表单项是否必填      | -                   | `false`    |
+| readonly     | Boolean         | 表单项是否只读      | -                   | `false`    |
+| disabled     | Boolean         | 表单项是否禁用      | -                   | `false`    |
+| hidden       | Boolean         | 表单项是否隐藏      | -                   | `false`    |
+| span         | Number          | 表单项占位宽度      | `1~24`              | `24`       |
+| initialValue | Any             | 表单项初始值        | -                   | `null`     |
+| interactive  | String          | 表单项交互形式      | `'select', 'input'` | -          |
+| model        | String          | 表单项绑定的`model` | -                   | -          |
+| component    | String          | 表单项组件          | -                   | `el-input` |
+| props        | Object          | 表单项组件          | -                   | `{}`       |
+| events       | Object          | 表单项组件          | -                   | `{}`       |
+| rules        | Array\<Rule\>   | 表单想校验规则      | -                   | `[]`       |
+| changes      | Array\<change\> | 表单项值联动配置    | -                   | `[]`       |
 
 #### Change 对象结构
 
-| 属性   | 类型   | 描述   | 默认值 |
-| ------ | ------ | ------ | ------ |
-| target | String | 目标项 | -      |
-| value  | Any    | 传递值 | -      |
-
-#### Component 对象结构
-
-| 属性   | 类型   | 描述                | 默认值 |
-| ------ | ------ | ------------------- | ------ |
-| model  | String | 表单项绑定的`model` | -      |
-| props  | Object | 表单项组件 props    | `{}`   |
-| events | Object | 表单项组件事件      | `{}`   |
+| 属性      | 类型   | 描述     | 可选值 | 默认值 |
+| --------- | ------ | -------- | ------ | ------ |
+| target    | String | 目标项   | -      | -      |
+| value     | Any    | 传递值   | -      | -      |
+| condition | String | 触发条件 | -      | -      |
 
 ### Events
 
@@ -465,6 +471,7 @@ export default {
 
 ### Slots
 
-| 名称             | 说明       | 参数   |
-| ---------------- | ---------- | ------ |
-| ${formItem.name} | 表单项插槽 | {item} |
+| 名称             | 说明           | 参数     |
+| ---------------- | -------------- | -------- |
+| itemLabel        | 表单项标签插槽 | `{item}` |
+| ${formItem.name} | 表单项插槽     | `{item}` |

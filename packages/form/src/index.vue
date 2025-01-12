@@ -88,19 +88,22 @@ export default {
     /**
      * @description 表单项配置
      * @type {Array<FormItem>}
-     * @property {Object} FormItem-表单项配置数组
-     * @property {String} FormItem.label 表单项标签
-     * @property {String} FormItem.required 表单项是否必填，默认为false
-     * @property {String} FormItem.readonly 表单项是否只读，默认为false
-     * @property {Boolean} FormItem.disabled 表单项是否禁用，默认为false
-     * @property {Boolean} FormItem.hidden 表单项是否隐藏，默认为false
-     * @property {String} FormItem.initialValue 表单项初始值，默认为null || []
-     * @property {String} FormItem.component 表单项使用的组件，必需
-     * @property {String} FormItem.model 表单项数据绑定的属性名，也是表单项标识
-     * @property {String} FormItem.props 表单项使用的组件配置，默认为{}
-     * @property {String} FormItem.events 表单项使用的组件绑定事件，默认为{}
-     * @property {String} FormItem.rule 表单校验规则，默认为[]
-     * @property {String} FormItem.change 表单项值联动配置，默认为[]
+     * @property {Object} FormItem - 表单项配置数组
+     * @property {String} FormItem.label - 表单项标签
+     * @property {String} FormItem.description - 表单项详细描述
+     * @property {Boolean} FormItem.required - 表单项是否必填，默认为 `false`
+     * @property {Boolean} FormItem.readonly - 表单项是否只读，默认为 `false`
+     * @property {Boolean} FormItem.disabled - 表单项是否禁用，默认为 `false`
+     * @property {Boolean} FormItem.hidden - 表单项是否隐藏，默认为 `false`
+     * @property {Number} FormItem.span - 表单项占位宽度，默认为 `24`，可选值为 `1~24`
+     * @property {Any} FormItem.initialValue - 表单项初始值，默认为 `null`、`[]` 或 `{}`
+     * @property {String} FormItem.interactive - 表单项交互形式，可选值为 `'select'` 或 `'input'`
+     * @property {String} FormItem.model - 表单项绑定的 `model`
+     * @property {String} FormItem.component - 表单项组件，默认为 `el-input`
+     * @property {Object} FormItem.props - 表单项组件配置，默认为 `{}`
+     * @property {Object} FormItem.events - 表单项组件绑定事件，默认为 `{}`
+     * @property {Array<Rule>} FormItem.rules - 表单校验规则，默认为 `[]`
+     * @property {Array<Change>} FormItem.changes - 表单项值联动配置，默认为 `[]`
      * @default []
      */
     items: {
@@ -166,21 +169,23 @@ export default {
      */
     formSelectedOptions() {
       return this.items.reduce((acc, cur) => {
-        const options =
-          deepParse(cur?.props?.options, {
-            $currentValues: this.formCurrentValues,
-            $extraContexts: this.contexts,
-          }) || [];
-        if (Array.isArray(this.formCurrentValues[cur.model])) {
-          acc[cur.model] =
-            options.filter((option) =>
-              this.formCurrentValues[cur.model].includes(option.value)
-            ) || this.formCurrentValues[cur.model];
-        } else {
-          acc[cur.model] =
-            options.find(
-              (option) => this.formCurrentValues[cur.model] === option.value
-            ) || this.formCurrentValues[cur.model];
+        if (cur.interactive === "select" || cur.props?.options) {
+          const options =
+            deepParse(cur?.props?.options, {
+              $currentValues: this.formCurrentValues,
+              $extraContexts: this.contexts,
+            }) || [];
+          if (Array.isArray(this.formCurrentValues[cur.model])) {
+            acc[cur.model] =
+              options.filter((option) =>
+                this.formCurrentValues[cur.model].includes(option.value)
+              ) || this.formCurrentValues[cur.model];
+          } else {
+            acc[cur.model] =
+              options.find(
+                (option) => this.formCurrentValues[cur.model] === option.value
+              ) || this.formCurrentValues[cur.model];
+          }
         }
         return acc;
       }, {});
@@ -212,13 +217,18 @@ export default {
      */
     formValueChanges() {
       const changeObj = this.formatFormItems.reduce((acc, cur) => {
-        acc[cur.model] = cur?.change || [];
+        acc[cur.model] = cur?.changes || [];
         return acc;
       }, {});
       const changeArr = Object.keys(changeObj).reduce((acc, key) => {
         const itemChangeArr = changeObj[key].map((item) => {
           item.source = key;
-          item.condition = Boolean(item.condition)
+          item.condition = Object.prototype.hasOwnProperty.call(
+            item,
+            "condition"
+          )
+            ? Boolean(item.condition)
+            : true;
           return item;
         });
         acc.push(...itemChangeArr);
