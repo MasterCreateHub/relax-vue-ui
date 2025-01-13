@@ -14,7 +14,7 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
-    <el-row class="re-form__body" :gutter="gutter">
+    <el-row class="re-form__body" :gutter="spacing">
       <el-col
         class="re-form-item__wrapper"
         v-for="(item, index) in formatFormItems"
@@ -27,7 +27,17 @@
           :prop="item.model"
         >
           <template slot="label">
-            <slot name="label" :item="item">{{ item.label }}</slot>
+            <slot name="itemLabel" :item="item">
+              <el-tooltip
+                v-if="item.description"
+                effect="dark"
+                :content="item.description"
+                placement="top"
+              >
+                <i class="el-icon-info" />
+              </el-tooltip>
+              {{ item.label }}
+            </slot>
           </template>
           <slot :name="item.model" :item="item">
             <component
@@ -66,6 +76,15 @@ export default {
       default: false,
     },
     /**
+     * @description 表单是否为禁用
+     * @type {Boolean}
+     * @default false
+     */
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    /**
      * @description 搜索表单标签位置
      * @type {'top'|'left'|'right'|'justify'}
      * @default 'justify'
@@ -78,40 +97,11 @@ export default {
       },
     },
     /**
-     * @description 表单是否为禁用
-     * @type {Boolean}
-     * @default false
+     * @description 表单项间隔
+     * @type {Number}
+     * @default 20
      */
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    /**
-     * @description 表单项配置
-     * @type {Array<FormItem>}
-     * @property {Object} FormItem - 表单项配置数组
-     * @property {String} FormItem.label - 表单项标签
-     * @property {String} FormItem.description - 表单项详细描述
-     * @property {Boolean} FormItem.required - 表单项是否必填，默认为 `false`
-     * @property {Boolean} FormItem.readonly - 表单项是否只读，默认为 `false`
-     * @property {Boolean} FormItem.disabled - 表单项是否禁用，默认为 `false`
-     * @property {Boolean} FormItem.hidden - 表单项是否隐藏，默认为 `false`
-     * @property {Number} FormItem.span - 表单项占位宽度，默认为 `24`，可选值为 `1~24`
-     * @property {Any} FormItem.initialValue - 表单项初始值，默认为 `null`、`[]` 或 `{}`
-     * @property {String} FormItem.interactive - 表单项交互形式，可选值为 `'select'` 或 `'input'`
-     * @property {String} FormItem.model - 表单项绑定的 `model`
-     * @property {String} FormItem.component - 表单项组件，默认为 `el-input`
-     * @property {Object} FormItem.props - 表单项组件配置，默认为 `{}`
-     * @property {Object} FormItem.events - 表单项组件绑定事件，默认为 `{}`
-     * @property {Array<Rule>} FormItem.rules - 表单校验规则，默认为 `[]`
-     * @property {Array<Change>} FormItem.changes - 表单项值联动配置，默认为 `[]`
-     * @default []
-     */
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    gutter: {
+    spacing: {
       type: Number,
       default: 20,
     },
@@ -153,6 +143,31 @@ export default {
       default: () => {
         return {};
       },
+    },
+    /**
+     * @description 表单项配置
+     * @type {Array<FormItem>}
+     * @property {Object} FormItem - 表单项配置数组
+     * @property {String} FormItem.label - 表单项标签
+     * @property {String} FormItem.description - 表单项详细描述
+     * @property {Boolean} FormItem.required - 表单项是否必填，默认为 `false`
+     * @property {Boolean} FormItem.readonly - 表单项是否只读，默认为 `false`
+     * @property {Boolean} FormItem.disabled - 表单项是否禁用，默认为 `false`
+     * @property {Boolean} FormItem.hidden - 表单项是否隐藏，默认为 `false`
+     * @property {Number} FormItem.span - 表单项占位宽度，默认为 `24`，可选值为 `1~24`
+     * @property {Any} FormItem.initialValue - 表单项初始值，默认为 `null`、`[]` 或 `{}`
+     * @property {String} FormItem.interactive - 表单项交互形式，可选值为 `'select'` 或 `'input'`
+     * @property {String} FormItem.model - 表单项绑定的 `model`
+     * @property {String} FormItem.component - 表单项组件，默认为 `el-input`
+     * @property {Object} FormItem.props - 表单项组件配置，默认为 `{}`
+     * @property {Object} FormItem.events - 表单项组件绑定事件，默认为 `{}`
+     * @property {Array<Rule>} FormItem.rules - 表单校验规则，默认为 `[]`
+     * @property {Array<Change>} FormItem.changes - 表单项值联动配置，默认为 `[]`
+     * @default []
+     */
+    items: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -432,4 +447,10 @@ export default {
     }
   }
 }
+// ::v-deep.is-justify {
+//   .el-form-item__label {
+//     text-align: justify;
+//     text-align-last: justify;
+//   }
+// }
 </style>

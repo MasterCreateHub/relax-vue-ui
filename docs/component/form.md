@@ -168,6 +168,176 @@ export default {
 
 :::
 
+### 特色用法
+
+- 支持表单只读模式；
+- 支持表单标签文字两端对齐；
+- 支持配置表单项的描述和提示信息；
+- 支持表单校验时滚动到第一次校验失败的表单项；
+
+::: demo
+
+```vue
+<template>
+  <div style="width: 600px; margin: auto;">
+    <re-form
+      ref="form"
+      label-width="80px"
+      :items="items"
+      :model="model"
+      :rules="rules"
+    />
+    <div class="form-view-footer">
+      <el-button type="primary" @click="handleSubmit" size="small"
+        >提交</el-button
+      >
+      <el-button type="primary" @click="handleReset" size="small"
+        >重置</el-button
+      >
+      <el-button type="primary" @click="handleClear" size="small"
+        >清除</el-button
+      >
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        {
+          label: "姓名",
+          model: "name",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入姓名",
+            clearable: true,
+          },
+        },
+        {
+          label: "性别",
+          model: "gender",
+          component: "config-select",
+          initialValue: null,
+          span: 24,
+          props: {
+            options: [
+              { label: "男", value: "1" },
+              { label: "女", value: "0" },
+            ],
+          },
+        },
+        {
+          label: "年龄",
+          model: "age",
+          component: "el-input-number",
+          initialValue: undefined,
+          span: 24,
+          props: {
+            placeholder: "请输入年龄",
+            controls: false,
+            min: 0,
+            max: 120,
+          },
+        },
+        {
+          label: "邮箱",
+          model: "email",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入邮箱",
+            clearable: true,
+            type: "email",
+          },
+        },
+        {
+          label: "电话",
+          model: "phone",
+          component: "el-input",
+          description: "格式为11位大陆手机号码",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入电话",
+            clearable: true,
+          },
+        },
+        {
+          label: "地址",
+          model: "address",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入地址",
+            clearable: true,
+            type: "textarea",
+          },
+        },
+      ],
+      model: {
+        name: null,
+        gender: null,
+        age: undefined,
+        email: null,
+        phone: null,
+        address: null,
+      },
+      rules: {
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别" }],
+        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱格式",
+            trigger: ["blur", "change"],
+          },
+        ],
+        phone: [
+          { required: true, message: "请输入电话", trigger: "blur" },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "请输入正确的手机号码",
+            trigger: "blur",
+          },
+        ],
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
+      },
+    };
+  },
+  computed: {},
+  methods: {
+    handleSubmit() {
+      this.$refs["form"].validate((valid) => {
+        valid
+          ? this.$message.success(
+              `校验成功， 表单信息为${JSON.stringify(this.model)}`
+            )
+          : this.$message.error("校验失败");
+      });
+    },
+    handleReset() {
+      this.$refs["form"].reset();
+    },
+    handleClear() {
+      this.$refs["form"].clearValidate();
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
+```
+
+:::
+
 ### 表单项配置联动
 
 支持通过配置实现表单项之间的配置联动。举例如下：
@@ -365,7 +535,7 @@ export default {
 ```vue
 <template>
   <div style="width: 600px; margin: auto;">
-    <re-form ref="form" label-width="80px" :items="items" :model="model"/>
+    <re-form ref="form" label-width="80px" :items="items" :model="model" />
   </div>
 </template>
 <script>
@@ -419,19 +589,19 @@ export default {
 
 ### Attributes
 
-| 参数             | 说明                           | 类型              | 可选值 | 默认值  |
-| ---------------- | ------------------------------ | ----------------- | ------ | ------- |
-| formModel        | 表单数据对象                   | Object            | -      | `{}`    |
-| readonly         | 表单是否为只读                 | Boolean           | -      | `false` |
-| disabled         | 表单是否为禁用                 | Boolean           | -      | `false` |
-| formItems        | 表单项配置                     | Array\<FormItem\> | -      | `[]`    |
-| formSections     | 表单分组配置                   | Array\<Object\>   | -      | `[]`    |
-| formSteps        | 表单分步配置                   | Array\<Object\>   | -      | `[]`    |
-| autoScrollError  | 是否自动滚动到第一个错误表单项 | Boolean           | -      | `true`  |
-| hideRequiredMark | 是否隐藏必填记号               | Boolean           | -      | `false` |
-| rules            | 表单校验配置                   | Object            | -      | `{}`    |
-| changes          | 表单数据联动配置               | Array             | -      | `[]`    |
-| baseConfig       | 表单基础配置                   | Object            | -      | `{}`    |
+| 参数          | 说明                         | 类型              | 可选值                            | 默认值    |
+| ------------- | ---------------------------- | ----------------- | --------------------------------- | --------- |
+| model         | 表单数据对象                 | Object            | -                                 | `{}`      |
+| readonly      | 表单是否为只读               | Boolean           | -                                 | `false`   |
+| disabled      | 表单是否为禁用               | Boolean           | -                                 | `false`   |
+| labelPosition | 搜索表单标签位置             | String            | `top`, `left`, `right`, `justify` | `justify` |
+| spacing       | 表单项间隔                   | Number            | -                                 | `20`      |
+| scrollToError | 检验时滚动到第一个错误表单项 | Boolean           | -                                 | `true`    |
+| contexts      | 额外的数据                   | Object            | -                                 | `{}`      |
+| rules         | 表单校验规则                 | Object            | -                                 | `{}`      |
+| changes       | 表单值联动规则               | Object            | -                                 | `{}`      |
+| items         | 表单项配置                   | Array\<FormItem\> | -                                 | `[]`      |
+| 其他属性      | 参考`element-ui`             | Any               | -                                 | -       |
 
 #### FormItem 对象结构
 
@@ -465,9 +635,14 @@ export default {
 
 ### Methods
 
-| 事件名   | 说明     | 参数   |
-| -------- | -------- | ------ |
-| validate | 表单校验 | result |
+| 方法名        | 说明                 | 参数           |
+| ------------- | -------------------- | -------------- |
+| validate      | 表单校验             | `callback`       |
+| validateField | 校验表单项           | `prop, callback` |
+| resetFields   | 移除表单项的校验结果 | -              |
+| clearValidate | 清空表单项校验       | `prop`           |
+| reset         | 表单重置             | -              |
+| submit        | 表单提交             | -              |
 
 ### Slots
 
