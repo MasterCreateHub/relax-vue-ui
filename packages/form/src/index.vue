@@ -4,12 +4,13 @@
       're-form',
       { 'is-readonly': readonly },
       { 'is-disabled': disabled },
-      { 'is-justify': labelPosition === 'justify' },
+      { 'is-justify': labelAlign === 'justify' },
     ]"
     ref="form"
     :model="formCurrentValues"
     :inline="false"
     :disabled="readonly || disabled"
+    :label-position="labelAlign"
     :rules="formRules"
     v-bind="$attrs"
     v-on="$listeners"
@@ -34,12 +35,12 @@
                 :content="item.description"
                 placement="top"
               >
-                <i class="el-icon-info" />
+                <i class="el-icon-info re-form-item__label-info" />
               </el-tooltip>
-              {{ item.label }}
+              <span>{{ item.label }}</span>
             </slot>
           </template>
-          <slot :name="item.model" :item="item">
+          <slot name="itemContent" :item="item">
             <component
               class="re-form-item-component"
               :is="item.component"
@@ -89,7 +90,7 @@ export default {
      * @type {'top'|'left'|'right'|'justify'}
      * @default 'justify'
      */
-    labelPosition: {
+    labelAlign: {
       type: String,
       default: "justify",
       validator(value) {
@@ -436,10 +437,14 @@ export default {
 .re-form {
   .re-form__body {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
 
     .re-form-item__wrapper {
       .re-form-item {
+        i.re-form-item__label-info{
+          margin-right: 4px;
+        }
         .re-form-item-component {
           width: 100%;
         }
@@ -447,10 +452,15 @@ export default {
     }
   }
 }
-// ::v-deep.is-justify {
-//   .el-form-item__label {
-//     text-align: justify;
-//     text-align-last: justify;
-//   }
-// }
+::v-deep.is-justify {
+  .el-form-item__label {
+    display: flex;
+    align-items: center;
+    span {
+      flex: 1;
+      text-align: justify;
+      text-align-last: justify;
+    }
+  }
+}
 </style>

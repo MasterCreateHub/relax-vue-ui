@@ -18,7 +18,7 @@
       :model="model"
       :rules="rules"
     />
-    <div class="form-view-footer">
+    <div>
       <el-button type="primary" @click="handleSubmit" size="small"
         >提交</el-button
       >
@@ -175,19 +175,33 @@ export default {
 - 支持配置表单项的描述和提示信息；
 - 支持表单校验时滚动到第一次校验失败的表单项；
 
-::: demo
+::: demo 1、通过`readonly`属性可设置表单为只读模式，方便展示；</br>2、通过`labelAlign`属性可设置表单项标签的文字两端对齐；</br>3、通过设置表单项的`description`可让表单项显示描述信息；</br>4、通过`scrollToError`属性可设置表单项校验时滚动到第一个错误处。
 
 ```vue
 <template>
-  <div style="width: 600px; margin: auto;">
-    <re-form
-      ref="form"
-      label-width="80px"
-      :items="items"
-      :model="model"
-      :rules="rules"
-    />
-    <div class="form-view-footer">
+  <div style="width: 600px;  margin: auto;">
+    <div style="margin-bottom: 10px;">
+      表单模式：
+      <el-radio-group v-model="mode" size="mini">
+        <el-radio-button label="normal">普通</el-radio-button>
+        <el-radio-button label="readonly">只读</el-radio-button>
+        <el-radio-button label="disabled">禁用</el-radio-button>
+      </el-radio-group>
+    </div>
+    <div class="form-container">
+      <re-form
+        ref="form"
+        label-width="120px"
+        label-align="justify"
+        :scroll-to-error="true"
+        :readonly="mode === 'readonly'"
+        :disabled="mode === 'disabled'"
+        :items="items"
+        :model="model"
+        :rules="rules"
+      />
+    </div>
+    <div>
       <el-button type="primary" @click="handleSubmit" size="small"
         >提交</el-button
       >
@@ -205,11 +219,13 @@ export default {
 export default {
   data() {
     return {
+      mode: "normal",
       items: [
         {
           label: "姓名",
           model: "name",
           component: "el-input",
+          description: "身份证现用姓名",
           initialValue: null,
           span: 24,
           props: {
@@ -220,6 +236,7 @@ export default {
         {
           label: "性别",
           model: "gender",
+          description: "生理性别",
           component: "config-select",
           initialValue: null,
           span: 24,
@@ -234,6 +251,7 @@ export default {
           label: "年龄",
           model: "age",
           component: "el-input-number",
+          description: "年龄",
           initialValue: undefined,
           span: 24,
           props: {
@@ -247,6 +265,7 @@ export default {
           label: "邮箱",
           model: "email",
           component: "el-input",
+          description: "目前只支持QQ邮箱、网易邮箱和新浪邮箱",
           initialValue: null,
           span: 24,
           props: {
@@ -256,25 +275,26 @@ export default {
           },
         },
         {
-          label: "电话",
+          label: "手机号码",
           model: "phone",
           component: "el-input",
           description: "格式为11位大陆手机号码",
           initialValue: null,
           span: 24,
           props: {
-            placeholder: "请输入电话",
+            placeholder: "请输入手机号码",
             clearable: true,
           },
         },
         {
-          label: "地址",
+          label: "个人住址",
           model: "address",
           component: "el-input",
+          description: "目前居住地址或身份证上的地址",
           initialValue: null,
           span: 24,
           props: {
-            placeholder: "请输入地址",
+            placeholder: "请输入个人住址",
             clearable: true,
             type: "textarea",
           },
@@ -301,7 +321,7 @@ export default {
           },
         ],
         phone: [
-          { required: true, message: "请输入电话", trigger: "blur" },
+          { required: true, message: "请输入手机号码", trigger: "blur" },
           {
             pattern: /^1[3-9]\d{9}$/,
             message: "请输入正确的手机号码",
@@ -332,10 +352,26 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>
+<style>
+.form-container {
+  width: 100%;
+  height: 300px;
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+</style>
 ```
 
+:::
+
+::: tip 只读模式：
+只读模式让表单可以直接展示详情，由于`el-form`组件不支持只读模式，所以该模式本质上是通过设置表单的`disabled`属性实现的，只是采用了不同的样式。
+```css
+.re-from.is-readonly{}
+```
 :::
 
 ### 表单项配置联动
@@ -601,7 +637,7 @@ export default {
 | rules         | 表单校验规则                 | Object            | -                                 | `{}`      |
 | changes       | 表单值联动规则               | Object            | -                                 | `{}`      |
 | items         | 表单项配置                   | Array\<FormItem\> | -                                 | `[]`      |
-| 其他属性      | 参考`element-ui`             | Any               | -                                 | -       |
+| 其他属性      | 参考`element-ui`             | Any               | -                                 | -         |
 
 #### FormItem 对象结构
 
@@ -635,18 +671,18 @@ export default {
 
 ### Methods
 
-| 方法名        | 说明                 | 参数           |
-| ------------- | -------------------- | -------------- |
+| 方法名        | 说明                 | 参数             |
+| ------------- | -------------------- | ---------------- |
 | validate      | 表单校验             | `callback`       |
 | validateField | 校验表单项           | `prop, callback` |
-| resetFields   | 移除表单项的校验结果 | -              |
+| resetFields   | 移除表单项的校验结果 | -                |
 | clearValidate | 清空表单项校验       | `prop`           |
-| reset         | 表单重置             | -              |
-| submit        | 表单提交             | -              |
+| reset         | 表单重置             | -                |
+| submit        | 表单提交             | -                |
 
 ### Slots
 
-| 名称             | 说明           | 参数     |
-| ---------------- | -------------- | -------- |
-| itemLabel        | 表单项标签插槽 | `{item}` |
-| ${formItem.name} | 表单项插槽     | `{item}` |
+| 名称        | 说明           | 参数     |
+| ----------- | -------------- | -------- |
+| itemLabel   | 表单项标签插槽 | `{item}` |
+| itemContent | 表单项组件插槽 | `{item}` |
