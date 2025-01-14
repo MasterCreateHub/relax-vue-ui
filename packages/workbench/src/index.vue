@@ -112,10 +112,42 @@ export default {
       required: true,
       validator(value) {
         return value.every((work) => {
+          let workActionsValid =
+            Array.isArray(work.actions) &&
+            work.actions.every((action) => {
+              return (
+                (!action && typeof action === "string") ||
+                (Object.prototype.toString.call(action) === "[object Object]" &&
+                  action.label &&
+                  action.name)
+              );
+            });
           return (
             Object.prototype.toString.call(work) === "[object Object]" &&
             work.label &&
-            work.key
+            work.key &&
+            workActionsValid
+          );
+        });
+      },
+    },
+    /**
+     * @description 可执行的操作 
+     * @type {Array<Action>}
+     * @property {String} Action.label 操作的文本标签
+     * @property {String} Action.name  操作标识，也是`el-button`默认触发的事件
+     * @property {String} Action.component 操作使用的组件，默认为`el-button`
+     * 
+     */
+    actions: {
+      type: Array,
+      default: () => [],
+      validator(value) {
+        return value.every((action) => {
+          return (
+            Object.prototype.toString.call(action) === "[object Object]" &&
+            action.label &&
+            action.name
           );
         });
       },
@@ -143,6 +175,13 @@ export default {
     currentWorkActions() {
       return Array.isArray(this.currentWorkConfig.actions)
         ? this.currentWorkConfig.actions
+            .map((action) => {
+              if (typeof action === "string") {
+                return this.actions.find((act) => act.name === action) || {};
+              }
+              return action;
+            })
+            .filter((action) => !!action.label || !!action.name)
         : [];
     },
   },
