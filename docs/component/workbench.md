@@ -507,8 +507,8 @@ export default {
               brand: null,
               name: null,
               category: null,
-              price: null,
-              stock: null,
+              price: 0,
+              stock: 0,
             },
             items: [
               {
@@ -530,6 +530,7 @@ export default {
                     },
                   ],
                 },
+                rules: [{ required: true, message: "请选择商品分类" }],
               },
               {
                 label: "商品品牌",
@@ -606,7 +607,7 @@ export default {
               brand: null,
               name: null,
               category: null,
-              sendQuantity: null,
+              sendQuantity: 0,
               address: null,
               remark: null,
             },
@@ -630,6 +631,7 @@ export default {
                     },
                   ],
                 },
+                rules: [{ required: true, message: "请选择商品分类" }],
               },
               {
                 label: "商品品牌",
@@ -685,7 +687,6 @@ export default {
                   clearable: true,
                   type: "textarea",
                 },
-                rules: [{ required: true, message: "发货地址不能为空" }],
               },
               {
                 label: "备注",

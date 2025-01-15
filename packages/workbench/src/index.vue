@@ -37,6 +37,7 @@
         :config="currentWorkConfig"
       >
         <component ref="workComponentRef"
+          :key="currentWork + '-workComponent'"
           :is="currentWorkConfig.component || null"
           v-bind="currentWorkConfig.props || {}"
           v-on="currentWorkConfig.events || {}"

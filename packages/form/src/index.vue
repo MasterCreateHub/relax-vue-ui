@@ -334,6 +334,7 @@ export default {
         const keys = Object.keys(newVal);
         keys.forEach((key) => {
           if (JSON.stringify(newVal[key]) !== JSON.stringify(oldVal[key])) {
+            console.log(key, newVal[key], oldVal[key]);
             const changes = this.formChanges[key];
             if (changes && changes.length > 0) {
               changes.forEach((change) => {
