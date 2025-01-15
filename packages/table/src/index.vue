@@ -267,8 +267,9 @@ export default {
     /**
      * @description 调用el-table自身的方法
      * @param {String} name - 方法名
+     * @param {Any} args - 参数
      */
-    tableFunction(name) {
+    tableFunction(name, ...args) {
       // 参数校验
       if (!name || typeof name !== "string") {
         console.error("Invalid method name:", name);
@@ -291,7 +292,7 @@ export default {
 
       // 调用方法
       try {
-        tableMethod();
+        tableMethod(...args);
       } catch (error) {
         console.error(`Error calling method ${name}:`, error);
       }

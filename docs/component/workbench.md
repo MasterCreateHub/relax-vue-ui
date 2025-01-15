@@ -1,6 +1,6 @@
 # Workbench
 
-将多个不同的业务操作组件（如表单）聚合到一起并根据使用场景进行切换
+将多个不同的业务操作组件（如表单）聚合到一起并根据使用场景进行切换。
 
 ## Workbench Usage
 
@@ -456,6 +456,286 @@ export default {
 
 :::
 
+### 配置任务组件
+
+支持直接为任务配置组件。
+
+::: demo
+
+```vue
+<template>
+  <div>
+    <div style="margin-bottom: 10px;">
+      当前任务：
+      <el-radio-group v-model="currentWork" size="mini">
+        <el-radio-button label="add">新增商品</el-radio-button>
+        <el-radio-button label="send">发货</el-radio-button>
+      </el-radio-group>
+    </div>
+    <re-workbench
+      ref="workbenchRef"
+      :currentWork="currentWork"
+      :works="works"
+      :layout="layout"
+      @add-submit="handleAddSubmit"
+      @send-confirm="handleSendConfirm"
+    >
+    </re-workbench>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      layout: "two",
+      currentWork: "add",
+      works: [
+        {
+          label: "新增商品",
+          key: "add",
+          actions: [
+            {
+              label: "提交",
+              name: "add-submit",
+              props: { type: "primary" },
+            },
+          ],
+          component: "re-form",
+          props: {
+            labelWidth: "80px",
+            model: {
+              brand: null,
+              name: null,
+              category: null,
+              price: null,
+              stock: null,
+            },
+            items: [
+              {
+                label: "商品分类",
+                model: "category",
+                component: "config-select",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请选择商品分类",
+                  options: [
+                    {
+                      label: "分类1",
+                      value: "1",
+                    },
+                    {
+                      label: "分类2",
+                      value: "2",
+                    },
+                  ],
+                },
+              },
+              {
+                label: "商品品牌",
+                model: "brand",
+                component: "config-select",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请选择商品品牌",
+                  options: [
+                    {
+                      label: "品牌1",
+                      value: "1",
+                    },
+                    {
+                      label: "品牌2",
+                      value: "2",
+                    },
+                  ],
+                },
+              },
+              {
+                label: "商品名称",
+                model: "name",
+                component: "el-input",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入商品名称",
+                  clearable: true,
+                },
+              },
+              {
+                label: "商品价格",
+                model: "price",
+                component: "el-input-number",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入商品价格",
+                  controls: true,
+                  min: 0,
+                },
+              },
+              {
+                label: "商品库存",
+                model: "stock",
+                component: "el-input-number",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入商品库存",
+                  controls: true,
+                  min: 0,
+                },
+              },
+            ],
+          },
+        },
+        {
+          label: "发货",
+          key: "send",
+          actions: [
+            {
+              label: "确认发货",
+              name: "send-confirm",
+              props: { type: "primary" },
+            },
+          ],
+          component: "re-form",
+          props: {
+            labelWidth: "100px",
+            model: {
+              brand: null,
+              name: null,
+              category: null,
+              sendQuantity: null,
+              address: null,
+              remark: null,
+            },
+            items: [
+              {
+                label: "商品分类",
+                model: "category",
+                component: "config-select",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请选择商品分类",
+                  options: [
+                    {
+                      label: "分类1",
+                      value: "1",
+                    },
+                    {
+                      label: "分类2",
+                      value: "2",
+                    },
+                  ],
+                },
+              },
+              {
+                label: "商品品牌",
+                model: "brand",
+                component: "config-select",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请选择商品品牌",
+                  options: [
+                    {
+                      label: "品牌1",
+                      value: "1",
+                    },
+                    {
+                      label: "品牌2",
+                      value: "2",
+                    },
+                  ],
+                },
+              },
+              {
+                label: "商品名称",
+                model: "name",
+                component: "el-input",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入商品名称",
+                  clearable: true,
+                },
+              },
+              {
+                label: "发货数量",
+                model: "sendQuantity",
+                component: "el-input-number",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入发货数量",
+                  controls: true,
+                  min: 0,
+                },
+              },
+              {
+                label: "发货地址",
+                model: "address",
+                component: "el-input",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入发货地址",
+                  clearable: true,
+                  type: "textarea",
+                },
+                rules: [{ required: true, message: "发货地址不能为空" }],
+              },
+              {
+                label: "备注",
+                model: "remark",
+                component: "el-input",
+                initialValue: null,
+                span: 24,
+                props: {
+                  placeholder: "请输入备注",
+                  clearable: true,
+                  type: "textarea",
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+  },
+  methods: {
+    handleAddSubmit(currentWork) {
+      this.$refs["workbenchRef"].workFunction("validate", (valid) => {
+        this.$message.success(
+          `当前任务为：${currentWork}，点击了提交按钮, ${
+            valid ? "校验成功" : "校验失败"
+          }`
+        );
+      });
+    },
+    handleSendConfirm(currentWork) {
+      this.$refs["workbenchRef"].workFunction("validate", (valid) => {
+        this.$message.success(
+          `当前任务为：${currentWork}，点击了确认发货按钮, ${
+            valid ? "校验成功" : "校验失败"
+          }`
+        );
+      });
+    },
+  },
+};
+</script>
+<style>
+.form-item {
+  width: 100%;
+}
+</style>
+```
+
+:::
+
 ### 自定义标题
 
 可以为每个任务自定义标题。
@@ -702,8 +982,17 @@ export default {
     </div>
     <re-workbench :currentWork="currentWork" :works="works">
       <template #action="{ currentWork, config }">
-        <el-button type="primary" @click="handleSubmit(currentWork, config)"
+        <el-button
+          v-if="currentWork === 'add'"
+          type="primary"
+          @click="handleAddSubmit(currentWork, config)"
           >提交</el-button
+        >
+        <el-button
+          v-if="currentWork === 'send'"
+          type="primary"
+          @click="handleSendConfirm(currentWork, config)"
+          >确认发货</el-button
         >
         <el-button type="primary" @click="handleCancel(currentWork, config)"
           >取消</el-button
@@ -891,14 +1180,19 @@ export default {
     };
   },
   methods: {
-    handleSubmit(currentWork, config) {
+    handleAddSubmit(currentWork, config) {
       this.$message.success(
         `当前任务为：${currentWork}，任务配置为：${config}，您点击了提交按钮`
       );
     },
+    handleSendConfirm(currentWork, config) {
+      this.$message.success(
+        `当前任务为：${currentWork}，任务配置为：${config}，您点击了确认发货按钮`
+      );
+    },
     handleCancel(currentWork, config) {
       this.$message.success(
-        `当前任务为：${currentWork}，任务配置为：${config}，点击了确认发货按钮`
+        `当前任务为：${currentWork}，任务配置为：${config}，点击了取消按钮`
       );
     },
   },

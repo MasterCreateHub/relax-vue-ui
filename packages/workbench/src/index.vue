@@ -36,7 +36,7 @@
         :currentWork="currentWork"
         :config="currentWorkConfig"
       >
-        <component
+        <component ref="workComponentRef"
           :is="currentWorkConfig.component || null"
           v-bind="currentWorkConfig.props || {}"
           v-on="currentWorkConfig.events || {}"
@@ -185,7 +185,41 @@ export default {
         : [];
     },
   },
-  methods: {},
+  methods: {
+    /**
+     * @description 调用工作组件自身的方法
+     * @param {String} name - 方法名
+     * @param {Any} args - 参数
+     */
+     workFunction(name, ...args) {
+      // 参数校验
+      if (!name || typeof name !== "string") {
+        console.error("Invalid method name:", name);
+        return;
+      }
+
+      // 获取 work-component 实例
+      const workComponentRef = this.$refs['workComponentRef'];
+      if (!workComponentRef) {
+        console.error("workComponent reference not found");
+        return;
+      }
+
+      // 检查方法是否存在
+      const workComponenMethod = workComponentRef[name];
+      if (typeof workComponenMethod !== "function") {
+        console.error(`Method ${name} does not exist on workComponent`);
+        return;
+      }
+
+      // 调用方法
+      try {
+        workComponenMethod(...args);
+      } catch (error) {
+        console.error(`Error calling method ${name}:`, error);
+      }
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
