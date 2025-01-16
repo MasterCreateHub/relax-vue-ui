@@ -9,6 +9,7 @@ export default {
       left: "0",
       width: "100%",
       height: "100%",
+      visible: false
     };
 
     const options = { ...defaultOptions, ...(binding.value || {}) };
@@ -20,7 +21,7 @@ export default {
     mask.style.height = options.height;
     mask.style.background = "rgba(255, 255, 255, 0.5)";
     mask.style.zIndex = 100000;
-    mask.style.cursor = "not-allowed";
+    mask.style.cursor = "unset";
 
     el.style.position = "relative";
     el.appendChild(mask);

@@ -26,6 +26,8 @@
           class="re-form-item"
           :label="item.label"
           :prop="item.model"
+          :required="item.required"
+          v-readonly="item.readonly"
         >
           <template slot="label">
             <slot name="itemLabel" :item="item">

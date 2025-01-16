@@ -1,10 +1,5 @@
 <template>
   <div class="form-view">
-    <config-select
-      v-model="test"
-      :options="contexts.productCategoryOptions"
-      clearable
-    ></config-select>
     <re-form
       ref="form"
       :items="items"
@@ -23,17 +18,6 @@
         >清除</el-button
       >
     </div>
-    <div class="form-view-footer">
-      <el-button type="primary" @click="testComp = {}" size="small"
-        >set测试</el-button
-      >
-      <el-button type="primary" @click="testComp.one = 1" size="small"
-        >set测试</el-button
-      >
-      <el-button type="primary" @click="$set(testComp, 'one', 1)" size="small"
-        >set测试</el-button
-      >
-    </div>
   </div>
 </template>
 
@@ -43,8 +27,6 @@ export default {
   components: {},
   data() {
     return {
-      test: null,
-      testObj: {},
       productNameOptions: [{ label: "苹果手机", value: "1", productType: "1" }],
       contexts: {
         productCategoryOptions: [
@@ -79,9 +61,11 @@ export default {
           model: "productCategory",
           component: "config-select",
           initialValue: null,
+          required: true,
+          // readonly: true,
           span: 8,
           props: {
-            // placeholder: "请选择产品大类",
+            placeholder: "请选择产品大类",
             clearable: true,
             options: "{{ $extraContexts.productCategoryOptions }}",
           },
@@ -91,6 +75,7 @@ export default {
           model: "productType",
           component: "config-select",
           initialValue: null,
+          required: true,
           span: 8,
           props: {
             placeholder: "请选择产品大类后选择产品类型",
@@ -185,29 +170,21 @@ export default {
         remark: null,
       },
       rules: {
-        productCategory: [
-          { required: true, message: "请选择产品大类", trigger: "change" },
-        ],
-        productType: [
-          { required: true, message: "请选择产品类型", trigger: "change" },
-        ],
-        productName: [
-          { required: true, message: "请选择产品名称", trigger: "change" },
-        ],
-        quantity: [{ required: true, message: "请填写数量", trigger: "blur" }],
+        // productCategory: [
+        //   { required: true, message: "请选择产品大类", trigger: "change" },
+        // ],
+        // productType: [
+        //   { required: true, message: "请选择产品类型", trigger: "change" },
+        // ],
+        // productName: [
+        //   { required: true, message: "请选择产品名称", trigger: "change" },
+        // ],
+        // quantity: [{ required: true, message: "请填写数量", trigger: "blur" }],
       },
     };
   },
   computed: {
-    testComp: {
-      get() {
-        return this.testObj;
-      },
-      set(val) {
-        console.log("触发了set", val);
-        this.testObj = val;
-      },
-    },
+
   },
   methods: {
     handleSubmit() {
