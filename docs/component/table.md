@@ -128,7 +128,12 @@ export default {
           label: "电话",
           prop: "phone",
           contentComponent: "el-tag",
-          dataInProps: null,
+          contentComponentProps: { type: "success" },
+          contentComponentEvents: {
+            click: (params) => {
+              console.log("click", params);
+            },
+          },
         },
       ],
     };

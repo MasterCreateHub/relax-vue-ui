@@ -34,7 +34,7 @@
       </slot>
     </div>
     <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
-      <el-table-column v-for="(column, index) in columns" :key="column.prop + index" v-bind="column">
+      <el-table-column v-for="(column, index) in formatColumns" :key="column.prop + index" v-bind="column">
         <template slot="header" slot-scope="scope">
           <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :column="scope.column"
             :index="scope.$index">{{ column.label }}</slot>
@@ -45,8 +45,9 @@
             :column="scope.column" :index="scope.$index">
             {{ scope.row[column.prop] }}
             <template v-if="column.contentComponent">
-              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+              <component :is="column.contentComponent" v-bind="column.contentComponentProps"
+                :[column.dataInProps]="scope.row[column.prop]"
+                v-on="column.contentFormatComponentEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
                 {{ scope.row[column.prop] }}
               </component>
             </template>
@@ -54,8 +55,9 @@
           </slot>
           <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
             <template v-if="column.contentComponent">
-              <component :is="column.contentComponent || null" v-bind="column.contentComponentProps || {}"
-                v-on="column.contentComponentEvents || {}" :[column.dataInProps]="scope.row[column.prop]">
+              <component :is="column.contentComponent" v-bind="column.contentComponentProps"
+                :[column.dataInProps]="scope.row[column.prop]"
+                v-on="column.contentFormatComponentEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
                 {{ scope.row[column.prop] }}
               </component>
             </template>
@@ -76,6 +78,7 @@
 </template>
 <script>
 const DEFAULT_PAGINATION = Symbol("defaultPagination");
+import { cloneDeep } from "lodash";
 export default {
   name: "ReTable",
   props: {
@@ -216,6 +219,28 @@ export default {
      */
     rightTools() {
       return this.toolbarConfig.filter((item) => item.position === "right");
+    },
+    /**
+     * @description 格式化表格列
+     */
+    formatColumns() {
+      const columns = cloneDeep(this.columns);
+      return columns.map((column) => {
+        column.contentComponent = column.contentComponent || null;
+        column.contentComponentProps = column.contentComponentProps || {};
+        column.contentComponentEvents = column.contentComponentEvents || {};
+        column.dataInProps = columns.dataInProps || null;
+        column.contentFormatComponentEvents = (params) => {
+          const events = {};
+          Object.keys(column.contentComponentEvents).forEach((event) => {
+            events[event] = (...args) => {
+              column.contentComponentEvents[event](params, ...args);
+            };
+          });
+          return { ...events };
+        }
+        return column;
+      });
     },
     /**
      * @description 表格数据总数
