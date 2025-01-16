@@ -9,7 +9,7 @@
     ref="form"
     :model="formCurrentValues"
     :inline="false"
-    :disabled="readonly || disabled"
+    :disabled="disabled"
     :label-position="labelAlign"
     :rules="formRules"
     v-bind="$attrs"
@@ -27,7 +27,7 @@
           :label="item.label"
           :prop="item.model"
           :required="item.required"
-          v-readonly="item.readonly"
+          v-readonly="(readonly || item.readonly)"
         >
           <template slot="label">
             <slot name="itemLabel" :item="item">
@@ -253,9 +253,20 @@ export default {
      * @type {Array}
      */
     formatFormItems() {
-      return deepParse(this.items, this.formContext).filter(
-        (item) => !item.hidden
-      );
+      return deepParse(this.items, this.formContext)
+        .filter((item) => !item.hidden)
+        .map((item) => {
+          return {
+            ...item,
+            readonly: item.readonly || false,
+            disabled: item.disabled || false,
+            props: {
+              ...item?.props,
+              readonly: item.readonly || item.props?.readonly || false,
+              disabled: item.disabled || item.props?.disabled || false,
+            },
+          };
+        });
     },
     /**
      * @description 表单项值联动配置数组
@@ -444,7 +455,7 @@ export default {
 
     .re-form-item__wrapper {
       .re-form-item {
-        i.re-form-item__label-info{
+        i.re-form-item__label-info {
           margin-right: 4px;
         }
         .re-form-item-component {

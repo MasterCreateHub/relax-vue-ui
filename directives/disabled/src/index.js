@@ -1,47 +1,56 @@
-export default {
-    name: "disabled",
-    bind(el, binding) {
-      const mask = document.createElement("div");
-      mask.className = "read-only-mask";
-  
-      const defaultOptions = {
-        top: "0",
-        left: "0",
-        width: "100%",
-        height: "100%",
-      };
-  
-      const options = { ...defaultOptions, ...(binding.value || {}) };
-  
-      mask.style.position = "absolute";
-      mask.style.top = options.top;
-      mask.style.left = options.left;
-      mask.style.width = options.width;
-      mask.style.height = options.height;
-      mask.style.background = "rgba(255, 255, 255, 0.5)";
-      mask.style.zIndex = 100000;
-      mask.style.cursor = "not-allowed";
-  
-      el.style.position = "relative";
-      el.appendChild(mask);
-      mask.style.display = options.visible ? "block" : "none";
-      el._disabledMask = mask;
-    },
-    update(el, binding) {
-      if (el._disabledMask) {
-        const options = { ...el._disabledMask.dataset, ...(binding.value || {}) };
-        el._disabledMask.style.display = options.visible ? "block" : "none";
-        el._disabledMask.style.top = options.top;
-        el._disabledMask.style.left = options.left;
-        el._disabledMask.style.width = options.width;
-        el._disabledMask.style.height = options.height;
-      }
-    },
-    unbind(el) {
-      if (el._disabledMask) {
-        el._disabledMask.remove();
-        delete el._disabledMask;
-      }
-    },
+const handleMask = (el, binding) => {
+  const defaultStyle = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    background: "rgba(245,247,250,0.5)",
+    zIndex: 100000,
+    cursor: "not-allowed",
   };
-  
+
+  let disabled = false;
+  let style = {};
+
+  if (typeof binding.value === "boolean") {
+    disabled = binding.value;
+  } else if (typeof binding.value === "object" && binding.value !== null) {
+    disabled = binding.value.disabled || false;
+    style = binding.value.style || {};
+  } else {
+    console.warn(
+      `[disabled directive] Binding value should be a boolean or an object with 'disabled' and 'style' properties. Received: ${typeof binding.value}`
+    );
+    disabled = false;
+  }
+
+  const finalStyle = { ...defaultStyle, ...style };
+  finalStyle.display = disabled ? "block" : "none";
+
+  Object.keys(finalStyle).forEach((key) => {
+    el._disabledMask.style[key] = finalStyle[key];
+  });
+};
+export default {
+  name: "disabled",
+  bind(el, binding) {
+    const mask = document.createElement("div");
+    mask.className = "disabled-mask";
+    el.style.position = "relative";
+    el.appendChild(mask);
+    el._disabledMask = mask;
+    handleMask(el, binding);
+  },
+  update(el, binding) {
+    if (el._disabledMask) {
+      handleMask(el, binding);
+    }
+  },
+  unbind(el) {
+    if (el._disabledMask) {
+      el._disabledMask.remove();
+      delete el._disabledMask;
+    }
+  },
+};
