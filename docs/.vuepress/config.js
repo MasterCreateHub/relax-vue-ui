@@ -38,7 +38,7 @@ module.exports = {
           title: "列表相关组件",
           collapsable: false,
           sidebarDepth: 2,
-          children: ["/component/searcher", "/component/table", "/component/toolbar", "/component/pagintion"],
+          children: ["/component/searcher", "/component/table", "/component/toolbar", "/component/pagination"],
         },
         {
           title: "详情相关组件",
