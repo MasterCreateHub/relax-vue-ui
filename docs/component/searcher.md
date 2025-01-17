@@ -228,11 +228,16 @@ export default {
 
 每当搜索条件发生变化时，自动触发防抖搜素。
 
-::: demo
+::: demo 启用自动搜索时若不绑定`model`属性，组件内部初始化时会自动发起一次搜索。
 
 ```vue
 <template>
-  <re-searcher :model="form" :factors="seacherFactors" @search="handleSearch" autoSearch />
+  <re-searcher
+    :model="form"
+    :factors="seacherFactors"
+    @search="handleSearch"
+    autoSearch
+  />
 </template>
 
 <script>
@@ -365,33 +370,33 @@ export default {
 
 ### Attributes
 
-| 参数           | 说明                 | 类型            | 可选值                     | 默认值    |
-| -------------- | -------------------- | --------------- | -------------------------- | --------- |
-| factors        | 搜索条件数组         | Array           | -                          | `[]`      |
-| model          | 搜索表单数据对象     | Object          | -                          | `{}`      |
-| layout         | 搜索表单布局         | String          | `flex`, `grid`             | `flex`    |
-| size           | 搜索表单尺寸         | String          | `small`, `mini`            | `small`   |
-| labelWidth     | 搜索表单项标签宽度   | String          | -                          | `60px`    |
-| labelPosition  | 搜索表单项标签位置   | String          | `left`, `right`, `justify` | `justify` |
-| defaultExpand  | 是否默认展开所有条件 | Boolean         | -                          | `false`   |
-| factorSpacing  | 搜索条件左右间距     | Number          | -                          | `20`      |
-| autoSearch     | 是否启用自动搜索     | Boolean, Number | -                          | `false`   |
-| searchText     | 搜索按钮文字         | String          | -                          | `搜索`    |
-| resetText      | 重置按钮文字         | String          | -                          | `重置`    |
-| expandText     | 展开按钮文字         | String          | -                          | `展开`    |
-| collapseText   | 收起按钮文字         | String          | -                          | `收起`    |
-| actionPosition | 操作按钮位置         | String          | `left`, `right`            | `right`   |
+| 参数           | 说明                 | 类型            | 可选值                   | 默认值    |
+| -------------- | -------------------- | --------------- | ------------------------ | --------- |
+| factors        | 搜索条件数组         | Array           | -                        | `[]`      |
+| model          | 搜索表单数据对象     | Object          | -                        | `{}`      |
+| layout         | 搜索表单布局         | String          | `flex`,`grid`            | `flex`    |
+| size           | 搜索表单尺寸         | String          | `small`,`mini`           | `small`   |
+| labelWidth     | 搜索表单项标签宽度   | String          | -                        | `60px`    |
+| labelPosition  | 搜索表单项标签位置   | String          | `left`,`right`,`justify` | `justify` |
+| defaultExpand  | 是否默认展开所有条件 | Boolean         | -                        | `false`   |
+| factorSpacing  | 搜索条件左右间距     | Number          | -                        | `20`      |
+| autoSearch     | 是否启用自动搜索     | Boolean, Number | -                        | `false`   |
+| searchText     | 搜索按钮文字         | String          | -                        | `搜索`    |
+| resetText      | 重置按钮文字         | String          | -                        | `重置`    |
+| expandText     | 展开按钮文字         | String          | -                        | `展开`    |
+| collapseText   | 收起按钮文字         | String          | -                        | `收起`    |
+| actionPosition | 操作按钮位置         | String          | `left`,`right`           | `right`   |
 
 #### Factor 对象结构
 
-| 参数      | 说明                     | 类型   | 可选值                                          | 默认值     |
-| --------- | ------------------------ | ------ | ----------------------------------------------- | ---------- |
-| label     | 搜索条件标签名称         | String | -                                               | -          |
-| model     | 搜索条件双向绑定的属性名 | String | -                                               | -          |
-| component | 搜索条件组件名称         | String | -                                               | `el-input` |
-| props     | 搜索条件组件的配置项     | Object | -                                               | `{}`       |
-| events    | 搜索条件组件的事件绑定   | Object | -                                               | `{}`       |
-| valueType | 搜索条件组件绑定值的类型 | String | `string`, `number`, `boolean`, `array`,`object` | -          |
+| 参数      | 说明                     | 类型   | 可选值                                       | 默认值     |
+| --------- | ------------------------ | ------ | -------------------------------------------- | ---------- |
+| label     | 搜索条件标签名称         | String | -                                            | -          |
+| model     | 搜索条件双向绑定的属性名 | String | -                                            | -          |
+| component | 搜索条件组件名称         | String | -                                            | `el-input` |
+| props     | 搜索条件组件的配置项     | Object | -                                            | `{}`       |
+| events    | 搜索条件组件的事件绑定   | Object | -                                            | `{}`       |
+| valueType | 搜索条件组件绑定值的类型 | String | `string`,`number`,`boolean`,`array`,`object` | -          |
 
 ### Events
 
@@ -404,7 +409,7 @@ export default {
 
 ### Slots
 
-| 名称           | 说明                       | 参数          |
-| -------------- | -------------------------- | ------------- |
-| ${factor.name} | 单个搜索条件区域自定义内容 | {form,factor} |
-| ${action}      | 按钮区域自定义内容         | {form}        |
+| 名称           | 说明                       | 参数             |
+| -------------- | -------------------------- | ---------------- |
+| ${factor.name} | 单个搜索条件区域自定义内容 | `{form, factor}` |
+| ${action}      | 按钮区域自定义内容         | `{form}`         |

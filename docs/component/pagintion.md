@@ -1,5 +1,7 @@
 # Pagintion
 
+用于数据分页。
+
 ## Usage
 
 ### 基础用法
@@ -46,7 +48,11 @@ export default {
 <template>
   <div>
     <p>使用 pagination 事件</p>
-    <re-pagination :total="total" :pageSizes="pageSizes" @pagination="handlePagination" />
+    <re-pagination
+      :total="total"
+      :pageSizes="pageSizes"
+      @pagination="handlePagination"
+    />
     <p>使用 current-change、size-change、next-click、prev-click 事件</p>
     <re-pagination
       :total="total"
@@ -96,23 +102,24 @@ export default {
 
 ### Attributes
 
-| 参数        | 说明           | 类型    | 可选值                    | 默认值                                 |
-| ----------- | -------------- | ------- | ------------------------- | -------------------------------------- |
-| layout      | 组件布局       | String  | -                         | `'total,sizes,prev,pager,next,jumper'` |
-| background  | 使用背景色     | Boolean | -                         | `true`                                 |
-| total       | 总条数，`必需` | Number  | -                         | -                                      |
-| currentPage | 当前页码       | Number  | -                         | `1`                                    |
-| pageSize    | 每页条数       | Number  | -                         | `10`                                   |
-| pageSizes   | 每页条数选项   | Array   | -                         | `[10, 20, 30, 50]`                     |
-| pagerCount  | 页码按钮       | Number  | -                         | `7`                                    |
-| align       | 对齐方式       | String  | `left`, `center`, `right` | `'center'`                             |
-| hidden      | 是否隐藏       | Boolean | -                         | `false`                                |
+| 参数        | 说明           | 类型    | 可选值                  | 默认值                               |
+| ----------- | -------------- | ------- | ----------------------- | ------------------------------------ |
+| layout      | 组件布局       | String  | -                       | `total,sizes,prev,pager,next,jumper` |
+| background  | 使用背景色     | Boolean | -                       | `true`                               |
+| total       | 总条数，`必需` | Number  | -                       | -                                    |
+| currentPage | 当前页码       | Number  | -                       | `1`                                  |
+| pageSize    | 每页条数       | Number  | -                       | `10`                                 |
+| pageSizes   | 每页条数选项   | Array   | -                       | `[10, 20, 30, 50]`                   |
+| pagerCount  | 页码按钮       | Number  | -                       | `7`                                  |
+| align       | 对齐方式       | String  | `left`,`center`,`right` | `'center'`                           |
+| hidden      | 是否隐藏       | Boolean | -                       | `false`                              |
 
 ### Events
 
-| 事件名     | 说明                       | 参数                            |
-| ---------- | -------------------------- | ------------------------------- |
-| pagination | 分页跳转、分页大小改变事件 | `{currentPage, pageSize, from}` |
+| 事件名             | 说明                                              | 参数                            |
+| ------------------ | ------------------------------------------------- | ------------------------------- |
+| pagination         | 分页跳转、分页大小改变事件                        | `{currentPage, pageSize, from}` |
+| el-pagination 事件 | `el-pagination`原本的事件，请参考`element-ui`文档 | -                               |
 
 ::: tip pagination 事件参数详细说明：
 `pagination`事件的参数是一个对象，其中 currentPage 为当前页码，pageSize 为每页显示条数，from 为触发该事件来源，值为`currentPage`或`pageSize`。

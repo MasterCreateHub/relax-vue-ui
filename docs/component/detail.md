@@ -1,10 +1,12 @@
 # Detail
 
+用于快速生成多章节的详情页。
+
 ## Usage
 
 ### 基础用法
 
-支持仅通过配置就生成一份多模块的详情页。
+支持仅通过配置就生成一份多章节的详情页。
 
 ::: demo
 
@@ -744,7 +746,7 @@ export default {
 | title          | 标题               | String           | -                             | -          |
 | sections       | 章节数组           | Array\<Section\> | -                             | `[]`       |
 | data           | 详情数据对象       | Object           | -                             | `{}`       |
-| showType       | 章节的展现形式     | String           | `'simple'`, `'bar'`, `'card'` | `'simple'` |
+| showType       | 章节的展现形式     | String           | `simple`,`bar`,`card` | `simple` |
 | collapsible    | 章节是否可折叠     | Boolean          | -                             | `false`    |
 | activeSections | 激活（展开）的章节 | Array\<String\>  | -                             | -          |
 

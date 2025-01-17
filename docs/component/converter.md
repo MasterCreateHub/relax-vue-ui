@@ -387,8 +387,8 @@ export default {
 
 | 参数            | 说明                                                    | 类型                               | 可选值 | 默认值 |
 | --------------- | ------------------------------------------------------- | ---------------------------------- | ------ | ------ |
-| target          | 要转换的字段或要转换的值，`必需`                        | `Number,String,Boolean,Array,Date` | -      | -      |
-| source          | 源数据或转换源数据的方法，`必需`                        | `Array,Object,Function,String`     | -      | -      |
+| target          | 要转换的字段或要转换的值，`必需`                        | `Number`,`String`,`Boolean`,`Array`,`Date` | -      | -      |
+| source          | 源数据或转换源数据的方法，`必需`                        | `Array`,`Object`,`Function`,`String`     | -      | -      |
 | container       | 最终的渲染容器，默认为`span`                            | `String`                           | -      | `span` |
 | containerProps  | 容器的属性配置，默认为`{}`                              | `Object`                           | -      | `{}`   |
 | containerEvents | 容器的绑定的事件，默认为`{}`                            | `Object`                           | -      | `{}`   |

@@ -1,6 +1,6 @@
 # Toolbar
 
-工具栏，将常用操作聚集到一起，以便于用户使用
+工具栏，将常用操作聚集到一起，以便于用户使用。
 
 ## Usage
 
@@ -203,16 +203,16 @@ export default {
 
 #### Tool 对象结构
 
-| 属性      | 说明                     | 类型    | 可选值          | 默认值      |
-| --------- | ------------------------ | ------- | --------------- | ----------- |
-| name      | 工具名称，工具的标识     | String  | -               | -           |
-| label     | 工具标签名称             | String  | -               | -           |
-| useTip    | 是否使用提示             | Boolean | -               | -           |
-| tooltip   | 提示内容，默认为工具标签 | String  | -               | -           |
-| position  | 工具位置                 | String  | `left`, `right` | -           |
-| component | 工具组件                 | String  | -               | `el-button` |
-| props     | 工具组件配置             | Object  | -               | `{}`        |
-| events    | 工具绑定的事件           | Object  | -               | `{}`        |
+| 属性      | 说明                     | 类型    | 可选值         | 默认值      |
+| --------- | ------------------------ | ------- | -------------- | ----------- |
+| name      | 工具名称，工具的标识     | String  | -              | -           |
+| label     | 工具标签名称             | String  | -              | -           |
+| useTip    | 是否使用提示             | Boolean | -              | -           |
+| tooltip   | 提示内容，默认为工具标签 | String  | -              | -           |
+| position  | 工具位置                 | String  | `left`,`right` | -           |
+| component | 工具组件                 | String  | -              | `el-button` |
+| props     | 工具组件配置             | Object  | -              | `{}`        |
+| events    | 工具绑定的事件           | Object  | -              | `{}`        |
 
 ### Events
 

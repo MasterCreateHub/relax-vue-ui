@@ -273,7 +273,7 @@ export default {
 | contentComponent       | 内容组件                     | Object | -      | -      |
 | contentComponentProps  | 内容组件的`props`            | Object | -      | -      |
 | contentComponentEvents | 内容组件的`events`           | Object | -      | -      |
-| dataInProps            | 内容组件所需数据的`prop`名称 | String | -      | -      |
+| dataInProps            | 内容组件所需数据的`prop`名称 | String | -      | `data` |
 
 ### Slots
 
