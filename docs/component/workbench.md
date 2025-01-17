@@ -23,8 +23,10 @@
     <re-workbench
       :currentWork="currentWork"
       :works="works"
+      :actions="actions"
       @add-submit="handleAddSubmit"
       @send-confirm="handleSendConfirm"
+      @cancel="handleCancel"
     >
       <template #add>
         <div style="width: 80%; margin: 0 auto;">
@@ -165,6 +167,7 @@ export default {
               name: "add-submit",
               props: { type: "primary" },
             },
+            "cancel",
           ],
         },
         {
@@ -176,7 +179,15 @@ export default {
               name: "send-confirm",
               props: { type: "primary" },
             },
+            "cancel",
           ],
+        },
+      ],
+      actions: [
+        {
+          label: "取消",
+          name: "cancel",
+          props: { plain: true },
         },
       ],
       productForm: {
@@ -213,6 +224,9 @@ export default {
     },
     handleSendConfirm(currentWork) {
       this.$message.success(`当前任务为：${currentWork}，点击了确认发货按钮`);
+    },
+    handleCancel(currentWork) {
+      this.$message.success(`当前任务为：${currentWork}，点击了公用的取消按钮`);
     },
   },
 };
@@ -739,7 +753,7 @@ export default {
 
 ### 自定义标题
 
-可以为每个任务自定义标题。
+支持为每个任务自定义标题。
 
 ::: demo
 
@@ -967,7 +981,7 @@ export default {
 
 ### 自定义操作区
 
-可以为每个任务自定义操作区。
+支持为每个任务自定义操作区。
 
 ::: demo
 
@@ -1212,19 +1226,23 @@ export default {
 
 ### Attributes
 
-| 参数        | 说明           | 类型          | 可选值        | 默认值 |
-| ----------- | -------------- | ------------- | ------------- | ------ |
-| layout      | 布局方式       | String        | `two`,`three` | `two`  |
-| currentWork | 当前任务       | String        | `${work.key}` |        |
-| works       | 工作台任务列表 | Array\<Work\> | -             | `[]`   |
+| 参数        | 说明                 | 类型            | 可选值        | 默认值 |
+| ----------- | -------------------- | --------------- | ------------- | ------ |
+| layout      | 布局方式             | String          | `two`,`three` | `two`  |
+| currentWork | 当前任务             | String          | `${work.key}` | -      |
+| works       | 工作台任务列表       | Array\<Work\>   | -             | `[]`   |
+| actions     | 工作任务可复用的操作 | Array\<Action\> | -             | `[]`   |
 
 #### Work 对象结构
 
-| 属性    | 说明                 | 类型            | 可选值 | 默认值 |
-| ------- | -------------------- | --------------- | ------ | ------ |
-| label   | 工作任务名称         | String          | -      | -      |
-| key     | 工作任务标识         | String          | -      | -      |
-| actions | 工作任务可执行的操作 | Array\<Action\> | -      | `[]`   |
+| 属性      | 说明                   | 类型            | 可选值   | 默认值 |
+| --------- | ---------------------- | --------------- | -------- | ------ | ---- |
+| label     | 工作任务名称           | String          | -        | -      |
+| key       | 工作任务标识           | String          | -        | -      |
+| actions   | 工作任务可执行的操作   | Array\<Action\  | String\> | -      | `[]` |
+| component | 工作任务组件           | String          | -        | -      |
+| props     | 工作任务组件的`props`  | Object          | -        | `{}`   |
+| events    | 工作任务组件的`events` | Object          | -        | `{}`   |
 
 #### Action 对象结构
 

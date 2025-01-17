@@ -42,7 +42,7 @@
               <span>{{ item.label }}</span>
             </slot>
           </template>
-          <slot name="itemContent" :item="item">
+          <slot :name="item.model" :item="item">
             <component
               class="re-form-item-component"
               :is="item.component"

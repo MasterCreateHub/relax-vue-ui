@@ -143,8 +143,7 @@ export default {
         address: [{ required: true, message: "请输入地址", trigger: "blur" }],
       },
     };
-  },
-  computed: {},
+  },  
   methods: {
     handleSubmit() {
       this.$refs["form"].validate((valid) => {
@@ -334,7 +333,6 @@ export default {
       },
     };
   },
-  computed: {},
   methods: {
     handleSubmit() {
       this.$refs["form"].validate((valid) => {
@@ -370,11 +368,185 @@ export default {
 :::
 
 ::: tip 只读模式：
-只读模式让表单可以直接展示详情，由于`el-form`组件不支持只读模式，所以该模式本质上是通过设置表单的`disabled`属性实现的，只是采用了不同的样式。
+只读模式让表单可以直接展示详情，由于`el-form`组件不支持只读模式，所以使用了自定义指令`v-readonly`在`el-form-item`上添加了一层遮罩，只读模式的样式请自己定义。
+
 ```css
-.re-from.is-readonly{}
+.re-from.is-readonly {
+  ...
+}
 ```
+
 :::
+
+### 自定义表单项内容
+
+支持自定义表单项内容。
+
+::: demo
+
+```vue
+<template>
+  <div style="width: 600px; margin: auto;">
+    <re-form
+      ref="form"
+      label-width="80px"
+      :items="items"
+      :model="model"
+      :rules="rules"
+    >
+      <template #itemLabel="{ item }">
+        <div class="item-label">{{ item.label + "：" }}</div>
+      </template>
+      <template #gender="{ item }">
+        <el-select style="width: 100%;" v-model="model.gender" placeholder="请选择性别">
+          <el-option label="女" value="0" />
+          <el-option label="男" value="1" />
+          <el-option label="未知" value="2" />
+        </el-select>
+      </template>
+    </re-form>
+    <div>
+      <el-button type="primary" @click="handleSubmit" size="small"
+        >提交</el-button
+      >
+      <el-button type="primary" @click="handleReset" size="small"
+        >重置</el-button
+      >
+      <el-button type="primary" @click="handleClear" size="small"
+        >清除</el-button
+      >
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        {
+          label: "姓名",
+          model: "name",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入姓名",
+            clearable: true,
+          },
+        },
+        {
+          label: "性别",
+          model: "gender",
+          initialValue: null,
+          span: 24,
+        },
+        {
+          label: "年龄",
+          model: "age",
+          component: "el-input-number",
+          initialValue: undefined,
+          span: 24,
+          props: {
+            placeholder: "请输入年龄",
+            controls: false,
+            min: 0,
+            max: 120,
+          },
+        },
+        {
+          label: "邮箱",
+          model: "email",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入邮箱",
+            clearable: true,
+            type: "email",
+          },
+        },
+        {
+          label: "电话",
+          model: "phone",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入电话",
+            clearable: true,
+          },
+        },
+        {
+          label: "地址",
+          model: "address",
+          component: "el-input",
+          initialValue: null,
+          span: 24,
+          props: {
+            placeholder: "请输入地址",
+            clearable: true,
+            type: "textarea",
+          },
+        },
+      ],
+      model: {
+        name: null,
+        gender: null,
+        age: undefined,
+        email: null,
+        phone: null,
+        address: null,
+      },
+      rules: {
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别" }],
+        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱格式",
+            trigger: ["blur", "change"],
+          },
+        ],
+        phone: [
+          { required: true, message: "请输入电话", trigger: "blur" },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "请输入正确的手机号码",
+            trigger: "blur",
+          },
+        ],
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
+      },
+    };
+  },
+  methods: {
+    handleSubmit() {
+      this.$refs["form"].validate((valid) => {
+        valid
+          ? this.$message.success(
+              `校验成功， 表单信息为${JSON.stringify(this.model)}`
+            )
+          : this.$message.error("校验失败");
+      });
+    },
+    handleReset() {
+      this.$refs["form"].reset();
+    },
+    handleClear() {
+      this.$refs["form"].clearValidate();
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
+```
+
+:::
+
 
 ### 表单项配置联动
 
@@ -669,22 +841,20 @@ export default {
 | value     | Any    | 传递值   | -      | -      |
 | condition | String | 触发条件 | -      | -      |
 
-### Events
-
 ### Methods
 
-| 方法名        | 说明                 | 参数             |
-| ------------- | -------------------- | ---------------- |
-| validate      | 表单校验             | `callback`       |
-| validateField | 校验表单项           | `prop, callback` |
-| resetFields   | 移除表单项的校验结果 | -                |
-| clearValidate | 清空表单项校验       | `prop`           |
-| reset         | 表单重置             | -                |
-| submit        | 表单提交             | -                |
+| 方法名        | 说明                 | 参数               |
+| ------------- | -------------------- | ------------------ |
+| validate      | 表单校验             | `callback`         |
+| validateField | 校验表单项           | `{prop, callback}` |
+| resetFields   | 移除表单项的校验结果 | -                  |
+| clearValidate | 清空表单项校验       | `prop`             |
+| reset         | 表单重置             | -                  |
+| submit        | 表单提交             | -                  |
 
 ### Slots
 
 | 名称        | 说明           | 参数     |
 | ----------- | -------------- | -------- |
 | itemLabel   | 表单项标签插槽 | `{item}` |
-| itemContent | 表单项组件插槽 | `{item}` |
+| {item.name} | 表单项组件插槽 | `{item}` |

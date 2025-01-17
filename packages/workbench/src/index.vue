@@ -117,7 +117,7 @@ export default {
             Array.isArray(work.actions) &&
             work.actions.every((action) => {
               return (
-                (!action && typeof action === "string") ||
+                (!!action && typeof action === "string") ||
                 (Object.prototype.toString.call(action) === "[object Object]" &&
                   action.label &&
                   action.name)
