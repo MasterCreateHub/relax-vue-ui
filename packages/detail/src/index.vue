@@ -4,47 +4,31 @@
       <slot name="header">{{ title }}</slot>
     </header>
     <main class="re-detail__body">
-      <section
-        v-for="section in renderConfig"
-        :key="section.name"
-        :class="[
-          're-detail-section',
-          `is-${sectionShowType}`,
-          {
-            'is-collapse': collapsible,
-          },
-          {
-            'is-active':
-              collapsible && currentActiveSections.includes(section.name),
-          },
-        ]"
-        @click="collapsible ? handleActive(section.name) : null"
-      >
+      <section v-for="section in renderConfig" :key="section.name" :class="[
+        're-detail-section',
+        `is-${sectionShowType}`,
+        {
+          'is-collapse': collapsible,
+        },
+        {
+          'is-active':
+            collapsible && currentActiveSections.includes(section.name),
+        },
+      ]" @click="collapsible ? handleActive(section.name) : null">
         <div class="re-detail-section__title">
           <slot :name="`${section.name}Title`" :section="section">
-            <i
-              :class="[
-                { 'el-icon-menu': !collapsible },
-                { 'el-icon-caret-right': collapsible },
-                're-detail-section__icon',
-              ]"
-            />
+            <i :class="[
+              { 'el-icon-menu': !collapsible },
+              { 'el-icon-caret-right': collapsible },
+              're-detail-section__icon',
+            ]" />
             {{ section.label }}
           </slot>
         </div>
         <div class="re-detail-section__content">
-          <slot
-            :name="`${section.name}Content`"
-            :section="section"
-            :data="section.data"
-          >
-            <component
-              v-for="(comp, index) in section.components"
-              :key="section.name + comp.dataKey + index"
-              :is="comp.name"
-              v-bind="comp.props"
-              v-on="comp.events"
-            />
+          <slot :name="`${section.name}Content`" :section="section" :data="section.data">
+            <component v-for="(comp, index) in section.components" :key="section.name + comp.dataKey + index"
+              :is="comp.name" v-bind="comp.props" v-on="comp.events" />
           </slot>
         </div>
       </section>
@@ -57,6 +41,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
+import { injectProps } from "/src/utils/index";
 export default {
   name: "ReDetail",
   props: {
@@ -200,11 +185,10 @@ export default {
         section.components = (section.components || []).map((component) => {
           component.props = component.props || {};
           component.events = component.events || {};
-          component.props = {
-            ...component.props,
-            [component.dataInProps || "data"]:
-              section.data[component.dataKey] || null,
-          };
+          component.props = injectProps(
+            { props: component.props },
+            { key: component.dataInProps || "data", value: section.data[component.dataKey] || null, }
+          )
           return component;
         });
         return section;

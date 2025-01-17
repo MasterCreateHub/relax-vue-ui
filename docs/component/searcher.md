@@ -232,13 +232,14 @@ export default {
 
 ```vue
 <template>
-  <re-searcher :factors="seacherFactors" @search="handleSearch" autoSearch />
+  <re-searcher :model="form" :factors="seacherFactors" @search="handleSearch" autoSearch />
 </template>
 
 <script>
 export default {
   data() {
     return {
+      form: { name: null, tel: null, level: null },
       seacherFactors: [
         {
           label: "姓名",

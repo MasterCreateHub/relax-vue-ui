@@ -1,13 +1,14 @@
 <template>
     <div :class="['re-converter', { 'is-Multiple': hasMultipleValues }]">
-        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container" v-bind="formatContainerProps(item)"
-            v-on="formatContainerEvents(item)" class="re-converter-value">
+        <component v-for="(item, index) in convertedValues" :key="'key' + index" :is="container"
+            v-bind="formatContainerProps(item)" v-on="formatContainerEvents(item)" class="re-converter-value">
             {{ item || defaultValue }}
         </component>
     </div>
 </template>
 
 <script>
+import { formatEvents } from "/src/utils/index";
 export default {
     name: "ReConverter",
     props: {
@@ -162,7 +163,7 @@ export default {
          * @description 是否有多个值
          */
         hasMultipleValues() {
-            return this.convertedValues.length > 0;
+            return this.convertedValues.length > 1;
         },
         /**
          * @description 最终计算得出的各个容器的props
@@ -170,7 +171,7 @@ export default {
         formatContainerProps() {
             return (item) => {
                 const props = {};
-                if(Array.isArray(this.source)){
+                if (Array.isArray(this.source)) {
                     const foundItem = this.source.find(sourceItem => sourceItem.label === item);
                     (foundItem.containerProps) && Object.keys(foundItem.containerProps).forEach((key) => {
                         props[key] = foundItem.containerProps[key];
@@ -183,14 +184,8 @@ export default {
          * @description 最终计算得出的容器的events，为事件新增一个参数，为当前渲染的值
          */
         formatContainerEvents() {
-            return (item) => {
-                const events = {};
-                Object.keys(this.containerEvents).forEach((event) => {
-                    events[event] = (...args) => {
-                        this.containerEvents[event](item, ...args);
-                    };
-                })
-                return { ...events };
+            return (params) => {
+                return formatEvents({ events: this.containerEvents }, params)
             };
         }
     },
@@ -202,10 +197,12 @@ export default {
 .re-converter {
     display: inline-block;
     box-sizing: border-box;
-    padding: 10px;
 
     &>.re-converter-value:not(:last-child) {
         margin-right: 10px;
     }
+}
+.re-converter + .re-converter {
+    margin-left: 10px;
 }
 </style>

@@ -1,8 +1,5 @@
 <template>
-  <el-descriptions
-    v-bind="$attrs"
-    :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]"
-  >
+  <el-descriptions v-bind="$attrs" :class="['re-descriptions', { 'is-layout-fixed': layout === 'fixed' }]">
     <template slot="title">
       <slot name="title"></slot>
     </template>
@@ -10,25 +7,14 @@
       <slot name="extra"></slot>
     </template>
 
-    <el-descriptions-item
-      v-for="(item, index) in renderConfig"
-      :key="item.prop + index"
-      :label="item.label"
-      :span="item.span"
-      :labelClassName="item.labelClassName"
-      :contentClassName="item.contentClassName"
-      :labelStyle="item.labelStyle"
-      :contentStyle="item.contentStyle"
-    >
+    <el-descriptions-item v-for="(item, index) in formatDescItems" :key="item.prop + index" :label="item.label"
+      :span="item.span" :labelClassName="item.labelClassName" :contentClassName="item.contentClassName"
+      :labelStyle="item.labelStyle" :contentStyle="item.contentStyle">
       <template slot="label">
         <slot name="label" :item="item" :data="data">
           <template v-if="item.labelComponent">
-            <component
-              :is="item.labelComponent"
-              v-bind="item.labelComponentProps"
-              v-on="item.labelComponentFormatEvents"
-              >{{ item.label }}</component
-            >
+            <component :is="item.labelComponent" v-bind="item.labelComponentProps" v-on="item.labelComponentFormatEvents">
+              {{ item.label }}</component>
           </template>
           <template v-else>{{ item.label }}</template>
         </slot>
@@ -36,14 +22,11 @@
       <template slot="default">
         <slot name="content" :item="item" :data="data">
           <template v-if="item.contentComponent">
-            <component
-              :is="item.contentComponent"
-              v-bind="item.contentComponentProps"
-              v-on="item.contentComponentFormatEvents"
-              >{{ item.value }}
+            <component :is="item.contentComponent" v-bind="item.contentComponentProps"
+              v-on="item.contentComponentFormatEvents">{{ data[item.prop] }}
             </component>
           </template>
-          <template v-else>{{ item.value }}</template>
+          <template v-else>{{ data[item.prop] }}</template>
         </slot>
       </template>
     </el-descriptions-item>
@@ -52,7 +35,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
-import { formatEvents } from "/src/utils/index";
+import { formatEvents, injectProps } from "/src/utils/index";
 export default {
   name: "ReDescriptions",
   props: {
@@ -107,9 +90,9 @@ export default {
   },
   computed: {
     /**
-     * @description 最终渲染配置
+     * @description 格式化items
      */
-    renderConfig() {
+    formatDescItems() {
       const itemsClone = cloneDeep(this.items);
       return itemsClone.map((item) => {
         item.labelComponent = item.labelComponent || null;
@@ -117,22 +100,18 @@ export default {
         item.labelComponentEvents = item.labelComponentEvents || {};
         item.labelComponentFormatEvents = formatEvents(
           { events: item.labelComponentEvents },
-          item,
-          this.data
+          { item: item, data: this.data }
         );
         item.contentComponent = item.contentComponent || null;
-        item.contentComponentProps = item.contentComponentProps || {};
+        item.contentComponentProps = injectProps(
+          { props: item.contentComponentProps },
+          { key: item.dataInProps || 'data', value: this.data[item.prop] || null }
+        )
         item.contentComponentEvents = item.contentComponentEvents || {};
         item.contentComponentFormatEvents = formatEvents(
           { events: item.contentComponentEvents },
-          item,
-          this.data
+          { item: item, data: this.data }
         );
-        item.dataInProps = item.dataInProps || null;
-        item.value = this.data[item.prop] || null;
-        if (item.dataInProps && typeof item.dataInProps === "string") {
-          item.contentComponentProps[item.dataInProps] = this.data[item.prop];
-        }
         return item;
       });
     },

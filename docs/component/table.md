@@ -86,6 +86,7 @@ export default {
         {
           id: 1,
           name: "张三",
+          level: "1",
           age: 18,
           email: "zhangsan@163.com",
           phone: "12345678901",
@@ -93,6 +94,7 @@ export default {
         {
           id: 2,
           name: "李四",
+          level: "2",
           age: 19,
           email: "lisi@163.com",
           phone: "12345678902",
@@ -100,6 +102,7 @@ export default {
         {
           id: 3,
           name: "王五",
+          level: "3",
           age: 20,
           email: "wangwu@163.com",
           phone: "12345678903",
@@ -107,6 +110,7 @@ export default {
         {
           id: 4,
           name: "赵六",
+          level: "1",
           age: 21,
           email: "zhaoliu@163.com",
           phone: "12345678904",
@@ -114,6 +118,7 @@ export default {
         {
           id: 5,
           name: "钱七",
+          level: "3",
           age: 22,
           email: "qianqiu@163.com",
           phone: "12345678905",
@@ -121,6 +126,32 @@ export default {
       ],
       columns: [
         { label: "会员ID", prop: "id" },
+        {
+          label: "会员等级",
+          prop: "level",
+          contentComponent: "re-converter",
+          contentComponentProps: {
+            source: [
+              {
+                value: "1",
+                label: "普通会员",
+                containerProps: { type: "primary" },
+              },
+              {
+                value: "2",
+                label: "黄金会员",
+                containerProps: { type: "warning" },
+              },
+              {
+                value: "3",
+                label: "尊享会员",
+                containerProps: { type: "success" },
+              },
+            ],
+            container: "el-tag",
+          },
+          dataInProps: "target",
+        },
         { label: "姓名", prop: "name" },
         { label: "年龄", prop: "age" },
         { label: "邮箱", prop: "email" },
@@ -130,8 +161,12 @@ export default {
           contentComponent: "el-tag",
           contentComponentProps: { type: "success" },
           contentComponentEvents: {
-            click: (params) => {
-              console.log("click", params);
+            click: ({ row, $index, column }) => {
+              this.$message.success(
+                `点击了第${$index + 1}行第${column.label}列，值为${
+                  row[column.property]
+                }`
+              );
             },
           },
         },

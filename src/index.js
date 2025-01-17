@@ -1,7 +1,7 @@
 
 
 import Components from '../packages/index'
-import Directives from '../directives/index'
+import Directives from './directives/index'
 import PACKAGE from "../package.json";
 const { version } = PACKAGE
 
