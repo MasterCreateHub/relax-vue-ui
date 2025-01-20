@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   theme: "",
-  title: "Relax UI",
+  title: "Relax Vue UI",
   description: "基于Element库二次封装的组件库",
   head: [
     [
@@ -27,7 +27,7 @@ module.exports = {
           title: "指南",
           collapsable: false,
           sidebarDepth: 2,
-          children: ['/guide/', "/guide/installation", "/guide/quickstart", "/guide/example"]
+          children: ['/guide/']
         },
       ],
       "/component/": [

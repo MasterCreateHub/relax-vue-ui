@@ -1,6 +1,6 @@
 {
   "name": "relax-vue-ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "lib/relax-vue-ui.umd.js",
   "module": "lib/relax-vue-ui.esm.js",
   "unpkg": "lib/relax-vue-ui.umd.min.js",
@@ -55,9 +55,10 @@
     "pre-commit": "lint-staged"
   },
   "keywords": [
+    "relax-vue-ui",
     "relax",
     "vue.js",
-    "relax-vue-ui",
+    "element-ui",
     "ui-components",
     "vue-components"
   ]

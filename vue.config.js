@@ -11,7 +11,8 @@ module.exports = defineConfig({
   },
   transpileDependencies: true,
   runtimeCompiler: true,
-  css: { extract: true },
+  css: { extract: false },
+  productionSourceMap: false,
   configureWebpack: {
     optimization: {
       usedExports: true
