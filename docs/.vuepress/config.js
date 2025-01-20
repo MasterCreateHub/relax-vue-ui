@@ -1,3 +1,6 @@
+
+const webpack = require('webpack');
+
 module.exports = {
   theme: "",
   title: "Relax UI",
@@ -24,7 +27,7 @@ module.exports = {
           title: "指南",
           collapsable: false,
           sidebarDepth: 2,
-          children: ['/guide/', "/guide/installation","/guide/quickstart","/guide/example"]
+          children: ['/guide/', "/guide/installation", "/guide/quickstart", "/guide/example"]
         },
       ],
       "/component/": [
@@ -72,4 +75,11 @@ module.exports = {
   head: [],
   plugins: ['demo-container'],
   markdown: {},
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        ResizeObserver: ['resize-observer-polyfill', 'default']
+      })
+    ]
+  }
 };
