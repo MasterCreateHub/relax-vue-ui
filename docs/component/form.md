@@ -57,6 +57,7 @@ export default {
           initialValue: null,
           span: 24,
           props: {
+            placeholder: "请选择性别",
             options: [
               { label: "男", value: "1" },
               { label: "女", value: "0" },
@@ -242,6 +243,7 @@ export default {
           initialValue: null,
           span: 24,
           props: {
+            placeholder: "请选择性别",
             options: [
               { label: "男", value: "1" },
               { label: "女", value: "0" },
