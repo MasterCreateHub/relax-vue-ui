@@ -14,9 +14,9 @@
   "private": false,
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "example:serve": "vue-cli-service serve",
-    "example:build": "vue-cli-service build",
+    "docs:build": "npm install webpack@4 -D && vuepress build docs && npm uninstall webpack",
+    "example:serve": "npm install webpack@5 -D && vue-cli-service serve && npm uninstall webpack",
+    "example:build": "vue-cli-service build  && npm uninstall webpack",
     "lib": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
     "lint": "vue-cli-service lint"
   },
@@ -48,8 +48,7 @@
     "sass-loader": "^10.0.0",
     "vue-template-compiler": "^2.6.14",
     "vuepress": "^1.9.10",
-    "vuepress-plugin-demo-container": "^0.2.0",
-    "webpack": "^4.47.0"
+    "vuepress-plugin-demo-container": "^0.2.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -61,5 +60,14 @@
     "element-ui",
     "ui-components",
     "vue-components"
-  ]
+  ],
+  "license": "MIT",
+  "author": "muchunhong <3271018951@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/mchgitee/relax-vue-ui.git"
+  },
+  "bugs": {
+    "url": "https://gitee.com/mchgitee/relax-vue-ui/issues"
+  }
 }
