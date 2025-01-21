@@ -839,7 +839,7 @@ export default {
 | minWidth               | 表格列最小宽度                         | String | -                            | -      |
 | align                  | 表格列对齐方式                         | String | -                            | -      |
 | fixed                  | 表格列固定方式                         | String | -                            | -      |
-| showOverflowTooltip    | 表格列是否显示 tooltip                 | String | -                            | -      |
+| showOverflowTooltip    | 表格列是否显示`tooltip`                | String | -                            | -      |
 | className              | 表格列样式类名                         | String | -                            | -      |
 | contentComponent       | 列内容组件                             | Object | -                            | -      |
 | contentComponentProps  | 列内容组件的`props`                    | Object | -                            | -      |
@@ -860,7 +860,7 @@ export default {
 | props     | 工具组件配置             | Object  | -              | -           |
 | events    | 工具绑定的事件           | Object  | -              | -           |
 
-### Pagination 对象结构
+#### Pagination 对象结构
 
 | 属性        | 说明         | 类型    | 可选值                  | 默认值                               |
 | ----------- | ------------ | ------- | ----------------------- | ------------------------------------ |

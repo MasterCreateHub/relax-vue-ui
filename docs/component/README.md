@@ -8,6 +8,6 @@
 | [`re-searcher`](./searcher.md)         | 搜索栏组件，用于数据搜索             |
 | [`re-toolbar`](./toolbar.md)          | 工具栏组件，用于聚合收纳工具按钮         |
 | [`re-table`](./table.md)            | 表格组件，用于数据展示               |
-| [`re-pagination`](./pagination.md)       | 分页器组件，用与数据分页             |
+| [`re-pagination`](./pagination.md)       | 分页器组件，用于数据分页             |
 | [`re-form`](./form.md)                 | 表单组件，用于搜集数据               |
 | [`re-workbench`](./workbench.md)            | 工作台组件，用于聚合多个页面或组件   |

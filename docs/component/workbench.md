@@ -1235,14 +1235,14 @@ export default {
 
 #### Work 对象结构
 
-| 属性      | 说明                   | 类型            | 可选值   | 默认值 |
-| --------- | ---------------------- | --------------- | -------- | ------ | ---- |
-| label     | 工作任务名称           | String          | -        | -      |
-| key       | 工作任务标识           | String          | -        | -      |
-| actions   | 工作任务可执行的操作   | Array\<Action\  | String\> | -      | `[]` |
-| component | 工作任务组件           | String          | -        | -      |
-| props     | 工作任务组件的`props`  | Object          | -        | `{}`   |
-| events    | 工作任务组件的`events` | Object          | -        | `{}`   |
+| 属性      | 说明                   | 类型                      | 可选值 | 默认值 |
+| --------- | ---------------------- | ------------------------- | ------ | ------ |
+| label     | 工作任务名称           | String                    | -      | -      |
+| key       | 工作任务标识           | String                    | -      | -      |
+| actions   | 工作任务可执行的操作   | Array\<Action \| String\> | -      | `[]`   |
+| component | 工作任务组件           | String                    | -      | -      |
+| props     | 工作任务组件的`props`  | Object                    | -      | `{}`   |
+| events    | 工作任务组件的`events` | Object                    | -      | `{}`   |
 
 #### Action 对象结构
 
