@@ -143,7 +143,7 @@ export default {
         address: [{ required: true, message: "请输入地址", trigger: "blur" }],
       },
     };
-  },  
+  },
   methods: {
     handleSubmit() {
       this.$refs["form"].validate((valid) => {
@@ -368,13 +368,8 @@ export default {
 :::
 
 ::: tip 只读模式：
-只读模式让表单可以直接展示详情，由于`el-form`组件不支持只读模式，所以使用了自定义指令`v-readonly`在`el-form-item`上添加了一层遮罩，只读模式的样式请自己定义。
 
-```css
-.re-from.is-readonly {
-  ...
-}
-```
+只读模式让表单可以直接展示详情，由于`el-form`组件不支持只读模式，所以使用了自定义指令`v-readonly`在`el-form-item`上添加了一层遮罩，只读模式的样式请自己定义。
 
 :::
 
@@ -398,7 +393,11 @@ export default {
         <div class="item-label">{{ item.label + "：" }}</div>
       </template>
       <template #gender="{ item }">
-        <el-select style="width: 100%;" v-model="model.gender" placeholder="请选择性别">
+        <el-select
+          style="width: 100%;"
+          v-model="model.gender"
+          placeholder="请选择性别"
+        >
           <el-option label="女" value="0" />
           <el-option label="男" value="1" />
           <el-option label="未知" value="2" />
@@ -547,7 +546,6 @@ export default {
 
 :::
 
-
 ### 表单项配置联动
 
 支持通过配置实现表单项之间的配置联动。举例如下：
@@ -663,9 +661,9 @@ export default {
 
 支持通过配置实现表单项的值联动。举例如下：
 
-- 表单项`A`的值填入时，其余表单项自动填入相关数据
+- 表单项`A`的值填入时，其余表单项自动填入相关数据。
 
-::: demo
+::: demo 表单项的`interactive`属性值为`select`且`props`中传入`options`数组是使用`$select`前提条件。
 
 ```vue
 <template>
@@ -683,6 +681,7 @@ export default {
           model: "goods",
           component: "config-select",
           initialValue: null,
+          interactive: "select",
           span: 24,
           props: {
             clearable: true,
@@ -738,7 +737,7 @@ export default {
 
 :::
 
-- 表单项`A`值重置时，其余相关表单项自动重置
+- 表单项`A`值重置时，其余相关表单项自动重置。
 
 ::: demo
 
@@ -815,23 +814,23 @@ export default {
 
 #### FormItem 对象结构
 
-| 属性         | 类型            | 描述                | 可选值              | 默认值     |
-| ------------ | --------------- | ------------------- | ------------------- | ---------- |
-| label        | String          | 表单项标签          | -                   | -          |
-| description  | String          | 表单项详细描述      | -                   | -          |
-| required     | Boolean         | 表单项是否必填      | -                   | `false`    |
-| readonly     | Boolean         | 表单项是否只读      | -                   | `false`    |
-| disabled     | Boolean         | 表单项是否禁用      | -                   | `false`    |
-| hidden       | Boolean         | 表单项是否隐藏      | -                   | `false`    |
-| span         | Number          | 表单项占位宽度      | `1~24`              | `24`       |
-| initialValue | Any             | 表单项初始值        | -                   | `null`     |
-| interactive  | String          | 表单项交互形式      | `'select', 'input'` | -          |
-| model        | String          | 表单项绑定的`model` | -                   | -          |
-| component    | String          | 表单项组件          | -                   | `el-input` |
-| props        | Object          | 表单项组件          | -                   | `{}`       |
-| events       | Object          | 表单项组件          | -                   | `{}`       |
-| rules        | Array\<Rule\>   | 表单想校验规则      | -                   | `[]`       |
-| changes      | Array\<change\> | 表单项值联动配置    | -                   | `[]`       |
+| 属性         | 类型            | 描述                | 可选值           | 默认值     |
+| ------------ | --------------- | ------------------- | ---------------- | ---------- |
+| label        | String          | 表单项标签          | -                | -          |
+| description  | String          | 表单项详细描述      | -                | -          |
+| required     | Boolean         | 表单项是否必填      | -                | `false`    |
+| readonly     | Boolean         | 表单项是否只读      | -                | `false`    |
+| disabled     | Boolean         | 表单项是否禁用      | -                | `false`    |
+| hidden       | Boolean         | 表单项是否隐藏      | -                | `false`    |
+| span         | Number          | 表单项占位宽度      | `1~24`           | `24`       |
+| initialValue | Any             | 表单项初始值        | -                | `null`     |
+| interactive  | String          | 表单项交互形式      | `select`,`input` | -          |
+| model        | String          | 表单项绑定的`model` | -                | -          |
+| component    | String          | 表单项组件          | -                | `el-input` |
+| props        | Object          | 表单项组件          | -                | `{}`       |
+| events       | Object          | 表单项组件          | -                | `{}`       |
+| rules        | Array\<Rule\>   | 表单想校验规则      | -                | `[]`       |
+| changes      | Array\<change\> | 表单项值联动配置    | -                | `[]`       |
 
 #### Change 对象结构
 
@@ -841,16 +840,27 @@ export default {
 | value     | Any    | 传递值   | -      | -      |
 | condition | String | 触发条件 | -      | -      |
 
+#### 联动变量
+
+| 名称             | 说明                             | 默认值 |
+| ---------------- | -------------------------------- | ------ |
+| $value           | 表单项当前的值                   | -      |
+| $select          | 表单项当前选中的选项             | -      |
+| $currentValues   | 表单绑定的数据对象               | -      |
+| $initialValues   | 表单项定义的初始值组成的数据对象 | {}     |
+| $selectedOptions | 选择类表单项选中的选项组成的对象 | {}     |
+| $extraContexts   | 表单额外注入的数据对象           | {}     |
+
 ### Methods
 
-| 方法名        | 说明                 | 参数               |
-| ------------- | -------------------- | ------------------ |
-| validate      | 表单校验             | `callback`         |
-| validateField | 校验表单项           | `{prop, callback}` |
-| resetFields   | 移除表单项的校验结果 | -                  |
-| clearValidate | 清空表单项校验       | `prop`             |
-| reset         | 表单重置             | -                  |
-| submit        | 表单提交             | -                  |
+| 方法名        | 说明                   | 参数               |
+| ------------- | ---------------------- | ------------------ |
+| validate      | 表单校验               | `callback`         |
+| validateField | 校验部分表单项         | `{prop, callback}` |
+| resetFields   | 重置表单并移除校验结果 | -                  |
+| clearValidate | 移除表单项校验结果     | `prop`             |
+| reset         | 表单重置               | -                  |
+| submit        | 表单提交               | -                  |
 
 ### Slots
 

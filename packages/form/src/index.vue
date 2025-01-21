@@ -1,55 +1,27 @@
 <template>
-  <el-form
-    :class="[
-      're-form',
-      { 'is-readonly': readonly },
-      { 'is-disabled': disabled },
-      { 'is-justify': labelAlign === 'justify' },
-    ]"
-    ref="form"
-    :model="formCurrentValues"
-    :inline="false"
-    :disabled="disabled"
-    :label-position="labelAlign"
-    :rules="formRules"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <el-form :class="[
+    're-form',
+    { 'is-readonly': readonly },
+    { 'is-disabled': disabled },
+    { 'is-justify': labelAlign === 'justify' },
+  ]" ref="form" :model="formCurrentValues" :inline="false" :disabled="disabled" :label-position="labelAlign"
+    :rules="formRules" v-bind="$attrs" v-on="$listeners">
     <el-row class="re-form__body" :gutter="spacing">
-      <el-col
-        class="re-form-item__wrapper"
-        v-for="(item, index) in formatFormItems"
-        :span="item.span"
-        :key="item.model + index"
-      >
-        <el-form-item
-          class="re-form-item"
-          :label="item.label"
-          :prop="item.model"
-          :required="item.required"
-          v-readonly="(readonly || item.readonly)"
-        >
+      <el-col class="re-form-item__wrapper" v-for="(item, index) in formatFormItems" :span="item.span"
+        :key="item.model + index">
+        <el-form-item class="re-form-item" :label="item.label" :prop="item.model" :required="item.required"
+          v-readonly="(readonly || item.readonly)">
           <template slot="label">
             <slot name="itemLabel" :item="item">
-              <el-tooltip
-                v-if="item.description"
-                effect="dark"
-                :content="item.description"
-                placement="top"
-              >
+              <span>{{ item.label }}</span>
+              <el-tooltip v-if="item.description" effect="dark" :content="item.description" placement="top">
                 <i class="el-icon-info re-form-item__label-info" />
               </el-tooltip>
-              <span>{{ item.label }}</span>
             </slot>
           </template>
           <slot :name="item.model" :item="item">
-            <component
-              class="re-form-item-component"
-              :is="item.component"
-              v-model="formCurrentValues[item.model]"
-              v-bind="item.props || {}"
-              v-on="item.events || {}"
-            ></component>
+            <component class="re-form-item-component" :is="item.component" v-model="formCurrentValues[item.model]"
+              v-bind="item.props || {}" v-on="item.events || {}"></component>
           </slot>
         </el-form-item>
       </el-col>
@@ -215,12 +187,12 @@ export default {
      */
     formSelectedOptions() {
       return this.items.reduce((acc, cur) => {
-        if (cur.interactive === "select" || cur.props?.options) {
-          const options =
-            deepParse(cur?.props?.options, {
-              $currentValues: this.formCurrentValues,
-              $extraContexts: this.contexts,
-            }) || [];
+        if (cur.interactive === "select" && cur.props?.options) {
+          const parsedOptions = deepParse(cur?.props?.options, {
+            $currentValues: this.formCurrentValues,
+            $extraContexts: this.contexts,
+          });
+          const options = Array.isArray(parsedOptions) ? parsedOptions : [];
           if (Array.isArray(this.formCurrentValues[cur.model])) {
             acc[cur.model] =
               options.filter((option) =>
@@ -456,8 +428,9 @@ export default {
     .re-form-item__wrapper {
       .re-form-item {
         i.re-form-item__label-info {
-          margin-right: 4px;
+          margin-left: 4px;
         }
+
         .re-form-item-component {
           width: 100%;
         }
@@ -465,10 +438,12 @@ export default {
     }
   }
 }
+
 ::v-deep.is-justify {
   .el-form-item__label {
     display: flex;
-    align-items: center;
+    align-items: baseline;
+
     span {
       flex: 1;
       text-align: justify;

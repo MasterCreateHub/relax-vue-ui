@@ -24,11 +24,10 @@
 ```vue
 <template>
   <div class="container">
-    <div  class="box" v-measure="measureConfig" :style="{ width: `${width}%` }"></div>
-    <el-slider v-model="width" :min="10" :max="100" />
-    <div class="size-info">
+    <div class="box" v-measure="measureConfig" :style="{ width: `${width}%` }">
       当前尺寸: {{ size.width }}px , {{ size.height }}px
     </div>
+    <el-slider v-model="width" :min="10" :max="100" />
   </div>
 </template>
 
@@ -60,7 +59,6 @@ export default {
 <style>
 .container {
   width: 100%;
-  height: 200px;
   position: relative;
 }
 
@@ -68,13 +66,9 @@ export default {
   width: 100%;
   height: 100px;
   background-color: #000;
-}
-
-.size-info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
   font-size: 14px;
-  color: #333;
+  color: #fff;
+  text-align: center;
+  line-height: 100px;
 }
 </style>
