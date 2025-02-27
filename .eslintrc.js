@@ -10,7 +10,7 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
   parserOptions: {
-    parser: "@babel/eslint-parser",
+    parser: "babel-eslint",
   },
   globals: {
     BigInt: "readonly",

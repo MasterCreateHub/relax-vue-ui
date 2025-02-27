@@ -1,6 +1,4 @@
-const { defineConfig } = require("@vue/cli-service");
-
-module.exports = defineConfig({
+module.exports = {
   pages: {
     index: {
       entry: "examples/main.js",
@@ -9,7 +7,6 @@ module.exports = defineConfig({
       favicon: "examples/public/favicon.ico",
     },
   },
-  transpileDependencies: true,
   runtimeCompiler: true,
   css: { extract: false },
   productionSourceMap: false,
@@ -18,4 +15,4 @@ module.exports = defineConfig({
       usedExports: true
     },
   },
-});
+};

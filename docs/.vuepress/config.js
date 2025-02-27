@@ -1,6 +1,3 @@
-
-const webpack = require('webpack');
-
 module.exports = {
   theme: "",
   title: "Relax Vue UI",
@@ -72,14 +69,10 @@ module.exports = {
       ],
     },
   },
-  head: [],
   plugins: ['demo-container'],
-  markdown: {},
-  configureWebpack: {
-    plugins: [
-      new webpack.ProvidePlugin({
-        ResizeObserver: ['resize-observer-polyfill', 'default']
-      })
-    ]
+  chainWebpack: config => {
+    config.plugin('provide').use(require('webpack').ProvidePlugin, [{
+      ResizeObserver: ['resize-observer-polyfill', 'default']
+    }]);
   }
 };
