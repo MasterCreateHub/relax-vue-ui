@@ -37,3 +37,22 @@ new Vue({
   render: (h) => h(App),
 }).$mount("#app");
 ```
+
+## 组件
+
+| 组件名称          | 说明                                 |
+| ----------------- | ------------------------------------ |
+| `re-converter`    | 转换器组件， 用于值处理或者字典映射  |
+| `re-descriptions` | 描述列表组件，用于对事物进行详细描述 |
+| `re-detail`       | 详情组件，用于展示事物详情           |
+| `re-searcher`     | 搜索栏组件，用于数据搜索             |
+| `re-toolbar`      | 工具栏组件，用于聚合收纳工具按钮     |
+| `re-table`        | 表格组件，用于数据展示               |
+| `re-pagination`   | 分页器组件，用于数据分页             |
+| `re-form`         | 表单组件，用于搜集数据               |
+| `re-workbench`    | 工作台组件，用于聚合多个页面或组件   |
+
+## 示例
+
+[示例文档](https://mastercreatehub.github.io/relax-vue-ui/)
+
