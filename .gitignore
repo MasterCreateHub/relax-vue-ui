@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # docs dist
 docs/.vuepress/dist
+
+# play files
+play/src/**
+!play/src/
