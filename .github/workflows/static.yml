@@ -1,0 +1,59 @@
+name: Deploy relax-vue-ui Docs
+
+on:
+  push:
+    branches:
+      - main
+
+# 新增权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 新增并发控制
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:  # 新增环境声明
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      # 步骤 1：检出代码（升级到 v4）
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      # 步骤 2：设置 Node.js 环境（新增）
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # 步骤 3：安装依赖（保持原逻辑）
+      - name: Install dependencies
+        run: npm install
+
+      # 步骤 4：构建文档（保持原逻辑）
+      - name: Build Docs 🔧
+        run: npm run docs:build
+
+      # 步骤 5：配置 Pages（新增）
+      - name: Configure Pages
+        uses: actions/configure-pages@v3
+
+      # 步骤 6：上传构建产物（替换为官方方案）
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: "docs/.vuepress/dist"  # 确保路径与构建输出一致
+
+      # 步骤 7：部署到 Pages（替换为官方 Action）
+      - name: Deploy 🚀
+        id: deployment
+        uses: actions/deploy-pages@v2
