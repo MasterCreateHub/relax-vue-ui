@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -20,11 +20,11 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       # 步骤 1：检出代码
       - name: Checkout 🛎️
-        uses: actions/checkout@v4  # 保持最新版本
+        uses: actions/checkout@v4 # 保持最新版本
 
       # 步骤 2：设置 Node.js
       - name: Setup Node.js
@@ -41,17 +41,9 @@ jobs:
       - name: Build Docs 🔧
         run: npm run docs:build
 
-      # 步骤 5：配置 Pages（升级到 v5）
-      - name: Configure Pages
-        uses: actions/configure-pages@v5  # 原为 v3
-
-      # 步骤 6：上传产物（升级到 v3）
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # 原为 v2
-        with:
-          path: "docs/.vuepress/dist"
-
-      # 步骤 7：部署（升级到 v4）
+      # 步骤 5：部署静态文件
       - name: Deploy 🚀
-        id: deployment
-        uses: actions/deploy-pages@v4  # 原为 v2
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs/.verpress/dist
