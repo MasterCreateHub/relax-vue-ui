@@ -1,5 +1,6 @@
 module.exports = {
   theme: "",
+  base: "/relax-vue-ui/",
   title: "Relax Vue UI",
   description: "基于Element库二次封装的组件库",
   head: [
