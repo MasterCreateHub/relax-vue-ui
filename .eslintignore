@@ -1,0 +1,9 @@
+node_modules
+/dist
+/lib
+/docs/.vuepress/dist
+**/*.js
+**/*.ts
+**/*.json
+**/*.md
+**/*.yaml
