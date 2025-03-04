@@ -11,7 +11,7 @@ module.exports = {
     },
   },
   runtimeCompiler: true,
-  css: { extract: false },
+  css: { extract: true },
   productionSourceMap: false,
   configureWebpack: {
     optimization: {

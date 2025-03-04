@@ -195,13 +195,14 @@ export default {
 
 <style lang="scss" scoped>
 .re-converter {
-    display: inline-block;
     box-sizing: border-box;
+    display: inline-block;
 
     &>.re-converter-value:not(:last-child) {
         margin-right: 10px;
     }
 }
+
 .re-converter + .re-converter {
     margin-left: 10px;
 }

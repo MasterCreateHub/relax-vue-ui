@@ -167,8 +167,8 @@ export default {
   
 <style lang="scss" scoped>
 .re-pagination {
+  padding: 0;
   margin-top: 10px;
-  padding: 0px;
 }
 
 .is-left {

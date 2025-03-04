@@ -216,17 +216,17 @@ export default {
 <style lang="scss" scoped>
 ::v-deep.re-detail {
   padding: 15px 20px;
+  overflow-y: auto;
   border: 2px solid #ebeef5;
   border-radius: 5px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 
   .re-detail__header {
     width: 100%;
-    text-align: center;
+    padding: 5px 0;
     font-size: 20px;
     font-weight: 700;
-    padding: 5px 0px;
+    text-align: center;
   }
 
   .re-detail__body {
@@ -245,11 +245,11 @@ export default {
   margin-bottom: 2px;
 
   .re-detail-section__title {
-    color: #ebeef5;
     display: flex;
-    background-color: #606266;
     align-items: center;
     padding: 10px 15px;
+    color: #ebeef5;
+    background-color: #606266;
 
     .re-detail-section__icon {
       margin-right: 8px;
@@ -267,10 +267,10 @@ export default {
   border-bottom: 2px solid #ebeef5;
 
   .re-detail-section__title {
-    color: #303133;
     display: flex;
     align-items: center;
     padding: 10px 15px;
+    color: #303133;
 
     .re-detail-section__icon {
       margin-right: 8px;
@@ -278,7 +278,7 @@ export default {
   }
 
   .re-detail-section__content {
-    padding: 5px 15px 15px 15px;
+    padding: 5px 15px 15px;
     transition: all 0.3s;
   }
 }
@@ -293,20 +293,20 @@ export default {
 
 .is-card {
   width: 100%;
-  border-radius: 4px;
-  border: 1px solid #ebeef5;
-  background-color: #fff;
+  margin-bottom: 15px;
   overflow: hidden;
   color: #303133;
+  background-color: #fff;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   transition: 0.3s;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
 
   .re-detail-section__title {
-    color: #303133;
     display: flex;
     align-items: center;
     padding: 10px 15px;
+    color: #303133;
     border-bottom: 1px solid #ebeef5;
 
     .re-detail-section__icon {

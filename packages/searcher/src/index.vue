@@ -482,14 +482,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep.re-searcher {
-  padding: 18px 18px 0px 18px;
-  border-radius: 4px;
-  border: 1px solid #ebeef5;
-  background-color: #fff;
+  padding: 18px 18px 0;
   overflow: hidden;
   color: #303133;
+  background-color: #fff;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   transition: 0.3s;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
   .is-justify {
     .el-form-item__label {
@@ -499,9 +499,7 @@ export default {
   }
 
   .re-searcher__body {
-
     .re-searcher-factor__wrapper {
-
       .re-factor-item {
         width: 100%;
       }
@@ -529,8 +527,8 @@ export default {
   }
 
   .re-searcher__body .is-right {
-    text-align: right;
     flex: 1;
+    text-align: right;
   }
 }
 </style>

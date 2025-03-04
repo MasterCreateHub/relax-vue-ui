@@ -225,48 +225,48 @@ export default {
 </script>
 <style lang="scss" scoped>
 .re-workbench {
-  width: 100%;
-  height: 100%;
-  border-radius: 4px;
-  border: 2px solid #ebeef5;
-  background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  color: #303133;
-  transition: 0.3s;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #303133;
+  background-color: #fff;
+  border: 2px solid #ebeef5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  transition: 0.3s;
 
   .re-workbench__header {
-    width: 100%;
-    padding: 15px 20px;
     box-sizing: border-box;
-    border-bottom: 2px #ebeef5 solid;
     display: flex;
     align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    border-bottom: 2px #ebeef5 solid;
 
     .re-workbench-title {
-      color: #72767b;
-      font-weight: 600;
       font-size: 18px;
+      font-weight: 600;
+      color: #72767b;
     }
   }
 
   .re-workbench__body {
-    width: 100%;
-    padding: 20px;
     box-sizing: border-box;
     flex: 1;
+    width: 100%;
+    padding: 20px;
     overflow-y: auto;
   }
 
   .re-workbench__footer {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     padding: 15px 20px;
-    box-sizing: border-box;
     border-top: 2px #ebeef5 solid;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 

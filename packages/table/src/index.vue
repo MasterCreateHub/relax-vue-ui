@@ -352,8 +352,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 ::v-deep.re-table {
-  width: 100%;
   flex: 1;
+  width: 100%;
 
   .re-table-toolbar__wrapper {
     padding-bottom: 10px;
@@ -387,15 +387,14 @@ export default {
   }
 
   .re-table__body {
-
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
-        word-break: break-word;
-        background-color: #f8f8f9;
-        color: #515a6e;
         height: 40px;
         font-size: 13px;
+        color: #515a6e;
+        overflow-wrap: break-word;
+        background-color: #f8f8f9;
       }
     }
   }

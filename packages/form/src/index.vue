@@ -422,8 +422,8 @@ export default {
 .re-form {
   .re-form__body {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
+    align-items: center;
 
     .re-form-item__wrapper {
       .re-form-item {
