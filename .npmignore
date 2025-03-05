@@ -1,19 +1,29 @@
 # 忽略目录
-plays/
-packages/
-public/
-build/
-node_modules/
-dist/
-mixins
-docs/
+node_modules
+/packages
+/dist
+/docs
 
 # 忽略指定文件
 vue.config.js
 babel.config.js
-.eslingintrc.js
+.jsconfig.json
+.browserlintrc
+lint-staged.config.js
+comminlint.config.js
+
 .gitignore
 .npmignore
-.jsconfig.json
-lint-staged.config.js
-.prettierrc.js
+
+.eslintrc.js
+.eslintignore
+
+.prettierrc.json
+.prettierignore
+
+.stylelint.config.js
+.stylelintignore
+
+
+
+

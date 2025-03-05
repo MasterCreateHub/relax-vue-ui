@@ -38,8 +38,8 @@
     "lib": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
     "lint:js": "vue-cli-service lint",
     "lint:css": "stylelint packages/**/*.{css,scss,vue} --cache --fix",
-    "prepare": "husky install",
-    "commitlint": "commitlint --edit"
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
   },
   "dependencies": {
     "core-js": "^3.8.3",
