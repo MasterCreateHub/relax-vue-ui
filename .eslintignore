@@ -2,6 +2,8 @@ node_modules
 /dist
 /lib
 /docs/.vuepress/dist
+/.github
+/.husky
 **/*.json
 **/*.md
 **/*.yaml

@@ -39,6 +39,8 @@
     "lint:js": "vue-cli-service lint",
     "lint:css": "stylelint packages/**/*.{css,scss,vue} --cache --fix",
     "lint-staged": "lint-staged",
+    "lint": "npm run lint:js && npm run lint:css",
+    "start": "npm install --force",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -63,6 +65,7 @@
     "lint-staged": "^9.5.0",
     "postcss": "^8.5.3",
     "postcss-html": "^1.8.0",
+    "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^2.2.1",
     "resize-observer-polyfill": "^1.5.1",

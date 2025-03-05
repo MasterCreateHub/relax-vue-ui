@@ -35,7 +35,7 @@ jobs:
 
       # 步骤 3：安装依赖
       - name: Install dependencies
-        run: npm install
+        run: npm install --force
 
       # 步骤 4：构建文档
       - name: Build Docs 🔧
