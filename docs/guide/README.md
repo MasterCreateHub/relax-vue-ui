@@ -42,6 +42,7 @@ import App from "./App.vue";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import RelaxVueUI from "relax-vue-ui";
+import 'relax-vue-ui/lib/relax-vue-ui.css';
 
 // 全局注册 element-ui 和 relax-vue-ui
 Vue.use(ElementUI);
