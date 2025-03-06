@@ -36,12 +36,12 @@ npm install relax-vue-ui
 
 ```javascript
 // main.js
-import Vue from "vue";
-import App from "./App.vue";
+import Vue from 'vue';
+import App from './App.vue';
 
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-import RelaxVueUI from "relax-vue-ui";
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import RelaxVueUI from 'relax-vue-ui';
 import 'relax-vue-ui/lib/relax-vue-ui.css';
 
 // 全局注册 element-ui 和 relax-vue-ui
@@ -50,20 +50,20 @@ Vue.use(RelaxVueUI);
 
 new Vue({
   render: (h) => h(App),
-}).$mount("#app");
+}).$mount('#app');
 ```
 
 ### 按需引入
 
 ```javascript
 // main.js
-import Vue from "vue";
-import App from "./App.vue";
+import Vue from 'vue';
+import App from './App.vue';
 
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 // 按需引入 relax-vue-ui 组件
-import { ReConverter, ReDescriptions, ReDetail } from "relax-vue-ui";
+import { ReConverter, ReDescriptions, ReDetail } from 'relax-vue-ui';
 
 // 全局注册 element-ui
 Vue.use(ElementUI);
@@ -72,6 +72,6 @@ Vue.use(ReConverter);
 Vue.use(ReDescriptions);
 Vue.use(ReDetail);
 new Vue({
-  el: "#app",
+  el: '#app',
 });
 ```
