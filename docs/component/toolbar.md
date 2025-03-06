@@ -8,7 +8,7 @@
 
 支持仅通过配置渲染工具栏。
 
-::: demo
+::: demo 　点击默认渲染的工具按钮会触发`${tool.name}`事件，事件默认参数为`点击事件对象`。
 
 ```vue
 <template>
@@ -27,49 +27,48 @@ export default {
     return {
       tools: [
         {
-          name: "add",
-          label: "新增",
-          position: "left",
+          name: 'add',
+          label: '新增',
+          position: 'left',
           props: {
-            type: "primary",
-            icon: "el-icon-plus",
+            type: 'primary',
+            icon: 'el-icon-plus',
             plain: true,
           },
         },
         {
-          name: "delete",
-          label: "删除",
-          position: "left",
+          name: 'delete',
+          label: '删除',
+          position: 'left',
           props: {
-            type: "danger",
-            icon: "el-icon-delete",
+            type: 'danger',
+            icon: 'el-icon-delete',
             plain: true,
           },
         },
         {
-          name: "searcher",
-          label: "搜索栏",
+          name: 'searcher',
+          label: '搜索栏',
           useTip: false,
-          position: "right",
-          component: "el-switch",
+          position: 'right',
+          component: 'el-switch',
           props: {
             value: true,
-            inactiveText: "搜索栏",
+            inactiveText: '搜索栏',
           },
           events: {
             input: (val) => {
-              this.tools.find((item) => item.name === "searcher").props.value =
-                val;
+              this.tools.find((item) => item.name === 'searcher').props.value = val;
             },
           },
         },
         {
-          name: "refresh",
-          label: "刷新",
+          name: 'refresh',
+          label: '刷新',
           useTip: true,
-          position: "right",
+          position: 'right',
           props: {
-            icon: "el-icon-refresh",
+            icon: 'el-icon-refresh',
             circle: true,
             plain: true,
           },
@@ -78,14 +77,15 @@ export default {
     };
   },
   methods: {
-    handleAdd() {
-      this.$message.success("点击了添加");
+    handleAdd(event) {
+      console.log(event);
+      this.$message.success('点击了添加，控制台查看默认参数');
     },
     handleDelete() {
-      this.$message.success("点击了删除");
+      this.$message.success('点击了删除');
     },
     handleRefresh() {
-      this.$message.success("点击了刷新");
+      this.$message.success('点击了刷新');
     },
   },
 };
@@ -104,22 +104,12 @@ export default {
 <template>
   <re-toolbar :tools="tools" :shadow="true">
     <template #add="{ tool }">
-      <el-button
-        type="primary"
-        icon="el-icon-plus"
-        plain
-        size="mini"
-        @click="handleAdd"
-        >{{ tool.label }}</el-button
-      >
+      <el-button type="primary" icon="el-icon-plus" plain size="mini" @click="handleAdd">{{
+        tool.label
+      }}</el-button>
     </template>
     <template #delete>
-      <el-button
-        type="danger"
-        icon="el-icon-delete"
-        plain
-        size="mini"
-        @click="handleDelete"
+      <el-button type="danger" icon="el-icon-delete" plain size="mini" @click="handleDelete"
         >删除</el-button
       >
     </template>
@@ -134,13 +124,7 @@ export default {
       </el-dropdown>
     </template>
     <template #refresh>
-      <el-button
-        icon="el-icon-refresh"
-        plain
-        circle
-        size="mini"
-        @click="handleRefresh"
-      />
+      <el-button icon="el-icon-refresh" plain circle size="mini" @click="handleRefresh" />
     </template>
   </re-toolbar>
 </template>
@@ -151,39 +135,39 @@ export default {
     return {
       tools: [
         {
-          name: "add",
-          label: "新增",
-          position: "left",
+          name: 'add',
+          label: '新增',
+          position: 'left',
         },
         {
-          name: "delete",
-          label: "删除",
-          position: "left",
+          name: 'delete',
+          label: '删除',
+          position: 'left',
         },
         {
-          name: "density",
-          label: "密度",
+          name: 'density',
+          label: '密度',
           useTip: true,
-          position: "right",
+          position: 'right',
         },
         {
-          name: "refresh",
-          label: "刷新",
+          name: 'refresh',
+          label: '刷新',
           useTip: true,
-          position: "right",
+          position: 'right',
         },
       ],
     };
   },
   methods: {
     handleAdd() {
-      this.$message.success("点击了添加");
+      this.$message.success('点击了添加');
     },
     handleDelete() {
-      this.$message.success("点击了删除");
+      this.$message.success('点击了删除');
     },
     handleRefresh() {
-      this.$message.success("点击了刷新");
+      this.$message.success('点击了刷新');
     },
   },
 };

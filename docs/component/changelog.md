@@ -1,5 +1,6 @@
 # 更新日志
 
-<template>
-    <el-empty description="别急, 等我更新!"></el-empty>
-</template>
+## v1.1.0 (2025-03-06)
+
+- `relax-vue-ui`的`npm`包语法格式已支持`es5`
+- `re-tooltar`组件的默认按钮工具默认传递`点击事件对象`参数

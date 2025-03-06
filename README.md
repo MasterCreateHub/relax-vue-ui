@@ -23,19 +23,20 @@ npm install relax-vue-ui
 在 main.js 中引入并使用 relax-vue-ui（包含全局注册 element-ui ）：
 
 ```javascript
-import Vue from "vue";
-import App from "./App.vue";
+import Vue from 'vue';
+import App from './App.vue';
 
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-import RelaxVueUI from "relax-vue-ui";
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import RelaxVueUI from 'relax-vue-ui';
+import 'relax-vue-ui/lib/relax-vue-ui.css';
 
 Vue.use(ElementUI);
 Vue.use(RelaxVueUI);
 
 new Vue({
   render: (h) => h(App),
-}).$mount("#app");
+}).$mount('#app');
 ```
 
 ## 组件
@@ -54,5 +55,4 @@ new Vue({
 
 ## 示例
 
-[示例文档](https://mastercreatehub.github.io/relax-vue-ui/)
-
+[示例文档:https://mastercreatehub.github.io/relax-vue-ui/](https://mastercreatehub.github.io/relax-vue-ui/)

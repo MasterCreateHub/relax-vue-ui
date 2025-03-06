@@ -13,7 +13,7 @@ features:
 
   - title: 随心使用
     details: Relax Vue UI 支持全量安装、按需引入及单个组件定制，灵活满足不同项目需求，轻松实现个性化开发。
-footer: MIT Licensed | Copyright © 2024-present MCH
+footer: MIT Licensed | Copyright © 2024-present muchunhong <3271018951@qq.com>
 ---
 
 <div></div>

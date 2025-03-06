@@ -9,7 +9,7 @@
               <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
             </template>
             <template v-else>
-              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)">{{ tool.label }}</el-button>
+              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name, $event)">{{ tool.label }}</el-button>
             </template>
           </slot>
         </el-tooltip>
@@ -24,7 +24,7 @@
               <component :is="tool.component" v-bind="tool.props || {}" v-on="tool.events || {}" />
             </template>
             <template v-else>
-              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name)" />
+              <el-button v-bind="tool.props || {}" size="mini" @click="$emit(tool.name, $event)" />
             </template>
           </slot>
         </el-tooltip>
