@@ -483,7 +483,6 @@ export default {
 <style lang="scss" scoped>
 ::v-deep.re-searcher {
   padding: 18px 18px 0;
-  overflow: hidden;
   color: #303133;
   background-color: #fff;
   border: 1px solid #ebeef5;
