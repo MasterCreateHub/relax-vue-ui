@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { formatEvents } from "@/utils/index";
+import { formatEvents } from "/src/utils/index";
 export default {
     name: "ReConverter",
     props: {
