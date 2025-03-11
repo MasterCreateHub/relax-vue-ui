@@ -1,25 +1,25 @@
 {
   "name": "relax-vue-ui",
   "version": "1.1.0",
+  "private": false,
   "description": "基于element-ui二次封装的组件库",
-  "keywords": [
-    "relax-vue-ui",
-    "relax",
-    "vue.js",
-    "element-ui",
-    "ui-components",
-    "vue-components"
-  ],
-  "license": "MIT",
   "author": "muchunhong <3271018951@qq.com>",
-  "homepage": "https://mastercreatehub.github.io/relax-vue-ui/",
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/mchgitee/relax-vue-ui.git"
+  "scripts": {
+    "test:unit": "vue-cli-service test:unit",
+    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev docs",
+    "eslint": "vue-cli-service lint",
+    "format": "npm run eslint && npm run stylelint && npm run prettier",
+    "lib": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
+    "lint-staged": "lint-staged",
+    "play:serve": "vue-cli-service serve",
+    "prepare": "husky install",
+    "prettier": "prettier --write",
+    "stylelint": "stylelint **/*.{css,scss,vue} --cache --fix"
   },
-  "bugs": {
-    "url": "https://gitee.com/mchgitee/relax-vue-ui/issues"
-  },
+  "main": "lib/relax-vue-ui.umd.js",
+  "module": "lib/relax-vue-ui.esm.js",
+  "unpkg": "lib/relax-vue-ui.umd.min.js",
   "files": [
     "lib",
     "packages",
@@ -27,40 +27,22 @@
     "src/utils",
     "src/directives"
   ],
-  "main": "lib/relax-vue-ui.umd.js",
-  "module": "lib/relax-vue-ui.esm.js",
-  "unpkg": "lib/relax-vue-ui.umd.min.js",
-  "private": false,
-  "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "play:serve": "vue-cli-service serve",
-    "lib": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
-    "eslint": "vue-cli-service lint",
-    "stylelint": "stylelint packages/**/*.{css,scss,vue} --cache --fix",
-    "prettier": "prettier --write",
-    "lint-staged": "lint-staged",
-    "format": "npm run eslint && npm run stylelint && npm run prettier",
-    "start": "npm install --force",
-    "prepare": "husky install"
-  },
   "dependencies": {
     "core-js": "^3.8.3",
     "lodash": "^4.17.21"
-  },
-  "peerDependencies": {
-    "element-ui": "^2.15.14",
-    "vue": "^2.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@vue/cli-plugin-babel": "~4.5.19",
     "@vue/cli-plugin-eslint": "~4.5.19",
+    "@vue/cli-plugin-unit-jest": "^4.5.19",
     "@vue/cli-service": "~4.5.19",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/test-utils": "^1.0.3",
     "async-validator": "^1.11.5",
     "babel-eslint": "^10.1.0",
+    "element-ui": "^2.15.14",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
@@ -75,7 +57,6 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "stylelint": "^16.15.0",
-    "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recess-order": "^6.0.0",
     "stylelint-config-recommended-scss": "^14.1.0",
     "stylelint-config-standard": "^37.0.0",
@@ -84,9 +65,29 @@
     "stylelint-order": "^6.0.4",
     "stylelint-scss": "^6.11.1",
     "vue": "^2.6.14",
-    "element-ui": "^2.15.14",
     "vue-template-compiler": "^2.6.14",
     "vuepress": "^1.9.10",
     "vuepress-plugin-demo-container": "^0.2.0"
+  },
+  "peerDependencies": {
+    "element-ui": "^2.15.14",
+    "vue": "^2.6.0"
+  },
+  "bugs": {
+    "url": "https://gitee.com/mchgitee/relax-vue-ui/issues"
+  },
+  "homepage": "https://mastercreatehub.github.io/relax-vue-ui/",
+  "keywords": [
+    "relax-vue-ui",
+    "relax",
+    "vue.js",
+    "element-ui",
+    "ui-components",
+    "vue-components"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/mchgitee/relax-vue-ui.git"
   }
 }

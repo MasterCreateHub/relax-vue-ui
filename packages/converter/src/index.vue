@@ -14,10 +14,8 @@ export default {
     props: {
         /**
          * @description 要转换的目标值
-         * @type {Number | String | Boolean | Array | Date}
          */
         target: {
-            type: [Number, String, Boolean, Array, Date],
             required: true,
             default: null,
         },
@@ -173,7 +171,7 @@ export default {
                 const props = {};
                 if (Array.isArray(this.source)) {
                     const foundItem = this.source.find(sourceItem => sourceItem.label === item);
-                    (foundItem.containerProps) && Object.keys(foundItem.containerProps).forEach((key) => {
+                    (foundItem?.containerProps) && Object.keys(foundItem.containerProps).forEach((key) => {
                         props[key] = foundItem.containerProps[key];
                     })
                 }

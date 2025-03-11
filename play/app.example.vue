@@ -15,11 +15,13 @@ body {
   margin: 0;
 
   #play {
-    height: 100%;
-    width: 100%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 50px 100px;
   }
 }
 </style>
