@@ -5,14 +5,16 @@
   "description": "基于element-ui二次封装的组件库",
   "author": "muchunhong <3271018951@qq.com>",
   "scripts": {
+    "test:file": "jest",
     "test:unit": "vue-cli-service test:unit",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs",
     "eslint": "vue-cli-service lint",
     "format": "npm run eslint && npm run stylelint && npm run prettier",
-    "lib": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
+    "build": "vue-cli-service build --target lib --dest lib --name relax-vue-ui src/index.js",
+    "libary": "npm run format && npm run test:unit && npm run build",
     "lint-staged": "lint-staged",
-    "play:serve": "vue-cli-service serve",
+    "play": "vue-cli-service serve",
     "prepare": "husky install",
     "prettier": "prettier --write",
     "stylelint": "stylelint **/*.{css,scss,vue} --cache --fix"
