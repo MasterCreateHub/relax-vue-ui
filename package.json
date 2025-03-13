@@ -25,9 +25,9 @@
   "files": [
     "lib",
     "packages",
-    "src/index.js",
-    "src/utils",
-    "src/directives"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "dependencies": {
     "core-js": "^3.8.3",

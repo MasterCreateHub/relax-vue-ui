@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   theme: "",
   base: "/relax-vue-ui/",
@@ -75,5 +77,9 @@ module.exports = {
     config.plugin('provide').use(require('webpack').ProvidePlugin, [{
       ResizeObserver: ['resize-observer-polyfill', 'default']
     }]);
+
+    config.resolve.alias
+      .set('@', path.resolve(__dirname, '../../src'))
+      .set('@packages', path.resolve(__dirname, '../../packages'))
   }
 };

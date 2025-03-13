@@ -77,7 +77,7 @@
 <script>
 const DEFAULT_PAGINATION = Symbol("defaultPagination");
 import { cloneDeep } from "lodash";
-import { formatEvents, injectProps } from "/src/utils/index";
+import { formatEvents, injectProps } from "@/utils/index";
 export default {
   name: "ReTable",
   props: {

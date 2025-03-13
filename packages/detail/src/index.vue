@@ -41,7 +41,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
-import { injectProps } from "/src/utils/index";
+import { injectProps } from "@/utils/index";
 export default {
   name: "ReDetail",
   props: {
