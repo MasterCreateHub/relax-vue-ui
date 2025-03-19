@@ -55,4 +55,4 @@ new Vue({
 
 ## 示例
 
-[示例文档:https://mastercreatehub.github.io/relax-vue-ui/](https://mastercreatehub.github.io/relax-vue-ui/)
+[示例文档：https://mastercreatehub.github.io/relax-vue-ui/](https://mastercreatehub.github.io/relax-vue-ui/)
