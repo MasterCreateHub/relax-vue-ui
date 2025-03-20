@@ -25,13 +25,13 @@ export default {
   data() {
     return {
       person: {
-        name: "小明",
-        gender: "男",
-        website: "http://www.xiaoming.com",
+        name: '小明',
+        gender: '男',
+        website: 'http://www.xiaoming.com',
       },
       dict: [
-        { value: "1", label: "喜羊羊" },
-        { value: "2", label: "灰太狼" },
+        { value: '1', label: '喜羊羊' },
+        { value: '2', label: '灰太狼' },
       ],
     };
   },
@@ -60,11 +60,11 @@ export default {
   data() {
     return {
       book: {
-        title: "JOJO的奇妙冒险",
+        title: 'JOJO的奇妙冒险',
       },
       dict: [
-        { value: "1", label: "科幻" },
-        { value: "2", label: "玄幻" },
+        { value: '1', label: '科幻' },
+        { value: '2', label: '玄幻' },
       ],
     };
   },
@@ -109,11 +109,11 @@ export default {
   data() {
     return {
       book: {
-        website: "http://www.baidu.com",
+        website: 'http://www.baidu.com',
       },
       dict: [
-        { value: "1", label: "警告" },
-        { value: "2", label: "处罚" },
+        { value: '1', label: '警告' },
+        { value: '2', label: '处罚' },
       ],
     };
   },
@@ -146,7 +146,7 @@ export default {
 export default {
   data() {
     return {
-      links: ["奥特曼", "铠甲勇士", "魂斗罗"],
+      links: ['奥特曼', '铠甲勇士', '魂斗罗'],
       linkEvents: {
         click: this.handleClick,
       },
@@ -172,18 +172,8 @@ export default {
 ```vue
 <template>
   <div>
-    <re-converter
-      target="name"
-      :source="{ name: null }"
-      default-value="/"
-      container="span"
-    />
-    <re-converter
-      :target="''"
-      :source="{ name: null }"
-      default-value="无"
-      container="span"
-    />
+    <re-converter target="name" :source="{ name: null }" default-value="/" container="span" />
+    <re-converter :target="''" :source="{ name: null }" default-value="无" container="span" />
   </div>
 </template>
 ```
@@ -223,19 +213,19 @@ export default {
 export default {
   data() {
     return {
-      status: ["1", "2", "3"],
+      status: ['1', '2', '3'],
     };
   },
   methods: {
     handleFormat(value) {
-      if (value === "1") {
-        return "上班";
+      if (value === '1') {
+        return '上班';
       }
-      if (value === "2") {
-        return "下班";
+      if (value === '2') {
+        return '下班';
       }
-      if (value === "3") {
-        return "辞职";
+      if (value === '3') {
+        return '辞职';
       }
     },
   },
@@ -260,11 +250,7 @@ export default {
       container="el-tag"
       :container-props="{ type: 'success' }"
     />
-    <re-converter
-      :target="numbers"
-      source="$targetValue.split(',')"
-      container="el-tag"
-    />
+    <re-converter :target="numbers" source="$targetValue.split(',')" container="el-tag" />
     <re-converter :target="price" source="'￥' + $targetValue" />
     <re-converter :target="percent" source="$targetValue + '%'" />
   </div>
@@ -273,8 +259,8 @@ export default {
 export default {
   data() {
     return {
-      status: "1",
-      numbers: "11011,11012,11013",
+      status: '1',
+      numbers: '11011,11012,11013',
       price: 36,
       percent: 57.5,
     };
@@ -311,10 +297,10 @@ export default {
   data() {
     return {
       person: {
-        name: "小明",
-        gender: "男",
+        name: '小明',
+        gender: '男',
         happy: null,
-        website: "http://www.xiaoming.com",
+        website: 'http://www.xiaoming.com',
       },
     };
   },
@@ -359,19 +345,19 @@ export default {
   data() {
     return {
       subjectDict: [
-        { value: "1", label: "语文" },
-        { value: "2", label: "数学" },
-        { value: "3", label: "英语" },
-        { value: "4", label: "物理" },
-        { value: "5", label: "化学" },
-        { value: "6", label: "生物" },
-        { value: "7", label: "地理" },
+        { value: '1', label: '语文' },
+        { value: '2', label: '数学' },
+        { value: '3', label: '英语' },
+        { value: '4', label: '物理' },
+        { value: '5', label: '化学' },
+        { value: '6', label: '生物' },
+        { value: '7', label: '地理' },
       ],
       processDict: [
-        { value: "1", label: "待审核", containerProps: { type: "info" } },
-        { value: "2", label: "审核中", containerProps: { type: "primary" } },
-        { value: "3", label: "审核通过", containerProps: { type: "success" } },
-        { value: "4", label: "审核拒绝", containerProps: { type: "danger" } },
+        { value: '1', label: '待审核', containerProps: { type: 'info' } },
+        { value: '2', label: '审核中', containerProps: { type: 'primary' } },
+        { value: '3', label: '审核通过', containerProps: { type: 'success' } },
+        { value: '4', label: '审核拒绝', containerProps: { type: 'danger' } },
       ],
     };
   },
@@ -385,11 +371,11 @@ export default {
 
 ### Attributes
 
-| 参数            | 说明                                                    | 类型                               | 可选值 | 默认值 |
-| --------------- | ------------------------------------------------------- | ---------------------------------- | ------ | ------ |
-| target          | 要转换的字段或要转换的值，`必需`                        | `Number`,`String`,`Boolean`,`Array`,`Date` | -      | -      |
-| source          | 源数据或转换源数据的方法，`必需`                        | `Array`,`Object`,`Function`,`String`     | -      | -      |
-| container       | 最终的渲染容器，默认为`span`                            | `String`                           | -      | `span` |
-| containerProps  | 容器的属性配置，默认为`{}`                              | `Object`                           | -      | `{}`   |
-| containerEvents | 容器的绑定的事件，默认为`{}`                            | `Object`                           | -      | `{}`   |
-| defaultValue    | 默认值，当转换失败或转换后值为`null`、`undefined`时使用 | `String`                           | -      | `null` |
+| 参数            | 说明                                                              | 类型                                 | 可选值 | 默认值 |
+| --------------- | ----------------------------------------------------------------- | ------------------------------------ | ------ | ------ |
+| target          | 要转换的字段或要转换的值，`必需`                                  | `Any`                                | -      | -      |
+| source          | 源数据或转换源数据的方法，`必需`                                  | `Array`,`Object`,`Function`,`String` | -      | -      |
+| container       | 最终的渲染容器，默认为`span`                                      | `String`                             | -      | `span` |
+| containerProps  | 容器的属性配置，默认为`{}`                                        | `Object`                             | -      | `{}`   |
+| containerEvents | 容器的绑定的事件，默认为`{}`                                      | `Object`                             | -      | `{}`   |
+| defaultValue    | 默认值，当转换失败或转换后值为`null`、`undefined`、''、NaN 时使用 | `String`                             | -      | `null` |

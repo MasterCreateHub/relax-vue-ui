@@ -20,6 +20,8 @@ export default {
   props: {
     /**
      * @description 要转换的目标值
+     * @type {Any}
+     * @default null
      */
     target: {
       required: true,
@@ -87,7 +89,7 @@ export default {
   },
   computed: {
     /**
-     * @description 最终的渲染值，如果转换后值为`null`、`undefined`、''、NaN，则使用`defaultValue`或者不渲染
+     * @description 最终的渲染值数组，如果转换后值为`null`、`undefined`、''、NaN，如果`defaultValue`合法则使用，否则不渲染
      */
     convertedValues() {
       const sourceType = Object.prototype.toString.call(this.source);
