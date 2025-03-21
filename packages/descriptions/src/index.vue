@@ -104,7 +104,7 @@ export default {
         );
         item.contentComponent = item.contentComponent || null;
         item.contentComponentProps = injectProps(
-          { props: item.contentComponentProps },
+          { props: item.contentComponentProps || {} },
           { key: item.dataInProps || 'data', value: this.data[item.prop] || null }
         )
         item.contentComponentEvents = item.contentComponentEvents || {};

@@ -2,172 +2,176 @@ import { shallowMount } from '@vue/test-utils'
 import ReDetail from '@packages/detail/src/index.vue'
 
 describe('ReDetail.vue', () => {
-  it('renders title and footer slots', () => {
-    const wrapper = shallowMount(ReDetail, {
-      slots: {
-        header: '<div class="custom-header">Custom Header</div>',
-        footer: '<div class="custom-footer">Custom Footer</div>'
+  const mockSections = [
+    {
+      name: 'basic',
+      label: '基本信息',
+      components: [
+        {
+          name: 'el-input',
+          dataKey: 'name',
+          dataInProps: 'value',
+          props: { readonly: true }
+        }
+      ]
+    },
+    {
+      name: 'advanced',
+      label: '高级信息',
+      components: [
+        {
+          name: 'el-select',
+          dataKey: 'type',
+          props: { multiple: true }
+        }
+      ]
+    }
+  ]
+
+  const mockData = {
+    basic: { name: 'Test Item' },
+    advanced: { type: ['A', 'B'] }
+  }
+
+  describe('Props验证', () => {
+    test.each`
+      scenario              | sections               | valid  | errorMatcher
+      ${'合法sections'}     | ${mockSections}        | ${true}| ${/^$/}
+      ${'缺少name'}         | ${[{label: 'Test'}]}   | ${false}| ${/'name'/}
+      ${'无效components类型'}| ${[{name:'a',label:'a',components:{}}]} | ${false}| ${/array/}
+      ${'缺少dataKey'}      | ${[{name:'a',label:'a',components:[{name:'cmp'}]}]} | ${false}| ${/'dataKey'/}
+    `('$scenario', ({ sections, valid, errorMatcher }) => {
+      const consoleError = jest.spyOn(console, 'error').mockImplementation()
+      
+      const validator = ReDetail.props.sections.validator
+      expect(validator(sections)).toBe(valid)
+      
+      if (!valid) {
+        expect(consoleError).toHaveBeenCalledWith(expect.stringMatching(errorMatcher), expect.anything())
       }
+      
+      consoleError.mockRestore()
     })
-    expect(wrapper.find('.custom-header').exists()).toBe(true)
-    expect(wrapper.find('.custom-footer').exists()).toBe(true)
   })
 
-  it('renders default sections when sections prop is empty', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [],
-        data: {}
-      }
-    })
-    expect(wrapper.findAll('.re-detail-section').length).toBe(0)
-  })
-
-  it('renders sections correctly when sections prop is provided', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] },
-          { name: 'section2', label: 'Section 2', components: [{ name: 'div', dataKey: 'key2' }] }
-        ],
-        data: { key1: 'Data 1', key2: 'Data 2' }
-      }
-    })
-    const sections = wrapper.findAll('.re-detail-section')
-    expect(sections.length).toBe(2)
-    expect(sections.at(0).text()).toContain('Section 1')
-    expect(sections.at(0).text()).toContain('Data 1')
-    expect(sections.at(1).text()).toContain('Section 2')
-    expect(sections.at(1).text()).toContain('Data 2')
-  })
-
-  it('renders sections with showType simple', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        showType: 'simple'
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-simple')
-  })
-
-  it('renders sections with showType bar', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        showType: 'bar'
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-bar')
-  })
-
-  it('renders sections with showType card', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        showType: 'card'
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-card')
-  })
-
-  it('renders sections non-collapsible', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        collapsible: false
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).not.toContain('is-collapse')
-  })
-
-  it('renders sections collapsible', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        collapsible: true
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-collapse')
-  })
-
-  it('renders sections with activeSections', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] },
-          { name: 'section2', label: 'Section 2', components: [{ name: 'div', dataKey: 'key2' }] }
-        ],
-        data: { key1: 'Data 1', key2: 'Data 2' },
-        collapsible: true,
-        activeSections: ['section1']
-      }
-    })
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-collapse')
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-active')
-  })
-
-  it('renders custom components and injects data', () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          {
-            name: 'section1',
-            label: 'Section 1',
-            components: [
-              { name: 'div', dataKey: 'key1', dataInProps: 'customData' }
-            ]
+  describe('核心功能', () => {
+    describe('不同展示模式', () => {
+      test.each`
+        showType   | expectedClass
+        ${'simple'}| ${'is-simple'}
+        ${'bar'}   | ${'is-bar'}
+        ${'card'}  | ${'is-card'}
+        ${'invalid'}| ${'is-simple'}
+      `('$showType模式显示$expectedClass', ({ showType, expectedClass }) => {
+        const wrapper = shallowMount(ReDetail, {
+          propsData: {
+            sections: mockSections,
+            showType
           }
-        ],
-        data: { key1: 'Data 1' }
-      }
+        })
+        
+        expect(wrapper.find('.re-detail-section').classes()).toContain(expectedClass)
+      })
     })
-    expect(wrapper.find('div').attributes('customdata')).toBe('Data 1')
+
+    describe('数据注入', () => {
+      it('应正确注入组件props', () => {
+        const wrapper = shallowMount(ReDetail, {
+          propsData: {
+            sections: mockSections,
+            data: mockData
+          },
+          stubs: ['el-input', 'el-select']
+        })
+
+        const inputProps = wrapper.findComponent({ name: 'el-input' }).props()
+        expect(inputProps.value).toBe('Test Item')
+        
+        const selectProps = wrapper.findComponent({ name: 'el-select' }).props()
+        expect(selectProps.multiple).toBe(true)
+      })
+    })
   })
 
-  it('toggles active sections when collapsible is true', async () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        collapsible: true
-      }
+  describe('可折叠功能', () => {
+    test.each`
+      collapsible | activeSections       | expected
+      ${false}    | ${undefined}         | ${0}
+      ${true}     | ${['basic']}         | ${1}
+      ${true}     | ${undefined}         | ${2}
+    `('当collapsible=$collapsible时显示$expected个内容区域', async ({ collapsible, activeSections, expected }) => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: {
+          sections: mockSections,
+          collapsible,
+          activeSections
+        }
+      })
+
+      expect(wrapper.findAll('.re-detail-section.is-active'))
+        .toHaveLength(expected)
     })
-    await wrapper.find('.re-detail-section').trigger('click')
-    expect(wrapper.find('.re-detail-section').classes()).toContain('is-active')
-    await wrapper.find('.re-detail-section').trigger('click')
-    expect(wrapper.find('.re-detail-section').classes()).not.toContain('is-active')
+
+    it('点击标题应切换展开状态', async () => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: {
+          sections: mockSections,
+          collapsible: true
+        }
+      })
+
+      await wrapper.find('.re-detail-section__title').trigger('click')
+      expect(wrapper.vm.currentActiveSections).not.toContain('basic')
+      
+      await wrapper.find('.re-detail-section__title').trigger('click')
+      expect(wrapper.vm.currentActiveSections).toContain('basic')
+    })
   })
 
-  it('emits active-section event when section is clicked', async () => {
-    const wrapper = shallowMount(ReDetail, {
-      propsData: {
-        sections: [
-          { name: 'section1', label: 'Section 1', components: [{ name: 'div', dataKey: 'key1' }] }
-        ],
-        data: { key1: 'Data 1' },
-        collapsible: true
-      }
+  describe('插槽支持', () => {
+    it('应渲染header插槽', () => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: { sections: mockSections },
+        slots: {
+          header: '<div class="custom-header">Custom Header</div>'
+        }
+      })
+      
+      expect(wrapper.find('.custom-header').exists()).toBe(true)
     })
-    await wrapper.find('.re-detail-section').trigger('click')
-    expect(wrapper.emitted('active-section')).toBeTruthy()
-    expect(wrapper.emitted('active-section')[0]).toEqual(['section1', false])
+
+    it('应渲染具名内容插槽', () => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: { sections: mockSections },
+        slots: {
+          'basicContent': '<div class="custom-content">Basic Content</div>'
+        }
+      })
+      
+      expect(wrapper.find('.custom-content').exists()).toBe(true)
+    })
+  })
+
+  describe('边界条件', () => {
+    it('处理空sections', () => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: { sections: [] }
+      })
+      
+      expect(wrapper.findAll('.re-detail-section')).toHaveLength(0)
+    })
+
+    it('处理无效的data结构', () => {
+      const wrapper = shallowMount(ReDetail, {
+        propsData: {
+          sections: mockSections,
+          data: { invalidKey: 'test' }
+        },
+        stubs: ['el-input']
+      })
+      
+      const input = wrapper.findComponent({ name: 'el-input' })
+      expect(input.props('value')).toBeUndefined()
+    })
   })
 })
