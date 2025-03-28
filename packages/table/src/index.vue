@@ -34,7 +34,7 @@
       </slot>
     </div>
     <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
-      <el-table-column v-for="(column, index) in formatTableColumns" :key="column.prop + index" v-bind="column">
+      <el-table-column v-for="(column, index) in formatTableColumns" :key="`${column.type}_${column.label}_${column.prop}_${index}`" v-bind="column">
         <template slot="header" slot-scope="scope">
           <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :column="scope.column"
             :index="scope.$index">{{ column.label }}</slot>
