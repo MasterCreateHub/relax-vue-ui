@@ -34,33 +34,36 @@
       </slot>
     </div>
     <el-table ref="tableRef" class="re-table__body" :data="tableShowData" v-bind="$attrs" v-on="$listeners">
-      <el-table-column v-for="(column, index) in formatTableColumns" :key="`${column.type}_${column.label}_${column.prop}_${index}`" v-bind="column">
-        <template slot="header" slot-scope="scope">
-          <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :column="scope.column"
-            :index="scope.$index">{{ column.label }}</slot>
-          <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
-        </template>
-        <template slot-scope="scope">
-          <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
-            :column="scope.column" :index="scope.$index">
-            {{ scope.row[column.prop] }}
-            <template v-if="column.contentComponent">
-              <component :is="column.contentComponent" v-bind="column.contentComponentFormatProps(scope.row)"
-                v-on="column.contentComponentFormatEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
-                {{ scope.row[column.prop] }}
-              </component>
-            </template>
-            <template v-else>{{ scope.row[column.prop] }}</template>
-          </slot>
-          <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
-            <template v-if="column.contentComponent">
-              <component :is="column.contentComponent" v-bind="column.contentComponentFormatProps(scope.row)"
-                v-on="column.contentComponentFormatEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
-                {{ scope.row[column.prop] }}
-              </component>
-            </template>
-            <template v-else>{{ scope.row[column.prop] }}</template>
-          </slot>
+      <el-table-column v-for="(column, index) in formatTableColumns"
+        :key="`${column.type}_${column.label}_${column.prop}_${index}`" v-bind="column">
+        <template v-if="column.type !== 'selection' || column.type !== 'index'">
+          <template slot="header" slot-scope="scope">
+            <slot v-if="$scopedSlots[`${column.prop}Label`]" :name="`${column.prop}Label`" :column="scope.column"
+              :index="scope.$index">{{ column.label }}</slot>
+            <slot v-else name="header" :column="scope.column" :index="scope.$index">{{ column.label }}</slot>
+          </template>
+          <template slot-scope="scope">
+            <slot v-if="$scopedSlots[`${column.prop}Content`]" :name="`${column.prop}Content`" :row="scope.row"
+              :column="scope.column" :index="scope.$index">
+              {{ scope.row[column.prop] }}
+              <template v-if="column.contentComponent">
+                <component :is="column.contentComponent" v-bind="column.contentComponentFormatProps(scope.row)"
+                  v-on="column.contentComponentFormatEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
+                  {{ scope.row[column.prop] }}
+                </component>
+              </template>
+              <template v-else>{{ scope.row[column.prop] }}</template>
+            </slot>
+            <slot v-else name="body" :row="scope.row" :column="scope.column" :index="scope.$index">
+              <template v-if="column.contentComponent">
+                <component :is="column.contentComponent" v-bind="column.contentComponentFormatProps(scope.row)"
+                  v-on="column.contentComponentFormatEvents({ row: scope.row, $index: scope.$index, column: scope.column })">
+                  {{ scope.row[column.prop] }}
+                </component>
+              </template>
+              <template v-else>{{ scope.row[column.prop] }}</template>
+            </slot>
+          </template>
         </template>
       </el-table-column>
       <slot name="default"></slot>
@@ -387,6 +390,7 @@ export default {
   }
 
   .re-table__body {
+
     .el-table__header-wrapper,
     .el-table__fixed-header-wrapper {
       th {
