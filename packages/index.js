@@ -7,9 +7,10 @@ import ReForm from "./form";
 import ReConverter from "./converter";
 import ReDescriptions from "./descriptions";
 import ReDetail from "./detail";
+import ReDynamicInput from "./dynamic-input";
 
 // 存储组件列表
-const components = [ReSearcher, ReToolbar, ReTable, RePagination, ReWorkbench, ReForm, ReConverter, ReDescriptions, ReDetail];
+const components = [ReSearcher, ReToolbar, ReTable, RePagination, ReWorkbench, ReForm, ReConverter, ReDescriptions, ReDetail, ReDynamicInput];
 
 // 定义 componentsInstall 方法
 const componentsInstall = function (Vue, option = []) {

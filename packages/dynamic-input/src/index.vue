@@ -1,5 +1,5 @@
 <template>
-    <div :class="['dynamic-input', `is-${mode}`,
+    <div :class="['dynamic-input', `is-${mode}`, componentSize ? `dynamic-input--${componentSize}` : '',
         { 'is-disabled': disabled },
         { 'is-readonly': readonly }]">
         <template v-if="mode === 'form'">
@@ -12,25 +12,25 @@
                             <el-form-item v-if="inElForm" :label="field.label" :prop="`${prop}.${index}.${field.model}`"
                                 :rules="rules[field.model]">
                                 <component class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                    v-model="item[field.model]" :size="size" />
+                                    v-model="item[field.model]" :size="componentSize" />
                             </el-form-item>
                             <component v-else class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                v-model="item[field.model]" :size="size" />
+                                v-model="item[field.model]" :size="componentSize" />
                         </slot>
                     </el-col>
                     <el-col v-if="mutable" class="dynamic-input-item-actions__wrapper">
                         <slot name="actions">
                             <el-button-group class="dynamic-input-item-actions">
-                                <el-button class="dynamic-input-remove" :size="size"
+                                <el-button class="dynamic-input-remove" :size="componentSize"
                                     :disabled="min && modelValue.length <= min" icon="el-icon-minus"
                                     @click="handleRemove(index)"></el-button>
-                                <el-button class="dynamic-input-add" :size="size"
+                                <el-button class="dynamic-input-add" :size="componentSize"
                                     :disabled="max && modelValue.length === max" icon="el-icon-plus"
                                     @click="handleAdd(index)"></el-button>
                                 <template v-if="sortable">
-                                    <el-button class="dynamic-input-move-up" :size="size" :disabled="index === 0"
+                                    <el-button class="dynamic-input-move-up" :size="componentSize" :disabled="index === 0"
                                         icon="el-icon-top" @click="handleMoveUp(index)"></el-button>
-                                    <el-button class="dynamic-input-move-down" :size="size"
+                                    <el-button class="dynamic-input-move-down" :size="componentSize"
                                         :disabled="index === modelValue.length - 1" icon="el-icon-bottom"
                                         @click="handleMoveDown(index)"></el-button>
                                 </template>
@@ -60,26 +60,26 @@
                                 <el-form-item v-if="inElForm" :prop="`${prop}.${index}.${field.model}`"
                                     :rules="rules[field.model]">
                                     <component class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                        v-model="item[field.model]" :size="size" />
+                                        v-model="item[field.model]" :size="componentSize" />
                                 </el-form-item>
                                 <component v-else class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                    v-model="item[field.model]" :size="size" />
+                                    v-model="item[field.model]" :size="componentSize" />
                             </slot>
                         </td>
                         <td v-if="mutable" class="dynamic-input-item-actions__wrapper">
                             <slot name="actions">
                                 <el-button-group class="dynamic-input-item-actions">
-
-                                    <el-button class="dynamic-input-remove" :size="size"
+                                    <el-button class="dynamic-input-remove" :size="componentSize"
                                         :disabled="min && modelValue.length <= min" icon="el-icon-minus"
                                         @click="handleRemove(index)"></el-button>
-                                    <el-button class="dynamic-input-add" :size="size"
+                                    <el-button class="dynamic-input-add" :size="componentSize"
                                         :disabled="max && modelValue.length === max" icon="el-icon-plus"
                                         @click="handleAdd(index)"></el-button>
                                     <template v-if="sortable">
-                                        <el-button class="dynamic-input-move-up" :size="size" :disabled="index === 0"
-                                            icon="el-icon-top" @click="handleMoveUp(index)"></el-button>
-                                        <el-button class="dynamic-input-move-down" :size="size"
+                                        <el-button class="dynamic-input-move-up" :size="componentSize"
+                                            :disabled="index === 0" icon="el-icon-top"
+                                            @click="handleMoveUp(index)"></el-button>
+                                        <el-button class="dynamic-input-move-down" :size="componentSize"
                                             :disabled="index === modelValue.length - 1" icon="el-icon-bottom"
                                             @click="handleMoveDown(index)"></el-button>
                                     </template>
@@ -98,25 +98,25 @@
                             <el-form-item v-if="inElForm" :label="field.label" :prop="`${prop}.${index}.${field.model}`"
                                 :rules="rules[field.model]">
                                 <component class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                    v-model="item[field.model]" :size="size" />
+                                    v-model="item[field.model]" :size="componentSize" />
                             </el-form-item>
                             <component v-else class="dynamic-input-item-component" :is="field.component || 'el-input'"
-                                v-model="item[field.model]" :size="size" />
+                                v-model="item[field.model]" :size="componentSize" />
                         </slot>
                     </div>
                     <div v-if="mutable" class="dynamic-input-item-actions__wrapper">
                         <slot name="actions">
                             <el-button-group class="dynamic-input-item-actions">
-                                <el-button class="dynamic-input-remove" :size="size"
+                                <el-button class="dynamic-input-remove" :size="componentSize"
                                     :disabled="min && modelValue.length <= min" icon="el-icon-minus"
                                     @click="handleRemove(index)"></el-button>
-                                <el-button class="dynamic-input-add" :size="size"
+                                <el-button class="dynamic-input-add" :size="componentSize"
                                     :disabled="max && modelValue.length === max" icon="el-icon-plus"
                                     @click="handleAdd(index)"></el-button>
                                 <template v-if="sortable">
-                                    <el-button class="dynamic-input-move-up" :size="size" :disabled="index === 0"
+                                    <el-button class="dynamic-input-move-up" :size="componentSize" :disabled="index === 0"
                                         icon="el-icon-top" @click="handleMoveUp(index)"></el-button>
-                                    <el-button class="dynamic-input-move-down" :size="size"
+                                    <el-button class="dynamic-input-move-down" :size="componentSize"
                                         :disabled="index === modelValue.length - 1" icon="el-icon-bottom"
                                         @click="handleMoveDown(index)"></el-button>
                                 </template>
@@ -138,14 +138,29 @@
 export default {
     name: 'ReDynamicInput',
     props: {
+        /**
+         * @description 双向绑定的数组
+         * @type {Array}
+         * @default []
+         */
         value: {
             type: Array,
             default: () => []
         },
+        /**
+         * @description 对象的字段数组
+         * @type {Array}
+         * @default []
+         */
         fields: {
             type: Array,
             default: () => []
         },
+        /**
+         * @description 显示模式
+         * @type {String}
+         * @default 'inline'
+         */
         mode: {
             type: String,
             default: 'inline',
@@ -153,43 +168,85 @@ export default {
                 return ['inline', 'table', 'form'].includes(val)
             }
         },
+        /**
+         * @description 该组件数据在表单对象的字段名
+         * @type {String}
+         * @default ''
+         */
         prop: {
             type: String,
             default: ''
         },
+        /**
+         * @description 是否禁用
+         * @type {Boolean}
+         * @default false
+         */
         disabled: {
             type: Boolean,
             default: false
         },
+        /**
+         * @description 是否只读
+         * @type {Boolean}
+         * @default false
+         */
         readonly: {
             type: Boolean,
             default: false
         },
+        /**
+         * @description 数据数组最小长度
+         * @type {Number}
+         */
         min: {
             type: Number,
             validator(val) {
                 return Number.isInteger(val) && val >= 0
             }
         },
+        /**
+         * @description 数据数组最大长度
+         * @type {Number}
+         */
         max: {
             type: Number,
             validator(val) {
                 return Number.isInteger(val) && val >= 0
             }
         },
+        /**
+         * @description 数据数组固定长度
+         * @type {Number}
+         */
         ration: {
             type: Number,
             validator(val) {
                 return Number.isInteger(val) && val >= 0
             }
         },
+        /**
+         * @description 是否开启排序按钮
+         * @type {Boolean}
+         */
         sortable: {
             type: Boolean,
             default: false
-        }
+        },
+        /**
+         * @description 尺寸
+         * @type {String}
+         */
+        size: String,
     },
     inject: {
-        elForm: { default: null }
+        elForm: {
+            default: null
+        },
+
+        elFormItem: {
+            default: null
+        }
     },
     data() {
         return {
@@ -197,6 +254,10 @@ export default {
         }
     },
     computed: {
+        /**
+         * @description 绑定值
+         * @type {Boolean}
+         */
         modelValue: {
             get() {
                 return this.value
@@ -205,19 +266,37 @@ export default {
                 this.$emit('input', val)
             }
         },
+        /**
+         * @description 是否在 el-form 内
+         * @type {Boolean}
+         */
         inElForm() {
             return !!this.elForm
         },
+        /**
+         * @description 校验规则
+         * @type {Object}
+         */
         rules() {
             if (!this.inElForm) {
                 return {}
-            } else {
-                return this.elForm.rules[this.prop]
             }
+            if ((this.elForm.rules || this.elFormItem.rules) && this.prop) {
+                return (this.elForm.rules || this.elFormItem.rules)[this.prop] || {}
+            }
+            return {}
         },
-        size() {
-            return this.elForm?.size || ''
+        /**
+         * @description 组件尺寸
+         * @type {String}
+         */
+        componentSize() {
+            return this.size || this.elFormItem?.size || this.elForm?.size || (this.$ELEMENT || {}).size;
         },
+        /**
+         * @description 是否可增减
+         * @type {Boolean}
+         */
         mutable() {
             if (this.ration && this.ration > 0) {
                 return false
@@ -232,38 +311,57 @@ export default {
         this.onInit()
     },
     methods: {
+        /**
+         * @description 组件初始化
+         */
         onInit() {
             if (this.ration && this.ration > 0) {
                 for (let i = 0; i < Math.floor(this.ration); i++) {
-                    this.modelValue.push(this.handleCreateItem())
+                    this.modelValue.push(this.onCreateItem())
                 }
                 return
             }
             if (this.min && this.modelValue.length < this.min) {
                 const need = Math.floor(this.min - this.modelValue.length)
                 for (let i = 0; i < need; i++) {
-                    this.modelValue.push(this.handleCreateItem())
+                    this.modelValue.push(this.onCreateItem())
                 }
                 return
             }
         },
-        handleCreateItem() {
+        /**
+         * @description 创建项
+         */
+        onCreateItem() {
             const item = {}
             this.fields.forEach(field => {
                 item[field.model] = field.defaultValue || null
             })
             return item
         },
+        /**
+        * @description 新增项
+        */
         handleAdd(index = -1) {
+            const newItem = this.onCreateItem()
             if (index === -1) {
-                this.modelValue.push(this.handleCreateItem())
+                this.modelValue.push(newItem)
             } else {
-                this.modelValue.splice(index + 1, 0, this.handleCreateItem())
+                this.modelValue.splice(index + 1, 0, newItem)
             }
+            this.$emit('item-added', newItem)
         },
+        /**
+         * @description 删除项
+         */
         handleRemove(index) {
+            const oldItem = this.modelValue[index]
             this.modelValue.splice(index, 1)
+            this.$emit('item-removed', oldItem)
         },
+        /**
+         * @description 上移项
+         */
         handleMoveUp(index) {
             if (index > 0) {
                 const oldRow = this.modelValue[index - 1]
@@ -272,6 +370,9 @@ export default {
                 this.$set(this.modelValue, index, oldRow)
             }
         },
+        /**
+         * @description 下移项
+         */
         handleMoveDown(index) {
             if (index < this.modelValue.length - 1) {
                 const oldRow = this.modelValue[index + 1]
@@ -285,7 +386,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.dynamic-input {
+::v-deep.dynamic-input {
     background-color: #FFFFFF;
     padding: 15px 15px 0;
     border: 1px solid #e6ebf5;
@@ -378,20 +479,25 @@ export default {
             .dynamic-input-item-component__wrapper {
                 margin-right: 10px;
                 flex: 1;
+
+                .el-form-item {
+                    display: flex;
+                    .el-form-item__label {
+                        padding: 0px 10px;
+                        flex-shrink: 0;
+                    }
+                }
             }
         }
     }
-}
-
-.dynamic-input__medium {
 
 }
-.dynamic-input__small {
-    
-}
-.dynamic-input__mini {
 
-}
+.dynamic-input__medium {}
+
+.dynamic-input__small {}
+
+.dynamic-input__mini {}
 
 .is-readonly {}
 
