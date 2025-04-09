@@ -7,7 +7,7 @@
                 <el-row class="dynamic-input-item" v-for="(item, index) in modelValue" :key="String(item) + index"
                     :gutter="10">
                     <el-col class="dynamic-input-item-component__wrapper" v-for="field in fields" :key="field.model + index"
-                        :span="field.span">
+                        :span="field.span || 8">
                         <slot name="default" :field="field" :item="item">
                             <el-form-item v-if="inElForm" :label="field.label" :prop="`${prop}.${index}.${field.model}`"
                                 :rules="rules[field.model]">
@@ -18,7 +18,7 @@
                                 v-model="item[field.model]" :size="componentSize" />
                         </slot>
                     </el-col>
-                    <el-col v-if="mutable" class="dynamic-input-item-actions__wrapper">
+                    <el-col v-if="mutable" class="dynamic-input-item-actions__wrapper" :span="24">
                         <slot name="actions">
                             <el-button-group class="dynamic-input-item-actions">
                                 <el-button class="dynamic-input-remove" :size="componentSize"
@@ -388,7 +388,7 @@ export default {
 <style scoped lang="scss">
 ::v-deep.dynamic-input {
     background-color: #FFFFFF;
-    padding: 15px 15px 0;
+    padding: 15px;
     border: 1px solid #e6ebf5;
     border-radius: 4px;
 
@@ -401,7 +401,33 @@ export default {
 
     .dynamic-input-item-actions {
         .el-button {
-            padding: 7px 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
+
+    .dynamic-input-item {
+
+        .el-form-item,
+        .el-form-item--medium.el-form-item,
+        .el-form-item--mini.el-form-item,
+        .el-form-item--small.el-form-item {
+            display: flex;
+            margin-bottom: 0px;
+
+            .el-form-item__label {
+                padding: 0 10px 0 0;
+                flex-shrink: 0;
+            }
+
+            .el-form-item__content {
+                flex: 1;
+            }
+
+        }
+
+        .dynamic-input-item-component__wrapper .dynamic-input-item-component {
+            width: 100%;
         }
     }
 
@@ -409,20 +435,18 @@ export default {
         .dynamic-input-item {
             display: flex;
             flex-wrap: wrap;
-            padding: 20px 10px 0px 10px;
             border: 1px solid #e6ebf5;
             border-radius: 4px;
             margin-bottom: 10px;
 
-            .dynamic-input-item-actions__wrapper {
+            .dynamic-input-item-component__wrapper {
                 flex: 1;
+            }
+
+            .dynamic-input-item-actions__wrapper {
                 text-align: right;
             }
 
-        }
-
-        .dynamic-input-item:nth-last-child(1) {
-            margin-bottom: 15px;
         }
 
         .dynamic-input-item:focus-within {
@@ -450,25 +474,11 @@ export default {
         .dynamic-input-item {
             border-bottom: 1px solid #DCDFE6;
 
-            .dynamic-input-item-component__wrapper {
-                padding: 20px 10px;
-                text-align: center;
-
-                .el-form-item,
-                .el-form-item--medium.el-form-item,
-                .el-form-item--mini.el-form-item,
-                .el-form-item--small.el-form-item {
-                    margin-bottom: 0px;
-                }
-            }
-
+            .dynamic-input-item-component__wrapper,
             .dynamic-input-item-actions__wrapper {
+                padding: 0 10px;
                 text-align: center;
             }
-        }
-
-        .dynamic-input-item:nth-last-child(1) {
-            border-bottom: none;
         }
     }
 
@@ -478,26 +488,77 @@ export default {
 
             .dynamic-input-item-component__wrapper {
                 margin-right: 10px;
-                flex: 1;
+            }
 
-                .el-form-item {
-                    display: flex;
-                    .el-form-item__label {
-                        padding: 0px 10px;
-                        flex-shrink: 0;
-                    }
-                }
+            .dynamic-input-item-actions__wrapper {
+                flex-shrink: 0;
             }
         }
     }
 
 }
 
-.dynamic-input__medium {}
+.dynamic-input,
+.dynamic-input.dynamic-input__medium {
+    .dynamic-input-item-forms .dynamic-input-item {
+        .dynamic-input-item-component__wrapper {
+            margin: 22px 10px;
+        }
 
-.dynamic-input__small {}
+        .dynamic-input-item-actions__wrapper {
+            margin: 0px 10px 22px;
+        }
+    }
 
-.dynamic-input__mini {}
+    .dynamic-input-item-table .dynamic-input-item {
+        .dynamic-input-item-component__wrapper {
+            padding: 22px 10px;
+        }
+
+    }
+
+    .dynamic-input-item-lines .dynamic-input-item {
+        margin: 22px 0px;
+    }
+    .dynamic-input-item-lines .dynamic-input-item:nth-of-type(1){
+        margin-top: 0px;
+    }
+    .dynamic-input-item-lines .dynamic-input-item:nth-last-of-type(1){
+        margin-bottom: 0px;
+    }
+}
+
+.dynamic-input.dynamic-input__small,
+.dynamic-input.dynamic-input__mini {
+    .dynamic-input-item-forms .dynamic-input-item {
+
+        .dynamic-input-item-component__wrapper {
+            margin: 18px 10px;
+        }
+
+        .dynamic-input-item-actions__wrapper {
+            margin: 0px 10px 18px;
+        }
+    }
+
+    .dynamic-input-item-table .dynamic-input-item {
+        .dynamic-input-item-component__wrapper {
+            padding: 18px 0px;
+        }
+
+    }
+
+    .dynamic-input-item-lines .dynamic-input-item {
+        margin: 18px 10px;
+    }
+    .dynamic-input-item-lines .dynamic-input-item:nth-of-type(1){
+        margin-top: 0px;
+    }
+    .dynamic-input-item-lines .dynamic-input-item:nth-last-of-type(1){
+        margin-bottom: 0px;
+    }
+}
+
 
 .is-readonly {}
 
